@@ -7,3 +7,11 @@ cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
+gmock.pc
+gmock_main.pc
+googletest-build/
+googletest-download/
+googletest-src/
+gtest.pc
+gtest_main.pc
+test/unittests
