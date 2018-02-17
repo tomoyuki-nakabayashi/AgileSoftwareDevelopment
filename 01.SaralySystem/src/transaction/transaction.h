@@ -1,7 +1,10 @@
 // Copyright <2018> Tomoyuki-Nakabayashi
 // This software is released under the MIT License, see LICENSE.
 
-namespace add_employee_transaction {
+#ifndef SARALYSYSTEM_TRANSACTION_TRANSACTION_H_
+#define SARALYSYSTEM_TRANSACTION_TRANSACTION_H_
+
+namespace transaction {
 
 class Transaction {
  public:
@@ -11,4 +14,6 @@ class Transaction {
     virtual ~Transaction() = default;
     virtual void Execute() = 0;
 };
-}  // namespace add_employee_transaction
+}  // namespace transaction
+
+#endif  // SARALYSYSTEM_TRANSACTION_TRANSACTION_H_

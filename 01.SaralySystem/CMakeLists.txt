@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.1)
+
 # Configure for c++
 project(saraly_system)
 enable_language(CXX)
@@ -42,6 +44,5 @@ endif()
 # pkg-config
 find_package(PkgConfig)
 
-# Now simply link against gtest or gtest_main as needed. Eg
-add_subdirectory(src)
+#add_subdirectory(src)
 add_subdirectory(test)
