@@ -13,12 +13,11 @@ class PayrollDatabaseTest : public ::testing::Test {
 };
 
 TEST_F(PayrollDatabaseTest, AddEmployee) {
-  PayrollDatabase db {};
   Employee expect {1, "Bob", "Home"};
-  db.AddEmployee(1, &expect);
+  PayrollDatabase::AddEmployee(1, expect);
 
-  const Employee *actual = db.GetEmployee(1);
-  EXPECT_EQ(expect, *actual);
+  Employee actual = PayrollDatabase::GetEmployee(1);
+  EXPECT_EQ(expect, actual);
 }
 
 } //  namespace add_employee_transaction_test

@@ -4,11 +4,17 @@
 #include <payroll_database/payroll_database.h>
 
 namespace payroll_database {
-void PayrollDatabase::AddEmployee(const int id, Employee *employee) {
-  employees_.insert(std::make_pair(id, employee));
+static std::map<int, std::unique_ptr<Employee>> employees_ {};
+
+void PayrollDatabase::AddEmployee(const int id, Employee& employee) {
+  employees_[id] = std::unique_ptr<Employee>{new Employee{employee}};
 }
 
-const Employee* PayrollDatabase::GetEmployee(const int id) const {
-  return employees_.at(id);
+Employee PayrollDatabase::GetEmployee(const int id) {
+  return *(employees_.at(id).get());
+}
+
+void PayrollDatabase::Clear() {
+  employees_.clear();
 }
 }  // namespace payroll_database
