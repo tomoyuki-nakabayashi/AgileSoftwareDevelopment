@@ -13,23 +13,26 @@ struct Employee {
   std::string name_;
   std::string address_;
 
-  Employee(int id, std::string name, std::string addr);
+  Employee(int id, std::string name, std::string addr)
+      : employee_id_ {id}
+      , name_ {name}
+      , address_ {addr} {
+
+  }
   Employee(const Employee& other) = default;
   Employee& operator=(const Employee& other) = default;
   ~Employee() = default;
+
+  bool operator==(const Employee& rhs) const {
+    return employee_id_ == rhs.employee_id_
+          && name_ == rhs.name_
+          && address_ == rhs.address_;
+  }
+
+  bool operator!=(const Employee &rhs) const {
+    return !(*this == rhs);
+  }
 };
 
 }  // namespace payroll_domain
-
-bool operator==(const payroll_domain::Employee& lhs,
-                const payroll_domain::Employee& rhs) {
-  return lhs.employee_id_ == rhs.employee_id_
-      && lhs.name_ == rhs.name_
-      && lhs.address_ == rhs.address_;
-}
-
-bool operator!=(const payroll_domain::Employee& lhs,
-                const payroll_domain::Employee& rhs) {
-  return !(lhs == rhs);
-}
 #endif  // SARALYSYSTEM_PAYROLL_DOMAIN_EMPLOYEE_H_

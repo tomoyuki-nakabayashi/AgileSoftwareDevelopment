@@ -11,7 +11,12 @@ class EmployeeTest : public ::testing::Test {
 };
 
 TEST_F(EmployeeTest, FirstTest) {
-  EXPECT_TRUE(true);
+  Employee e1 {1, "Bob", "Home"};
+  Employee e2 {1, "Bob", "Home"};
+  Employee e3 {2, "Robert", "Lab"};
+
+  EXPECT_EQ(e1, e2);
+  EXPECT_NE(e1, e3);
 }
 
 }  // namespace payroll_domain_test
