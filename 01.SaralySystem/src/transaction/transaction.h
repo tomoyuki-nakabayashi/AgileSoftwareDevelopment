@@ -9,8 +9,8 @@ namespace transaction {
 class Transaction {
  public:
     Transaction() = default;
-    Transaction(const Transaction& other) = default;
-    Transaction& operator=(const Transaction& other) = default;
+    Transaction(const Transaction& other) = delete;
+    Transaction& operator=(const Transaction& other) = delete;
     virtual ~Transaction() = default;
     virtual void Execute() = 0;
 };

@@ -21,7 +21,7 @@ struct Employee {
   }
   Employee(const Employee& other) = default;
   Employee& operator=(const Employee& other) = default;
-  ~Employee() = default;
+  virtual ~Employee() = default;
 
   bool operator==(const Employee& rhs) const {
     return employee_id_ == rhs.employee_id_
