@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 include_directories(../src)
 add_executable(unittests
-  test_add_salaried_employee.cpp)
+  payroll_domain_test/employee_test.cpp
+  ../src/payroll_domain/employee.cpp)
 target_link_libraries(unittests gtest_main)
