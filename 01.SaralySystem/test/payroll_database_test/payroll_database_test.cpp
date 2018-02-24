@@ -16,7 +16,7 @@ TEST_F(PayrollDatabaseTest, AddEmployee) {
   Employee expect {1, "Bob", "Home"};
   PayrollDatabase::AddEmployee(1, expect);
 
-  Employee actual = PayrollDatabase::GetEmployee(1);
+  Employee actual {PayrollDatabase::GetEmployee(1)};
   EXPECT_EQ(expect, actual);
 }
 

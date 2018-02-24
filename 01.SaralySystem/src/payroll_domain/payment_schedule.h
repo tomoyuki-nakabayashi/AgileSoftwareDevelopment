@@ -6,12 +6,12 @@
 
 namespace payroll_domain {
 
-class PayrollSchedule {
+class PaymentSchedule {
  public:
-    PayrollSchedule() = default;
-    PayrollSchedule(const PayrollSchedule&) = default;
-    PayrollSchedule& operator=(const PayrollSchedule&) = default;
-    virtual ~PayrollSchedule() = default;
+    PaymentSchedule() = default;
+    PaymentSchedule(const PaymentSchedule&) = default;
+    PaymentSchedule& operator=(const PaymentSchedule&) = default;
+    virtual ~PaymentSchedule() = default;
 };
 }  // namespace payroll_domain
 

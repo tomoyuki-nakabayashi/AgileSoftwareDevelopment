@@ -19,28 +19,28 @@ class Employee {
         , address_ {addr} {
 
     }
-    Employee(const Employee& other) = default;
-    Employee& operator=(const Employee& other) = default;
+    Employee(const Employee&) = default;
+    Employee& operator=(const Employee&) = default;
     virtual ~Employee() = default;
 
-    void SetPaymentClassification(PaymentClassification *c) {
-      classification_ = c;
+    void SetClassification(std::unique_ptr<PaymentClassification> c) {
+      classification_ = std::move(c);
     }
 
-    void SetPaymentSchedule(PaymentSchedule *s) {
-      schedule_ = s;
+    void SetSchedule(std::unique_ptr<PaymentSchedule> s) {
+      schedule_ = std::move(s);
     }
 
     void SetMethod(std::function<void()> m) {
       method_ = m;
     }
 
-    PaymentClassification* GetPaymentClassification() {
-      return classification_;
+    PaymentClassification GetPaymentClassification() {
+      return *classification_;
     }
 
-    PaymentSchedule* GetPaymentSchedule() {
-      return schedule_;
+    PaymentSchedule GetPaymentSchedule() {
+      return *schedule_;
     }
 
     std::function<void()> GetMethod() {
@@ -61,8 +61,8 @@ class Employee {
     int employee_id_;
     std::string name_;
     std::string address_;
-    PaymentClassification *classification_;
-    PaymentSchedule *schedule_;
+    PaymentClassification classification_;
+    PaymentSchedule schedule_;
     std::function<void()> method_;
 };
 

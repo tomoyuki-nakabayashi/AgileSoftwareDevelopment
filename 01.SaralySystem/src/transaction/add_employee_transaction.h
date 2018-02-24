@@ -5,21 +5,26 @@
 #define SARALYSYSTEM_TRANSACTION_ADD_EMPLOYEE_TRANSACTION_H_
 
 #include <string>
+#include <memory>
 #include <transaction/transaction.h>
+#include <payroll_domain/payment_schedule.h>
+#include <payroll_domain/payment_classification.h>
 
 namespace transaction {
+using payroll_domain::PaymentSchedule;
+using payroll_domain::PaymentClassification;
 class AddEmployeeTransaction: public Transaction {
  public:
     AddEmployeeTransaction(int id, std::string name, std::string addr)
-        : employee_id {id}, name_ {name}, address_ {addr} {}
+        : employee_id_ {id}, name_ {name}, address_ {addr} {}
     AddEmployeeTransaction(const AddEmployeeTransaction&) = delete;
     AddEmployeeTransaction& operator=(const AddEmployeeTransaction&) = delete;
     virtual ~AddEmployeeTransaction() override = default;
     void Execute() final;
 
  private:
-    virtual PaymentSchedule GetSchedule() = 0 const;
-    virtual PaymentClassification GetClassification() = 0 const;
+    virtual std::unique_ptr<PaymentSchedule> GetSchedule() const = 0;
+    virtual std::unique_ptr<PaymentClassification> GetClassification() const = 0;
 
  private:
     int employee_id_;
