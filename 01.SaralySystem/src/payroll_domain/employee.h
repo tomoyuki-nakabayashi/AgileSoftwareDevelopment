@@ -5,33 +5,65 @@
 #define SARALYSYSTEM_PAYROLL_DOMAIN_EMPLOYEE_H_
 
 #include <string>
+#include <functional>
+#include <payroll_domain/payment_classification.h>
+#include <payroll_domain/payment_schedule.h>
 
 namespace payroll_domain {
 
-struct Employee {
-  int employee_id_;
-  std::string name_;
-  std::string address_;
+class Employee {
+ public:
+    Employee(int id, std::string name, std::string addr)
+        : employee_id_ {id}
+        , name_ {name}
+        , address_ {addr} {
 
-  Employee(int id, std::string name, std::string addr)
-      : employee_id_ {id}
-      , name_ {name}
-      , address_ {addr} {
+    }
+    Employee(const Employee& other) = default;
+    Employee& operator=(const Employee& other) = default;
+    virtual ~Employee() = default;
 
-  }
-  Employee(const Employee& other) = default;
-  Employee& operator=(const Employee& other) = default;
-  virtual ~Employee() = default;
+    void SetPaymentClassification(PaymentClassification *c) {
+      classification_ = c;
+    }
 
-  bool operator==(const Employee& rhs) const {
-    return employee_id_ == rhs.employee_id_
-          && name_ == rhs.name_
-          && address_ == rhs.address_;
-  }
+    void SetPaymentSchedule(PaymentSchedule *s) {
+      schedule_ = s;
+    }
 
-  bool operator!=(const Employee &rhs) const {
-    return !(*this == rhs);
-  }
+    void SetMethod(std::function<void()> m) {
+      method_ = m;
+    }
+
+    PaymentClassification* GetPaymentClassification() {
+      return classification_;
+    }
+
+    PaymentSchedule* GetPaymentSchedule() {
+      return schedule_;
+    }
+
+    std::function<void()> GetMethod() {
+      return method_;
+    }
+
+    bool operator==(const Employee& rhs) const {
+      return employee_id_ == rhs.employee_id_
+            && name_ == rhs.name_
+            && address_ == rhs.address_;
+    }
+
+    bool operator!=(const Employee &rhs) const {
+      return !(*this == rhs);
+    }
+
+ private:
+    int employee_id_;
+    std::string name_;
+    std::string address_;
+    PaymentClassification *classification_;
+    PaymentSchedule *schedule_;
+    std::function<void()> method_;
 };
 
 }  // namespace payroll_domain

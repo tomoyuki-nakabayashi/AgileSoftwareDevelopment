@@ -13,7 +13,7 @@ void AddEmployeeTransaction::Execute() {
   Employee e {employee_id_, name_, address_};
   e.SetClassification(GetClassification());
   e.SetSchedule(GetSchedule());
-  e.SetMethod(HoldMethod());
+  e.SetMethod([](){});
 
   PayrollDatabase::AddEmployee(employee_id_, e);
 }

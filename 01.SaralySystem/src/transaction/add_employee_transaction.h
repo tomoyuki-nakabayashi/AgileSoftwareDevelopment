@@ -15,11 +15,11 @@ class AddEmployeeTransaction: public Transaction {
     AddEmployeeTransaction(const AddEmployeeTransaction&) = delete;
     AddEmployeeTransaction& operator=(const AddEmployeeTransaction&) = delete;
     virtual ~AddEmployeeTransaction() override = default;
-    void Execute() override;
+    void Execute() final;
 
  private:
-    PaymentSchedule GetSchedule() = 0 const;
-    PaymentClassification GetClassification() = 0 const;
+    virtual PaymentSchedule GetSchedule() = 0 const;
+    virtual PaymentClassification GetClassification() = 0 const;
 
  private:
     int employee_id_;
