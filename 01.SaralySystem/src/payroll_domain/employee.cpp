@@ -21,4 +21,28 @@ Employee::Employee(const Employee& other)
     , schedule_ {std::make_unique<PaymentSchedule>(*other.schedule_)}
     , method_ {other.method_} {    
 }
+
+void Employee::SetClassification(std::unique_ptr<PaymentClassification> c) {
+    classification_ = std::move(c);
+}
+
+void Employee::SetSchedule(std::unique_ptr<PaymentSchedule> s) {
+    schedule_ = std::move(s);
+}
+
+void Employee::SetMethod(std::function<void()> m) {
+    method_ = m;
+}
+
+const PaymentClassification& Employee::GetPaymentClassification() const{ 
+    return *classification_;
+}
+
+const PaymentSchedule& Employee::GetPaymentSchedule() const {
+    return *schedule_;
+}
+
+std::function<void()> Employee::GetMethod() const {
+    return method_;
+}
 }  // namespace payroll_domain

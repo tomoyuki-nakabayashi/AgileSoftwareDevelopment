@@ -16,15 +16,11 @@ AddSalariedEmployee::AddSalariedEmployee(int id,
 }
 
 std::unique_ptr<PaymentClassification> AddSalariedEmployee::GetClassification() const {
-  std::unique_ptr<PaymentClassification> classification {nullptr};
-  classification.reset(new PaymentClassification{});
-  return classification;
+  return std::unique_ptr<PaymentClassification>(new PaymentClassification{});
 }
 
 std::unique_ptr<PaymentSchedule> AddSalariedEmployee::GetSchedule() const {
-  std::unique_ptr<PaymentSchedule> schedule {nullptr};
-  schedule.reset(new PaymentSchedule{});
-  return schedule;
+  return std::unique_ptr<PaymentSchedule>(new PaymentSchedule{});
 }
 
 }  // namespace transaction

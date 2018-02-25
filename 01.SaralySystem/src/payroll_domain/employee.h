@@ -22,29 +22,13 @@ class Employee {
     Employee& operator=(const Employee&) = default;
     virtual ~Employee() = default;
 
-    void SetClassification(ClassificationUPtr c) {
-      classification_ = std::move(c);
-    }
+    void SetClassification(std::unique_ptr<PaymentClassification> c);
+    void SetSchedule(std::unique_ptr<PaymentSchedule> s);
+    void SetMethod(std::function<void()> m);
 
-    void SetSchedule(ScheduleUPtr s) {
-      schedule_ = std::move(s);
-    }
-
-    void SetMethod(std::function<void()> m) {
-      method_ = m;
-    }
-
-    PaymentClassification GetPaymentClassification() {
-      return *classification_;
-    }
-
-    PaymentSchedule GetPaymentSchedule() {
-      return *schedule_;
-    }
-
-    std::function<void()> GetMethod() {
-      return method_;
-    }
+    const PaymentClassification& GetPaymentClassification() const;
+    const PaymentSchedule& GetPaymentSchedule() const;
+    std::function<void()> GetMethod() const;
 
     bool operator==(const Employee& rhs) const {
       return employee_id_ == rhs.employee_id_
