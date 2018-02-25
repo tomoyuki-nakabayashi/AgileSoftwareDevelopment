@@ -16,8 +16,8 @@ class SalariedClassification: public PaymentClassification {
     SalariedClassification& operator=(const SalariedClassification&) = default;
     ~SalariedClassification() override = default;
 
-    PaymentClassification* clone() const override {
-      return new SalariedClassification{*this};
+    std::unique_ptr<PaymentClassification> clone() const override {
+      return std::unique_ptr<PaymentClassification>(new SalariedClassification{*this});
     }
     double GetSalary() const {return salary_;}
 

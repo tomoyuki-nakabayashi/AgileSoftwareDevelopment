@@ -15,8 +15,8 @@ class MonthlySchedule: public PaymentSchedule {
     MonthlySchedule& operator=(const MonthlySchedule&) = default;
     ~MonthlySchedule() override = default;
 
-    PaymentSchedule* clone() const override {
-      return new MonthlySchedule{*this};
+    std::unique_ptr<PaymentSchedule> clone() const override {
+      return std::unique_ptr<PaymentSchedule>(new MonthlySchedule{*this});
     }
 };
 }  // namespace payroll_domain

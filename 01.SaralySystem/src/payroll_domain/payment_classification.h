@@ -4,6 +4,8 @@
 #ifndef SARALYSYSTEM_PAYROLL_DOMAIN_PAYMENT_CLASSIFICATION_H_
 #define SARALYSYSTEM_PAYROLL_DOMAIN_PAYMENT_CLASSIFICATION_H_
 
+#include <memory>
+
 namespace payroll_domain {
 
 class PaymentClassification {
@@ -13,8 +15,8 @@ class PaymentClassification {
     PaymentClassification& operator=(const PaymentClassification&) = default;
     virtual ~PaymentClassification() = default;
 
-    virtual PaymentClassification* clone() const {
-      return new PaymentClassification{*this};
+    virtual std::unique_ptr<PaymentClassification> clone() const {
+      return std::make_unique<PaymentClassification>(*this);
     }
 };
 

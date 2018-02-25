@@ -21,9 +21,9 @@ Employee::Employee(const Employee& other)
     , schedule_ {nullptr}
     , method_ {other.method_} {
   if (other.classification_ != nullptr)
-    classification_.reset(other.classification_->clone());
+    classification_ = other.classification_->clone();
   if (other.schedule_ != nullptr)
-    schedule_.reset(other.schedule_->clone());
+    schedule_ = other.schedule_->clone();
 }
 
 void Employee::SetClassification(std::unique_ptr<PaymentClassification> c) {
