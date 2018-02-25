@@ -17,34 +17,36 @@ Employee::Employee(const Employee& other)
     : employee_id_ {other.employee_id_}
     , name_ {other.name_}
     , address_ {other.address_}
-    , classification_ {std::unique_ptr<PaymentClassification>(nullptr)}
-    , schedule_ {std::make_unique<PaymentSchedule>(*other.schedule_)}
+    , classification_ {nullptr}
+    , schedule_ {nullptr}
     , method_ {other.method_} {
   if (other.classification_ != nullptr)
     classification_.reset(other.classification_->clone());
+  if (other.schedule_ != nullptr)
+    schedule_.reset(other.schedule_->clone());
 }
 
 void Employee::SetClassification(std::unique_ptr<PaymentClassification> c) {
-    classification_ = std::move(c);
+  classification_ = std::move(c);
 }
 
 void Employee::SetSchedule(std::unique_ptr<PaymentSchedule> s) {
-    schedule_ = std::move(s);
+  schedule_ = std::move(s);
 }
 
 void Employee::SetMethod(std::function<void()> m) {
-    method_ = m;
+  method_ = m;
 }
 
 const PaymentClassification* Employee::GetClassification() const{ 
-    return classification_.get();
+  return classification_.get();
 }
 
 const PaymentSchedule* Employee::GetSchedule() const {
-    return schedule_.get();
+  return schedule_.get();
 }
 
 std::function<void()> Employee::GetMethod() const {
-    return method_;
+  return method_;
 }
 }  // namespace payroll_domain

@@ -17,7 +17,7 @@ class SalariedClassification: public PaymentClassification {
     ~SalariedClassification() override = default;
 
     PaymentClassification* clone() const override {
-      return new SalariedClassification(*this);
+      return new SalariedClassification{*this};
     }
     double GetSalary() const {return salary_;}
 

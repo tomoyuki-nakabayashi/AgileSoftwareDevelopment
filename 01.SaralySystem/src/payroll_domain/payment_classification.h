@@ -14,7 +14,7 @@ class PaymentClassification {
     virtual ~PaymentClassification() = default;
 
     virtual PaymentClassification* clone() const {
-      return new PaymentClassification(*this);
+      return new PaymentClassification{*this};
     }
 };
 

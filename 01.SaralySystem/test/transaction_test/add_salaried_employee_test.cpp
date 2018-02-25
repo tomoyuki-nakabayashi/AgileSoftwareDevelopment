@@ -2,7 +2,6 @@
 // This software is released under the MIT License, see LICENSE.
 
 #include <gtest/gtest.h>
-#include<typeinfo>
 #include <transaction/add_salaried_employee.h>
 #include <payroll_domain/employee.h>
 #include <payroll_domain/salaried_classification.h>

@@ -15,7 +15,7 @@ class MonthlySchedule: public PaymentSchedule {
     MonthlySchedule& operator=(const MonthlySchedule&) = default;
     ~MonthlySchedule() override = default;
 
-    virtual PaymentSchedule* clone() const override {
+    PaymentSchedule* clone() const override {
       return new MonthlySchedule{*this};
     }
 };
