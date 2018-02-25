@@ -12,6 +12,10 @@ class PaymentSchedule {
     PaymentSchedule(const PaymentSchedule&) = default;
     PaymentSchedule& operator=(const PaymentSchedule&) = default;
     virtual ~PaymentSchedule() = default;
+
+    virtual PaymentSchedule* clone() const {
+      return new PaymentSchedule{*this};
+    }
 };
 }  // namespace payroll_domain
 

@@ -14,6 +14,10 @@ class MonthlySchedule: public PaymentSchedule {
     MonthlySchedule(const MonthlySchedule&) = default;
     MonthlySchedule& operator=(const MonthlySchedule&) = default;
     ~MonthlySchedule() override = default;
+
+    virtual PaymentSchedule* clone() const override {
+      return new MonthlySchedule{*this};
+    }
 };
 }  // namespace payroll_domain
 

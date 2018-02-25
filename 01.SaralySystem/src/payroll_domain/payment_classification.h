@@ -12,6 +12,10 @@ class PaymentClassification {
     PaymentClassification(const PaymentClassification&) = default;
     PaymentClassification& operator=(const PaymentClassification&) = default;
     virtual ~PaymentClassification() = default;
+
+    virtual PaymentClassification* clone() const {
+      return new PaymentClassification(*this);
+    }
 };
 
 }  // namespace payroll_domain

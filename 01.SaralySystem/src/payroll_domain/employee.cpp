@@ -17,9 +17,11 @@ Employee::Employee(const Employee& other)
     : employee_id_ {other.employee_id_}
     , name_ {other.name_}
     , address_ {other.address_}
-    , classification_ {std::make_unique<PaymentClassification>(*other.classification_)}
+    , classification_ {std::unique_ptr<PaymentClassification>(nullptr)}
     , schedule_ {std::make_unique<PaymentSchedule>(*other.schedule_)}
-    , method_ {other.method_} {    
+    , method_ {other.method_} {
+  if (other.classification_ != nullptr)
+    classification_.reset(other.classification_->clone());
 }
 
 void Employee::SetClassification(std::unique_ptr<PaymentClassification> c) {
