@@ -18,7 +18,7 @@ AddSalariedEmployee::AddSalariedEmployee(int id,
 }
 
 std::unique_ptr<PaymentClassification> AddSalariedEmployee::GetClassification() const {
-  return std::unique_ptr<PaymentClassification>(new SalariedClassification{});
+  return std::unique_ptr<PaymentClassification>(new SalariedClassification{salary_});
 }
 
 std::unique_ptr<PaymentSchedule> AddSalariedEmployee::GetSchedule() const {

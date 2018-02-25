@@ -5,12 +5,14 @@
 #include <transaction/add_salaried_employee.h>
 #include <payroll_domain/employee.h>
 #include <payroll_domain/salaried_classification.h>
+#include <payroll_domain/monthly_schedule.h>
 #include <payroll_database/payroll_database.h>
 
 namespace add_employee_transaction_test {
 using transaction::AddSalariedEmployee;
 using payroll_domain::Employee;
 using payroll_domain::SalariedClassification;
+using payroll_domain::MonthlySchedule;
 using payroll_database::PayrollDatabase;
 
 class TestPayroll : public ::testing::Test {
@@ -23,7 +25,10 @@ TEST_F(TestPayroll, TestAddSalariedEmployee) {
   t.Execute();
   Employee e {PayrollDatabase::GetEmployee(kEmployeeId)};
   EXPECT_EQ(expect, e);
-  auto c = e.GetClassification();
-  EXPECT_NE(nullptr, dynamic_cast<const SalariedClassification*>(c));
+  auto sc = dynamic_cast<const SalariedClassification*>(e.GetClassification());
+  EXPECT_NE(nullptr, sc);
+  EXPECT_DOUBLE_EQ(1000.00, sc->GetSalary());
+  auto ms = dynamic_cast<const MonthlySchedule*>(e.GetSchedule());
+  EXPECT_NE(nullptr, ms);
 }
 }  // namespace add_salaried_employee_test
