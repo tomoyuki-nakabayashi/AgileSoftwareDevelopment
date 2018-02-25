@@ -6,28 +6,27 @@
 
 #include <string>
 #include <functional>
+#include <memory>
 #include <payroll_domain/payment_classification.h>
 #include <payroll_domain/payment_schedule.h>
 
 namespace payroll_domain {
 
+using ClassificationUPtr = std::unique_ptr<PaymentClassification>;
+using ScheduleUPtr = std::unique_ptr<PaymentSchedule>;
+
 class Employee {
  public:
-    Employee(int id, std::string name, std::string addr)
-        : employee_id_ {id}
-        , name_ {name}
-        , address_ {addr} {
-
-    }
-    Employee(const Employee&) = default;
+    Employee(int id, std::string name, std::string addr);
+    Employee(const Employee&);
     Employee& operator=(const Employee&) = default;
     virtual ~Employee() = default;
 
-    void SetClassification(std::unique_ptr<PaymentClassification> c) {
+    void SetClassification(ClassificationUPtr c) {
       classification_ = std::move(c);
     }
 
-    void SetSchedule(std::unique_ptr<PaymentSchedule> s) {
+    void SetSchedule(ScheduleUPtr s) {
       schedule_ = std::move(s);
     }
 
@@ -61,8 +60,8 @@ class Employee {
     int employee_id_;
     std::string name_;
     std::string address_;
-    PaymentClassification classification_;
-    PaymentSchedule schedule_;
+    ClassificationUPtr classification_;
+    ScheduleUPtr schedule_;
     std::function<void()> method_;
 };
 

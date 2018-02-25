@@ -11,8 +11,7 @@ void PayrollDatabase::AddEmployee(const int id, Employee& employee) {
 }
 
 Employee PayrollDatabase::GetEmployee(const int id) {
-  auto employee = employees_.at(id);
-  return *employee;
+  return *employees_.at(id);
 }
 
 void PayrollDatabase::Clear() {

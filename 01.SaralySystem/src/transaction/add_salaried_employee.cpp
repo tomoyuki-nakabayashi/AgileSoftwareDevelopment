@@ -1,7 +1,7 @@
 // Copyright <2018> Tomoyuki-Nakabayashi
 // This software is released under the MIT License, see LICENSE.
 
-#include <payroll_domain/add_salaried_employee.h>
+#include <transaction/add_salaried_employee.h>
 #include <payroll_domain/salaried_classification.h>
 #include <payroll_domain/monthly_schedule.h>
 
@@ -10,19 +10,21 @@ namespace transaction {
 AddSalariedEmployee::AddSalariedEmployee(int id,
                                          std::string name,
                                          std::string addr,
-                                         double saraly) 
+                                         double salary) 
   : AddEmployeeTransaction{id, name, addr}
-  , saraly_{saraly} {
+  , salary_{salary} {
 }
 
-PaymentClassification AddSalariedEmployee::GetClassification() const {
-  std::unique_ptr<PaymentClassification> classification {nullptre};
-  return std::move(classification.reset(new PaymentClassification{}));
+std::unique_ptr<PaymentClassification> AddSalariedEmployee::GetClassification() const {
+  std::unique_ptr<PaymentClassification> classification {nullptr};
+  classification.reset(new PaymentClassification{});
+  return classification;
 }
 
 std::unique_ptr<PaymentSchedule> AddSalariedEmployee::GetSchedule() const {
-  std::unique_ptr<PaymentSchedule> schedule {nullptre};
-  return std::move(schedule.reset(new PaymentSchedule{}));
+  std::unique_ptr<PaymentSchedule> schedule {nullptr};
+  schedule.reset(new PaymentSchedule{});
+  return schedule;
 }
 
 }  // namespace transaction

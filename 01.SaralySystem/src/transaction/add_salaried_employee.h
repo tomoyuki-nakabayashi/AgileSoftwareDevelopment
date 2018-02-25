@@ -15,7 +15,7 @@ class AddSalariedEmployee: public AddEmployeeTransaction {
     AddSalariedEmployee(int id,
                         std::string name,
                         std::string addr,
-                        double saraly);
+                        double salary);
     ~AddSalariedEmployee() override = default;
 
  private:
