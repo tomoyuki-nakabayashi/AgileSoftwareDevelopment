@@ -34,12 +34,12 @@ void Employee::SetMethod(std::function<void()> m) {
     method_ = m;
 }
 
-const PaymentClassification& Employee::GetPaymentClassification() const{ 
-    return *classification_;
+const PaymentClassification* Employee::GetClassification() const{ 
+    return classification_.get();
 }
 
-const PaymentSchedule& Employee::GetPaymentSchedule() const {
-    return *schedule_;
+const PaymentSchedule* Employee::GetSchedule() const {
+    return schedule_.get();
 }
 
 std::function<void()> Employee::GetMethod() const {

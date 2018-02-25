@@ -10,14 +10,16 @@ namespace payroll_domain {
 
 class SalariedClassification: public PaymentClassification {
  public:
-    explicit SalariedClassification(double saraly = 0.0)
-      :PaymentClassification{}, saraly_ {saraly} {}
+    explicit SalariedClassification(double salary = 0.0)
+      :PaymentClassification{}, salary_ {salary} {}
     SalariedClassification(const SalariedClassification&) = default;
     SalariedClassification& operator=(const SalariedClassification&) = default;
     ~SalariedClassification() override = default;
 
+    double GetSalary() const {return salary_;}
+
  private:
-    double saraly_;
+    double salary_;
 };
 
 }  // namespace payroll_domain

@@ -6,6 +6,8 @@
 #include <payroll_domain/monthly_schedule.h>
 
 namespace transaction {
+using payroll_domain::SalariedClassification;
+using payroll_domain::MonthlySchedule;
 
 AddSalariedEmployee::AddSalariedEmployee(int id,
                                          std::string name,
@@ -16,11 +18,11 @@ AddSalariedEmployee::AddSalariedEmployee(int id,
 }
 
 std::unique_ptr<PaymentClassification> AddSalariedEmployee::GetClassification() const {
-  return std::unique_ptr<PaymentClassification>(new PaymentClassification{});
+  return std::unique_ptr<PaymentClassification>(new SalariedClassification{});
 }
 
 std::unique_ptr<PaymentSchedule> AddSalariedEmployee::GetSchedule() const {
-  return std::unique_ptr<PaymentSchedule>(new PaymentSchedule{});
+  return std::unique_ptr<PaymentSchedule>(new MonthlySchedule{});
 }
 
 }  // namespace transaction
