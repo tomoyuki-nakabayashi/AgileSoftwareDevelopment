@@ -3,15 +3,17 @@
 
 #include <gtest/gtest.h>
 #include <transaction/add_salaried_employee.h>
+#include <transaction/add_hourly_employee.h>
 #include <payroll_domain/employee.h>
 #include <payroll_domain/salaried_classification.h>
 #include <payroll_domain/monthly_schedule.h>
-#include <payroll_domain/weekly_classification.h>
+#include <payroll_domain/hourly_classification.h>
 #include <payroll_domain/weekly_schedule.h>
 #include <payroll_database/payroll_database.h>
 
 namespace add_employee_transaction_test {
 using transaction::AddSalariedEmployee;
+using transaction::AddHourlyEmployee;
 using payroll_domain::Employee;
 using payroll_domain::SalariedClassification;
 using payroll_domain::MonthlySchedule;
@@ -39,9 +41,14 @@ TEST_F(TestPayroll, TestAddSalariedEmployee) {
 TEST_F(TestPayroll, TestAddHourlyEmployee) {
   constexpr int kEmployeeId = 2;
   const Employee expect {kEmployeeId, "Martin", "Home"};
-  AddHourlyEmployee t {kEmployeeId, "Bob", "Home", 10.00};
+  AddHourlyEmployee t {kEmployeeId, "Martin", "Home", 10.00};
   t.Execute();
   Employee e {PayrollDatabase::GetEmployee(kEmployeeId)};
   EXPECT_EQ(expect, e);
+  auto hc = dynamic_cast<const HourlyClassification*>(e.GetClassification());
+  EXPECT_NE(nullptr, hc);
+  EXPECT_DOUBLE_EQ(10.00, hc->GetHourlyPay());
+  auto ws = dynamic_cast<const WeeklySchedule*>(e.GetSchedule());
+  EXPECT_NE(nullptr, ws);
 }
 }  // namespace add_salaried_employee_test
