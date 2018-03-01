@@ -60,10 +60,16 @@ TEST_F(TestPayroll, TestAddHourlyEmployee) {
 
 TEST_F(TestPayroll, TestAddCommissionedEmployee) {
   constexpr int kEmployeeId = 3;
-  const Employee expect {kEmployeeId, "Martin", "Home"};
-  AddCommissionedEmployee t {kEmployeeId, "Martin", "Home", 1000.00, 10.00};
+  const Employee expect {kEmployeeId, "Robert", "Home"};
+  AddCommissionedEmployee t {kEmployeeId, "Robert", "Home", 1000.00, 10.00};
   t.Execute();
   Employee e {PayrollDatabase::GetEmployee(kEmployeeId)};
   EXPECT_EQ(expect, e);
+  auto cc = dynamic_cast<const CommissionedClassification*>(e.GetClassification());
+  EXPECT_NE(nullptr, cc);
+  EXPECT_DOUBLE_EQ(1000.00, cc->GetSalary());
+  EXPECT_DOUBLE_EQ(10.00, cc->GetCommissionRate());
+  auto bws = dynamic_cast<const BiweeklySchedule*>(e.GetSchedule());
+  EXPECT_NE(nullptr, bws);
 }
 }  // namespace add_salaried_employee_test
