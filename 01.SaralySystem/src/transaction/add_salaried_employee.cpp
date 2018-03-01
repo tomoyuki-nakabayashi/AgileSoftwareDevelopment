@@ -17,12 +17,12 @@ AddSalariedEmployee::AddSalariedEmployee(int id,
   , salary_{salary} {
 }
 
-std::unique_ptr<PaymentClassification> AddSalariedEmployee::GetClassification() const {
-  return std::unique_ptr<PaymentClassification>(new SalariedClassification{salary_});
+UPtrPayClass AddSalariedEmployee::GetClassification() const {
+  return UPtrPayClass(new SalariedClassification{salary_});
 }
 
-std::unique_ptr<PaymentSchedule> AddSalariedEmployee::GetSchedule() const {
-  return std::unique_ptr<PaymentSchedule>(new MonthlySchedule{});
+UPtrPaySchedule AddSalariedEmployee::GetSchedule() const {
+  return UPtrPaySchedule(new MonthlySchedule{});
 }
 
 }  // namespace transaction

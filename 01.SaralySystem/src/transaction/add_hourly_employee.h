@@ -4,11 +4,15 @@
 #ifndef SARALYSYSTEM_TRANSACTION_ADD_HOURLY_EMPLOYEE_H_
 #define SARALYSYSTEM_TRANSACTION_ADD_HOURLY_EMPLOYEE_H_
 
-#include <transaction/add_employee_transaction.h>
 #include <string>
 #include <memory>
+#include <transaction/add_employee_transaction.h>
+#include <payroll_domain/payment_classification.h>
+#include <payroll_domain/payment_schedule.h>
 
 namespace transaction {
+using payroll_domain::UPtrPayClass;
+using payroll_domain::UPtrPaySchedule;
 
 class AddHourlyEmployee: public AddEmployeeTransaction {
  public:
@@ -19,8 +23,8 @@ class AddHourlyEmployee: public AddEmployeeTransaction {
     ~AddHourlyEmployee() override = default;
 
  private:
-    std::unique_ptr<PaymentSchedule> GetSchedule() const override;
-    std::unique_ptr<PaymentClassification> GetClassification() const override;
+    UPtrPaySchedule GetSchedule() const override;
+    UPtrPayClass GetClassification() const override;
 
  private:
     double hourly_pay_;

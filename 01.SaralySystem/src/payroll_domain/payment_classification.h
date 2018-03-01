@@ -7,6 +7,8 @@
 #include <memory>
 
 namespace payroll_domain {
+class PaymentClassification;
+using UPtrPayClass = std::unique_ptr<PaymentClassification>;
 
 class PaymentClassification {
  public:
@@ -15,7 +17,7 @@ class PaymentClassification {
     PaymentClassification& operator=(const PaymentClassification&) = default;
     virtual ~PaymentClassification() = default;
 
-    virtual std::unique_ptr<PaymentClassification> clone() const {
+    virtual UPtrPayClass clone() const {
       return std::make_unique<PaymentClassification>(*this);
     }
 };
