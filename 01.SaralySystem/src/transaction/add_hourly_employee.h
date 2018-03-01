@@ -19,7 +19,7 @@ class AddHourlyEmployee: public AddEmployeeTransaction {
     AddHourlyEmployee(int id,
                       std::string name,
                       std::string addr,
-                      double hourly_pay);
+                      double hourly_rate);
     ~AddHourlyEmployee() override = default;
 
  private:
@@ -27,7 +27,7 @@ class AddHourlyEmployee: public AddEmployeeTransaction {
     UPtrPayClass GetClassification() const override;
 
  private:
-    double hourly_pay_;
+    double hourly_rate_;
 };
 }  // namespace transaction
 

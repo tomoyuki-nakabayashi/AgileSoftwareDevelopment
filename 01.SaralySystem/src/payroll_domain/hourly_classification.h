@@ -10,8 +10,8 @@ namespace payroll_domain {
 
 class HourlyClassification: public PaymentClassification {
  public:
-    explicit HourlyClassification(double hourly_pay = 0.0)
-      :PaymentClassification{}, hourly_pay_ {hourly_pay} {}
+    explicit HourlyClassification(double hourly_rate = 0.0)
+      :PaymentClassification{}, hourly_rate_ {hourly_rate} {}
     HourlyClassification(const HourlyClassification&) = default;
     HourlyClassification& operator=(const HourlyClassification&) = default;
     ~HourlyClassification() override = default;
@@ -19,10 +19,10 @@ class HourlyClassification: public PaymentClassification {
     std::unique_ptr<PaymentClassification> clone() const override {
       return std::unique_ptr<PaymentClassification>(new HourlyClassification{*this});
     }
-    double GetHourlyPay() const {return hourly_pay_;}
+    double GetHourlyPay() const {return hourly_rate_;}
 
  private:
-    double hourly_pay_;
+    double hourly_rate_;
 };
 
 }  // namespace payroll_domain

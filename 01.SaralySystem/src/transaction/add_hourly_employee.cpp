@@ -12,13 +12,13 @@ using payroll_domain::WeeklySchedule;
 AddHourlyEmployee::AddHourlyEmployee(int id,
                                      std::string name,
                                      std::string addr,
-                                     double hourly_pay) 
+                                     double hourly_rate) 
   : AddEmployeeTransaction{id, name, addr}
-  , hourly_pay_{hourly_pay} {
+  , hourly_rate_{hourly_rate} {
 }
 
 UPtrPayClass AddHourlyEmployee::GetClassification() const {
-  return UPtrPayClass(new HourlyClassification{hourly_pay_});
+  return UPtrPayClass(new HourlyClassification{hourly_rate_});
 }
 
 UPtrPaySchedule AddHourlyEmployee::GetSchedule() const {
