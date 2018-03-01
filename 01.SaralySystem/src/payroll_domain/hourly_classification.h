@@ -19,7 +19,7 @@ class HourlyClassification: public PaymentClassification {
     std::unique_ptr<PaymentClassification> clone() const override {
       return std::unique_ptr<PaymentClassification>(new HourlyClassification{*this});
     }
-    double GetHourlyPay() const {return hourly_rate_;}
+    double GetHourlyRate() const {return hourly_rate_;}
 
  private:
     double hourly_rate_;
