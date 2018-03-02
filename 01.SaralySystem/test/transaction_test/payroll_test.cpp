@@ -5,6 +5,7 @@
 #include <transaction/add_salaried_employee.h>
 #include <transaction/add_hourly_employee.h>
 #include <transaction/add_commissioned_employee.h>
+#include <transaction/delete_employee.h>
 #include <payroll_domain/employee.h>
 #include <payroll_domain/salaried_classification.h>
 #include <payroll_domain/hourly_classification.h>
@@ -18,6 +19,7 @@ namespace add_employee_transaction_test {
 using transaction::AddSalariedEmployee;
 using transaction::AddHourlyEmployee;
 using transaction::AddCommissionedEmployee;
+using transaction::DeleteEmployee;
 using payroll_domain::Employee;
 using payroll_domain::SalariedClassification;
 using payroll_domain::HourlyClassification;
@@ -28,6 +30,10 @@ using payroll_domain::BiweeklySchedule;
 using payroll_database::PayrollDatabase;
 
 class TestPayroll : public ::testing::Test {
+ protected:
+    void TearDown() override {
+      PayrollDatabase::Clear();
+    }
 };
 
 TEST_F(TestPayroll, TestAddSalariedEmployee) {
@@ -71,5 +77,18 @@ TEST_F(TestPayroll, TestAddCommissionedEmployee) {
   EXPECT_DOUBLE_EQ(10.00, cc->GetCommissionRate());
   auto bws = dynamic_cast<const BiweeklySchedule*>(e.GetSchedule());
   EXPECT_NE(nullptr, bws);
+}
+
+TEST_F(TestPayroll, TestDeleteEmployee) {
+  constexpr int kEmployeeId = 3;
+  const Employee expect {kEmployeeId, "Lance", "Home"};
+  AddCommissionedEmployee t{kEmployeeId, "Lance", "Home", 2500, 3.2};
+  t.Execute();
+  Employee e{PayrollDatabase::GetEmployee(kEmployeeId)};
+  EXPECT_EQ(expect, e);
+
+  DeleteEmployee dt{kEmployeeId};
+  dt.Execute();
+  EXPECT_THROW(PayrollDatabase::GetEmployee(kEmployeeId), std::out_of_range);
 }
 }  // namespace add_salaried_employee_test
