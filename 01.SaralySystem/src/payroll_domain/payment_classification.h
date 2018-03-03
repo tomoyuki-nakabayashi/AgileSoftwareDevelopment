@@ -16,10 +16,6 @@ class PaymentClassification {
     PaymentClassification(const PaymentClassification&) = default;
     PaymentClassification& operator=(const PaymentClassification&) = default;
     virtual ~PaymentClassification() = default;
-
-    virtual UPtrPayClass clone() const {
-      return std::make_unique<PaymentClassification>(*this);
-    }
 };
 
 }  // namespace payroll_domain

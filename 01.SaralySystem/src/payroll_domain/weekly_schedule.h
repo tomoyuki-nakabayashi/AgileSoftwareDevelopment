@@ -14,10 +14,6 @@ class WeeklySchedule: public PaymentSchedule {
     WeeklySchedule(const WeeklySchedule&) = default;
     WeeklySchedule& operator=(const WeeklySchedule&) = default;
     ~WeeklySchedule() override = default;
-
-    std::unique_ptr<PaymentSchedule> clone() const override {
-      return std::unique_ptr<PaymentSchedule>(new WeeklySchedule{*this});
-    }
 };
 }  // namespace payroll_domain
 

@@ -1,6 +1,7 @@
 // Copyright <2018> Tomoyuki-Nakabayashi
 // This software is released under the MIT License, see LICENSE.
 
+#include <memory>
 #include <gtest/gtest.h>
 #include <payroll_domain/employee.h>
 #include <payroll_database/payroll_database.h>
@@ -14,7 +15,7 @@ class PayrollDatabaseTest : public ::testing::Test {
 
 TEST_F(PayrollDatabaseTest, AddEmployee) {
   Employee expect {1, "Bob", "Home"};
-  PayrollDatabase::AddEmployee(1, expect);
+  PayrollDatabase::AddEmployee(1, std::make_shared<Employee>(1, "Bob", "Home"));
 
   auto actual = PayrollDatabase::GetEmployee(1);
   EXPECT_EQ(expect, *actual);

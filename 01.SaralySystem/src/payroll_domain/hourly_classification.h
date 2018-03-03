@@ -21,9 +21,6 @@ class HourlyClassification: public PaymentClassification {
     HourlyClassification& operator=(const HourlyClassification&) = default;
     ~HourlyClassification() override = default;
 
-    std::unique_ptr<PaymentClassification> clone() const override {
-      return std::unique_ptr<PaymentClassification>(new HourlyClassification{*this});
-    }
     double GetHourlyRate() const {return hourly_rate_;}
     void AddTimeCard(const TimeCard& tc) { 
       time_cards_.insert(std::make_pair(tc.date, TimeCard{tc})); 

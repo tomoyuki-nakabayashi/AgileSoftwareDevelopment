@@ -9,27 +9,31 @@
 #include <memory>
 #include <payroll_domain/payment_classification.h>
 #include <payroll_domain/payment_schedule.h>
+#include <payroll_domain/affiliation.h>
 
 namespace payroll_domain {
 class Employee;
 using SPtrEmployee = std::shared_ptr<Employee>;
-using ClassificationUPtr = std::unique_ptr<PaymentClassification>;
-using ScheduleUPtr = std::unique_ptr<PaymentSchedule>;
+using UPtrClassification = std::unique_ptr<PaymentClassification>;
+using UPtrSchedule = std::unique_ptr<PaymentSchedule>;
+using UPtrAffiliation = std::unique_ptr<Affiliation>;
 
 class Employee {
  public:
     Employee(int id, std::string name, std::string addr);
-    Employee(const Employee&);
+    Employee(const Employee&) = delete;
     Employee& operator=(const Employee&) = default;
     virtual ~Employee() = default;
 
-    void SetClassification(std::unique_ptr<PaymentClassification> c);
-    void SetSchedule(std::unique_ptr<PaymentSchedule> s);
+    void SetClassification(UPtrClassification c);
+    void SetSchedule(UPtrSchedule s);
     void SetMethod(std::function<void()> m);
+    void SetAffiliation(UPtrAffiliation a);
 
     PaymentClassification* GetClassification() const;
     PaymentSchedule* GetSchedule() const;
     std::function<void()> GetMethod() const;
+    Affiliation* GetAffiliation() const;
 
     bool operator==(const Employee& rhs) const {
       return employee_id_ == rhs.employee_id_
@@ -45,9 +49,10 @@ class Employee {
     int employee_id_;
     std::string name_;
     std::string address_;
-    ClassificationUPtr classification_;
-    ScheduleUPtr schedule_;
+    UPtrClassification classification_;
+    UPtrSchedule schedule_;
     std::function<void()> method_;
+    UPtrAffiliation affiliation_;
 };
 
 }  // namespace payroll_domain

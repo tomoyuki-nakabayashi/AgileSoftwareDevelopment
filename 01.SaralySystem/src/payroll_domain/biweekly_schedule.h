@@ -14,10 +14,6 @@ class BiweeklySchedule: public PaymentSchedule {
     BiweeklySchedule(const BiweeklySchedule&) = default;
     BiweeklySchedule& operator=(const BiweeklySchedule&) = default;
     ~BiweeklySchedule() override = default;
-
-    UPtrPaySchedule clone() const override {
-      return UPtrPaySchedule(new BiweeklySchedule{*this});
-    }
 };
 }  // namespace payroll_domain
 

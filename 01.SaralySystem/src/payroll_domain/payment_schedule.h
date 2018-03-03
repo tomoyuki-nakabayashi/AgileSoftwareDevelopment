@@ -14,10 +14,6 @@ class PaymentSchedule {
     PaymentSchedule(const PaymentSchedule&) = default;
     PaymentSchedule& operator=(const PaymentSchedule&) = default;
     virtual ~PaymentSchedule() = default;
-
-    virtual UPtrPaySchedule clone() const {
-      return std::make_unique<PaymentSchedule>(*this);
-    }
 };
 }  // namespace payroll_domain
 

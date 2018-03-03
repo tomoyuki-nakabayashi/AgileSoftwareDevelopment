@@ -18,7 +18,7 @@ class PayrollDatabase {
     PayrollDatabase(const PayrollDatabase&) = delete;
     PayrollDatabase& operator=(const PayrollDatabase&) = delete;
     ~PayrollDatabase() = delete;
-    static void AddEmployee(const int id, Employee& employee);
+    static void AddEmployee(const int id, std::shared_ptr<Employee> e);
     static void DeleteEmployee(const int id);
     static SPtrEmployee GetEmployee(const int id);
     static void Clear();

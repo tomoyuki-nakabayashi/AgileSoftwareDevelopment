@@ -128,4 +128,14 @@ TEST_F(TestPayroll, TestSalesReceiptTransaction) {
   auto sr = sc->GetSalesReceipt(20180303);
   EXPECT_DOUBLE_EQ(100, sr.amount);
 }
+
+TEST_F(TestPayroll, TestAddServiceCharge) {
+  constexpr int kEmployeeId = 2;
+  AddHourlyEmployee t{kEmployeeId, "Bill", "Home", 15.25};
+  t.Execute();
+  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
+//  e->SetAffilication(std::unique_ptr<Affiliation>{new UnionAffiliation{12.5}});
+//  constexpr int kMemberId = 86;
+//  PayrollDatabase::AddUnionMember(kMemberId, e);
+}
 }  // namespace add_salaried_employee_test

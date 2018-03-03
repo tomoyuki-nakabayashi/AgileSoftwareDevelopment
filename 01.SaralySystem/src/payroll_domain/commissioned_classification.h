@@ -24,9 +24,6 @@ class CommissionedClassification: public PaymentClassification {
       = default;
     ~CommissionedClassification() override = default;
 
-    UPtrPayClass clone() const override {
-      return UPtrPayClass(new CommissionedClassification{*this});
-    }
     double GetSalary() const { return salary_; }
     double GetCommissionRate() const { return commission_rate_; }
     void AddSalesReceipt(const SalesReceipt&& sr) {
