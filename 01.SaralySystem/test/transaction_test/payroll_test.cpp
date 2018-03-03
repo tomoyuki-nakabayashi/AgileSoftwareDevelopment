@@ -59,6 +59,14 @@ class TestPayroll : public ::testing::Test {
     }
 };
 
+constexpr int32_t kHeId = 2;
+const Employee kHourlyEmp{kHeId, "Bill", "Home"};
+AddHourlyEmployee ahe{kHeId, "Bill", "Home", 15.25};
+
+constexpr int32_t kCeId = 3;
+const Employee kCoEmp{kCeId, "Lance", "Home"};
+AddCommissionedEmployee ace{kCeId, "Lance", "Home", 2500, 3.2};
+
 TEST_F(TestPayroll, TestAddSalariedEmployee) {
   constexpr int kEmployeeId = 1;
   const Employee expect {kEmployeeId, "Bob", "Home"};
@@ -74,54 +82,43 @@ TEST_F(TestPayroll, TestAddSalariedEmployee) {
 }
 
 TEST_F(TestPayroll, TestAddHourlyEmployee) {
-  constexpr int kEmployeeId = 2;
-  const Employee expect {kEmployeeId, "Martin", "Home"};
-  AddHourlyEmployee t {kEmployeeId, "Martin", "Home", 10.00};
-  t.Execute();
-  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
-  EXPECT_EQ(expect, *e);
+  ahe.Execute();
+  auto e = PayrollDatabase::GetEmployee(kHeId);
+  EXPECT_EQ(kHourlyEmp, *e);
   auto hc = dynamic_cast<const HourlyClassification*>(e->GetClassification());
   EXPECT_NE(nullptr, hc);
-  EXPECT_DOUBLE_EQ(10.00, hc->GetHourlyRate());
+  EXPECT_DOUBLE_EQ(15.25, hc->GetHourlyRate());
   auto ws = dynamic_cast<const WeeklySchedule*>(e->GetSchedule());
   EXPECT_NE(nullptr, ws);
 }
 
 TEST_F(TestPayroll, TestAddCommissionedEmployee) {
-  constexpr int kEmployeeId = 3;
-  const Employee expect {kEmployeeId, "Robert", "Home"};
-  AddCommissionedEmployee t {kEmployeeId, "Robert", "Home", 1000.00, 10.00};
-  t.Execute();
-  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
-  EXPECT_EQ(expect, *e);
+  ace.Execute();
+  auto e = PayrollDatabase::GetEmployee(kCeId);
+  EXPECT_EQ(kCoEmp, *e);
   auto cc = dynamic_cast<const CommissionedClassification*>(e->GetClassification());
   EXPECT_NE(nullptr, cc);
-  EXPECT_DOUBLE_EQ(1000.00, cc->GetSalary());
-  EXPECT_DOUBLE_EQ(10.00, cc->GetCommissionRate());
+  EXPECT_DOUBLE_EQ(2500, cc->GetSalary());
+  EXPECT_DOUBLE_EQ(3.2, cc->GetCommissionRate());
   auto bws = dynamic_cast<const BiweeklySchedule*>(e->GetSchedule());
   EXPECT_NE(nullptr, bws);
 }
 
 TEST_F(TestPayroll, TestDeleteEmployee) {
-  constexpr int kEmployeeId = 3;
-  const Employee expect {kEmployeeId, "Lance", "Home"};
-  AddCommissionedEmployee t{kEmployeeId, "Lance", "Home", 2500, 3.2};
-  t.Execute();
-  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
-  EXPECT_EQ(expect, *e);
+  ace.Execute();
+  auto e = PayrollDatabase::GetEmployee(kCeId);
+  EXPECT_EQ(kCoEmp, *e);
 
-  DeleteEmployee dt{kEmployeeId};
+  DeleteEmployee dt{kCeId};
   dt.Execute();
-  EXPECT_EQ(nullptr, PayrollDatabase::GetEmployee(kEmployeeId));
+  EXPECT_EQ(nullptr, PayrollDatabase::GetEmployee(kCeId));
 }
 
 TEST_F(TestPayroll, TestTimeCardTransaction) {
-  constexpr int kEmployeeId = 2;
-  AddHourlyEmployee t{kEmployeeId, "Bill", "Home", 15.25};
-  t.Execute();
-  TimeCardTransaction tct{20180303, 8.0, kEmployeeId};
+  ahe.Execute();
+  TimeCardTransaction tct{20180303, 8.0, kHeId};
   tct.Execute();
-  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
+  auto e = PayrollDatabase::GetEmployee(kHeId);
   auto pc = e->GetClassification();
   auto hc = dynamic_cast<HourlyClassification*>(pc);
   EXPECT_NE(nullptr, hc);
@@ -130,12 +127,10 @@ TEST_F(TestPayroll, TestTimeCardTransaction) {
 }
 
 TEST_F(TestPayroll, TestSalesReceiptTransaction) {
-  constexpr int kEmployeeId = 3;
-  AddCommissionedEmployee t{kEmployeeId, "Lance", "Home", 2500, 3.2};
-  t.Execute();
-  SalesReceiptTransaction srt{20180303, 100, kEmployeeId};
+  ace.Execute();
+  SalesReceiptTransaction srt{20180303, 100, kCeId};
   srt.Execute();
-  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
+  auto e = PayrollDatabase::GetEmployee(kCeId);
   auto pc = e->GetClassification();
   auto sc = dynamic_cast<CommissionedClassification*>(pc);
   EXPECT_NE(nullptr, sc);
@@ -144,10 +139,8 @@ TEST_F(TestPayroll, TestSalesReceiptTransaction) {
 }
 
 TEST_F(TestPayroll, TestAddServiceCharge) {
-  constexpr int32_t kEmployeeId = 2;
-  AddHourlyEmployee t{kEmployeeId, "Bill", "Home", 15.25};
-  t.Execute();
-  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
+  ahe.Execute();
+  auto e = PayrollDatabase::GetEmployee(kHeId);
   e->SetAffiliation(std::unique_ptr<Affiliation>{new UnionAffiliation{12.5}});
   constexpr int32_t kMemberId = 86;
   PayrollDatabase::AddUnionMember(kMemberId, e);
@@ -157,32 +150,24 @@ TEST_F(TestPayroll, TestAddServiceCharge) {
 }
 
 TEST_F(TestPayroll, TestChangeNameTransaction) {
-  constexpr int32_t kEmpId = 2;
-  AddHourlyEmployee t{kEmpId, "Bill", "Home", 15.25};
-  t.Execute();
+  ahe.Execute();
 
-  Employee expect{kEmpId, "Bob", "Home"};
-  ChangeNameTransaction cnt{kEmpId, "Bob"};
+  Employee expect{kHeId, "Bob", "Home"};
+  ChangeNameTransaction cnt{kHeId, "Bob"};
   cnt.Execute();
-  auto e = PayrollDatabase::GetEmployee(kEmpId);
+  auto e = PayrollDatabase::GetEmployee(kHeId);
   EXPECT_EQ(expect, *e);
 }
 
 TEST_F(TestPayroll, TestChangeAddressTransaction) {
-  constexpr int32_t kEmpId = 2;
-  AddHourlyEmployee t{kEmpId, "Bill", "Home", 15.25};
-  t.Execute();
+  ahe.Execute();
 
-  Employee expect{kEmpId, "Bill", "New Home"};
-  ChangeAddressTransaction cat{kEmpId, "New Home"};
+  Employee expect{kHeId, "Bill", "New Home"};
+  ChangeAddressTransaction cat{kHeId, "New Home"};
   cat.Execute();
-  auto e = PayrollDatabase::GetEmployee(kEmpId);
+  auto e = PayrollDatabase::GetEmployee(kHeId);
   EXPECT_EQ(expect, *e);
 }
-
-constexpr int32_t kCeId = 3;
-const Employee kCoEmp{kCeId, "Lance", "Home"};
-AddCommissionedEmployee ace{kCeId, "Lance", "Home", 2500, 3.2};
 
 TEST_F(TestPayroll, TestChangeHourlyTransaction) {
   ace.Execute();
