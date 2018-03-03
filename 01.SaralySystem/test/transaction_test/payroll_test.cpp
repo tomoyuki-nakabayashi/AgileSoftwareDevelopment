@@ -12,6 +12,7 @@
 #include <transaction/service_charge_transaction.h>
 #include <transaction/change_employee_transaction.h>
 #include <transaction/change_basic_information.h>
+#include <transaction/change_classification.h>
 #include <payroll_domain/employee.h>
 #include <payroll_domain/salaried_classification.h>
 #include <payroll_domain/hourly_classification.h>
@@ -33,9 +34,9 @@ using transaction::DeleteEmployee;
 using transaction::TimeCardTransaction;
 using transaction::SalesReceiptTransaction;
 using transaction::ServiceChargeTransaction;
-using transaction::ChangeEmployeeTransaction;
 using transaction::ChangeNameTransaction;
 using transaction::ChangeAddressTransaction;
+using transaction::ChangeHourlyTransaction;
 using payroll_domain::Employee;
 using payroll_domain::SalariedClassification;
 using payroll_domain::HourlyClassification;
@@ -176,5 +177,14 @@ TEST_F(TestPayroll, TestChangeAddressTransaction) {
   cat.Execute();
   auto e = PayrollDatabase::GetEmployee(kEmpId);
   EXPECT_EQ(expect, *e);
+}
+
+TEST_F(TestPayroll, TestChangeClassification) {
+  constexpr int32_t kEmpId = 3;
+  AddCommissionedEmployee t{kEmpId, "Lance", "Home", 2500, 3.2};
+  t.Execute();
+
+  ChangeHourlyTransaction cht{kEmpId, 27.52};
+  cht.Execute();
 }
 }  // namespace add_salaried_employee_test
