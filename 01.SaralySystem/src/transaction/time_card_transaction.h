@@ -20,9 +20,9 @@ class TimeCardTransaction: public Transaction {
     void Execute() override;
 
  private:
-    int64_t date_;
-    double hours;
-    int32_t employee_id_;
+    const int64_t date_;
+    const double hours_;
+    const int32_t employee_id_;
 };
 }  // namespace transaction
 

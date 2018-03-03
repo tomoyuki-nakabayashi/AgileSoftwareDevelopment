@@ -26,8 +26,8 @@ class Employee {
     void SetSchedule(std::unique_ptr<PaymentSchedule> s);
     void SetMethod(std::function<void()> m);
 
-    const PaymentClassification* GetClassification() const;
-    const PaymentSchedule* GetSchedule() const;
+    PaymentClassification* GetClassification() const;
+    PaymentSchedule* GetSchedule() const;
     std::function<void()> GetMethod() const;
 
     bool operator==(const Employee& rhs) const {

@@ -6,6 +6,7 @@
 #include <transaction/add_hourly_employee.h>
 #include <transaction/add_commissioned_employee.h>
 #include <transaction/delete_employee.h>
+#include <transaction/time_card_transaction.h>
 #include <payroll_domain/employee.h>
 #include <payroll_domain/salaried_classification.h>
 #include <payroll_domain/hourly_classification.h>
@@ -13,6 +14,7 @@
 #include <payroll_domain/monthly_schedule.h>
 #include <payroll_domain/weekly_schedule.h>
 #include <payroll_domain/biweekly_schedule.h>
+#include <payroll_domain/time_card.h>
 #include <payroll_database/payroll_database.h>
 
 namespace add_employee_transaction_test {
@@ -20,6 +22,7 @@ using transaction::AddSalariedEmployee;
 using transaction::AddHourlyEmployee;
 using transaction::AddCommissionedEmployee;
 using transaction::DeleteEmployee;
+using transaction::TimeCardTransaction;
 using payroll_domain::Employee;
 using payroll_domain::SalariedClassification;
 using payroll_domain::HourlyClassification;
@@ -27,6 +30,8 @@ using payroll_domain::CommissionedClassification;
 using payroll_domain::MonthlySchedule;
 using payroll_domain::WeeklySchedule;
 using payroll_domain::BiweeklySchedule;
+using payroll_domain::TimeCard;
+using payroll_domain::UPtrPayClass;
 using payroll_database::PayrollDatabase;
 
 class TestPayroll : public ::testing::Test {
@@ -100,8 +105,28 @@ TEST_F(TestPayroll, TestTimeCardTransaction) {
   tct.Execute();
   Employee e{PayrollDatabase::GetEmployee(kEmployeeId)};
   auto pc = e.GetClassification();
-  EXPECT_EQ(typeid(HourlyClassification), typeid(pc));
-  TimeCard tc = dynamic_cast<const HourlyClassification*>(pc)->GetTimeCard(20180303);
-  EXPECT_EQ(8.0, tc.GetHours());
+  auto hc = dynamic_cast<HourlyClassification*>(pc);
+  EXPECT_NE(nullptr, hc);
+  auto tc = hc->GetTimeCard(20180303);
+  EXPECT_EQ(8.0, tc.hours);
 }
+
+TEST_F(TestPayroll, AddTimeCard) {
+  HourlyClassification hc {10};
+  hc.AddTimeCard(TimeCard{20180303, 8.0});
+  auto tc = hc.GetTimeCard(20180303);
+
+  EXPECT_EQ(8.0, tc.hours);
+}
+
+TEST_F(TestPayroll, GetTimeCardFromClonedObject) {
+  HourlyClassification orginal {10};
+  orginal.AddTimeCard(TimeCard{20180303, 8.0});
+  auto cloned = orginal.clone();
+  auto hc = dynamic_cast<HourlyClassification*>(cloned.get());
+  auto tc = hc->GetTimeCard(20180303);
+
+  EXPECT_EQ(8.0, tc.hours);
+}
+
 }  // namespace add_salaried_employee_test

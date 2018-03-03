@@ -14,8 +14,7 @@ void PayrollDatabase::DeleteEmployee(const int id) {
   employees_.erase(id);
 }
 
-Employee PayrollDatabase::GetEmployee(const int id) {
-  //auto e = std::make_unique<Employee>(*employees_[id]);
+Employee& PayrollDatabase::GetEmployee(const int id) {
   return *employees_.at(id);
 }
 
