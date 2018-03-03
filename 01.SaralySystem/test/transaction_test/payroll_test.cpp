@@ -1,6 +1,7 @@
 // Copyright <2018> Tomoyuki-Nakabayashi
 // This software is released under the MIT License, see LICENSE.
 
+#include <cstdint>
 #include <gtest/gtest.h>
 #include <transaction/add_salaried_employee.h>
 #include <transaction/add_hourly_employee.h>
@@ -8,6 +9,7 @@
 #include <transaction/delete_employee.h>
 #include <transaction/time_card_transaction.h>
 #include <transaction/sales_receipt_transaction.h>
+#include <transaction/service_charge_transaction.h>
 #include <payroll_domain/employee.h>
 #include <payroll_domain/salaried_classification.h>
 #include <payroll_domain/hourly_classification.h>
@@ -15,6 +17,8 @@
 #include <payroll_domain/monthly_schedule.h>
 #include <payroll_domain/weekly_schedule.h>
 #include <payroll_domain/biweekly_schedule.h>
+#include <payroll_domain/affiliation.h>
+#include <payroll_domain/union_affiliation.h>
 #include <payroll_domain/time_card.h>
 #include <payroll_domain/sales_receipt.h>
 #include <payroll_database/payroll_database.h>
@@ -26,6 +30,7 @@ using transaction::AddCommissionedEmployee;
 using transaction::DeleteEmployee;
 using transaction::TimeCardTransaction;
 using transaction::SalesReceiptTransaction;
+using transaction::ServiceChargeTransaction;
 using payroll_domain::Employee;
 using payroll_domain::SalariedClassification;
 using payroll_domain::HourlyClassification;
@@ -33,6 +38,8 @@ using payroll_domain::CommissionedClassification;
 using payroll_domain::MonthlySchedule;
 using payroll_domain::WeeklySchedule;
 using payroll_domain::BiweeklySchedule;
+using payroll_domain::Affiliation;
+using payroll_domain::UnionAffiliation;
 using payroll_domain::TimeCard;
 using payroll_domain::SalesReceipt;
 using payroll_domain::UPtrPayClass;
@@ -130,12 +137,15 @@ TEST_F(TestPayroll, TestSalesReceiptTransaction) {
 }
 
 TEST_F(TestPayroll, TestAddServiceCharge) {
-  constexpr int kEmployeeId = 2;
+  constexpr int32_t kEmployeeId = 2;
   AddHourlyEmployee t{kEmployeeId, "Bill", "Home", 15.25};
   t.Execute();
   auto e = PayrollDatabase::GetEmployee(kEmployeeId);
-//  e->SetAffilication(std::unique_ptr<Affiliation>{new UnionAffiliation{12.5}});
-//  constexpr int kMemberId = 86;
-//  PayrollDatabase::AddUnionMember(kMemberId, e);
+  e->SetAffiliation(std::unique_ptr<Affiliation>{new UnionAffiliation{12.5}});
+  constexpr int32_t kMemberId = 86;
+  PayrollDatabase::AddUnionMember(kMemberId, e);
+  ServiceChargeTransaction sct{kMemberId, 20180303, 12.95};
+  sct.Execute();
+  EXPECT_EQ(12.95, e->GetAffiliation().ServiceCharge(20180303));
 }
 }  // namespace add_salaried_employee_test

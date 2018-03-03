@@ -25,15 +25,15 @@ class Employee {
     Employee& operator=(const Employee&) = default;
     virtual ~Employee() = default;
 
-    void SetClassification(UPtrClassification c);
-    void SetSchedule(UPtrSchedule s);
+    void SetClassification(UPtrClassification&& c);
+    void SetSchedule(UPtrSchedule&& s);
     void SetMethod(std::function<void()> m);
-    void SetAffiliation(UPtrAffiliation a);
+    void SetAffiliation(UPtrAffiliation&& a);
 
     PaymentClassification* GetClassification() const;
     PaymentSchedule* GetSchedule() const;
     std::function<void()> GetMethod() const;
-    Affiliation* GetAffiliation() const;
+    Affiliation& GetAffiliation() const;
 
     bool operator==(const Employee& rhs) const {
       return employee_id_ == rhs.employee_id_

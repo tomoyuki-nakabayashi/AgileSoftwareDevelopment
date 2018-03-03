@@ -14,16 +14,20 @@ Employee::Employee(int id, std::string name, std::string addr)
     , affiliation_{nullptr} {    
 }
 
-void Employee::SetClassification(std::unique_ptr<PaymentClassification> c) {
+void Employee::SetClassification(UPtrClassification&& c) {
   classification_ = std::move(c);
 }
 
-void Employee::SetSchedule(std::unique_ptr<PaymentSchedule> s) {
+void Employee::SetSchedule(UPtrSchedule&& s) {
   schedule_ = std::move(s);
 }
 
 void Employee::SetMethod(std::function<void()> m) {
   method_ = m;
+}
+
+void Employee::SetAffiliation(UPtrAffiliation&& a) {
+  affiliation_ = std::move(a);
 }
 
 PaymentClassification* Employee::GetClassification() const{ 
@@ -36,5 +40,9 @@ PaymentSchedule* Employee::GetSchedule() const {
 
 std::function<void()> Employee::GetMethod() const {
   return method_;
+}
+
+Affiliation& Employee::GetAffiliation() const {
+  return *affiliation_;
 }
 }  // namespace payroll_domain

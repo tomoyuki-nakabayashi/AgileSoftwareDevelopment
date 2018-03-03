@@ -21,6 +21,9 @@ class PayrollDatabase {
     static void AddEmployee(const int id, std::shared_ptr<Employee> e);
     static void DeleteEmployee(const int id);
     static SPtrEmployee GetEmployee(const int id);
+    static void AddUnionMember(const int id, std::shared_ptr<Employee> e);
+    static void DeleteUnionMember(const int id);
+    static SPtrEmployee GetUnionMember(const int id);
     static void Clear();
 };
 

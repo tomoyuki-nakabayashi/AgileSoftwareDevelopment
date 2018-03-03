@@ -12,5 +12,6 @@ add_executable(unittests
   ../src/transaction/add_commissioned_employee.cpp
   ../src/transaction/delete_employee.cpp
   ../src/transaction/time_card_transaction.cpp
-  ../src/transaction/sales_receipt_transaction.cpp)
+  ../src/transaction/sales_receipt_transaction.cpp
+  ../src/transaction/service_charge_transaction.cpp)
 target_link_libraries(unittests gtest_main)

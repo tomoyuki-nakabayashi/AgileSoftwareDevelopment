@@ -13,7 +13,7 @@ namespace payroll_domain {
 class UnionAffiliation: public Affiliation {
  public:
     explicit UnionAffiliation(double due = 0.0):
-        Affilication{}, due_{due}, service_charges_{} {}
+        Affiliation{}, due_{due}, service_charges_{} {}
     UnionAffiliation(const UnionAffiliation&) = delete;
     UnionAffiliation(UnionAffiliation&&) = default;
     UnionAffiliation& operator=(const UnionAffiliation&) = delete;
