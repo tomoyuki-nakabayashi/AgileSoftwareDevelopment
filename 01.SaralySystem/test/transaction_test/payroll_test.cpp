@@ -38,6 +38,7 @@ using transaction::ChangeNameTransaction;
 using transaction::ChangeAddressTransaction;
 using transaction::ChangeSalariedTransaction;
 using transaction::ChangeHourlyTransaction;
+using transaction::ChangeCommissionedTransaction;
 using payroll_domain::Employee;
 using payroll_domain::SalariedClassification;
 using payroll_domain::HourlyClassification;
@@ -193,5 +194,18 @@ TEST_F(TestPayroll, TestChangeSalariedTransaction) {
   EXPECT_DOUBLE_EQ(2500, sc->GetSalary());
   auto ms = dynamic_cast<const MonthlySchedule*>(e->GetSchedule());
   EXPECT_NE(nullptr, ms);
+}
+
+TEST_F(TestPayroll, TestChangeCommissionedTransaction) {
+  ahe.Execute();
+
+  ChangeCommissionedTransaction cht{kHeId, 2500, 3.2};
+  cht.Execute();
+  auto e = PayrollDatabase::GetEmployee(kHeId);
+  auto cc = dynamic_cast<const CommissionedClassification*>(e->GetClassification());
+  EXPECT_NE(nullptr, cc);
+  EXPECT_DOUBLE_EQ(2500, cc->GetSalary());
+  auto bs = dynamic_cast<const BiweeklySchedule*>(e->GetSchedule());
+  EXPECT_NE(nullptr, bs);
 }
 }  // namespace add_salaried_employee_test

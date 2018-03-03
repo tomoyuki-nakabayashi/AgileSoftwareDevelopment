@@ -13,9 +13,11 @@
 #include <payroll_domain/payment_classification.h>
 #include <payroll_domain/salaried_classification.h>
 #include <payroll_domain/hourly_classification.h>
+#include <payroll_domain/commissioned_classification.h>
 #include <payroll_domain/payment_schedule.h>
 #include <payroll_domain/monthly_schedule.h>
 #include <payroll_domain/weekly_schedule.h>
+#include <payroll_domain/biweekly_schedule.h>
 
 namespace transaction {
 using payroll_domain::Employee;
@@ -23,8 +25,10 @@ using payroll_domain::UPtrPayClass;
 using payroll_domain::UPtrPaySchedule;
 using payroll_domain::SalariedClassification;
 using payroll_domain::HourlyClassification;
+using payroll_domain::CommissionedClassification;
 using payroll_domain::MonthlySchedule;
 using payroll_domain::WeeklySchedule;
+using payroll_domain::BiweeklySchedule;
 
 class ChangeClassification: public ChangeEmployeeTransaction {
  public:
@@ -81,6 +85,28 @@ class ChangeSalariedTransaction: public ChangeClassification {
 
  private:
     double salary_;
+};
+
+class ChangeCommissionedTransaction: public ChangeClassification {
+ public:
+    ChangeCommissionedTransaction(int32_t id, double salary, double commission_rate)
+        : ChangeClassification{id}
+        , salary_{salary}
+        , commission_rate_{commission_rate} {}
+    virtual ~ChangeCommissionedTransaction() override = default;
+
+ private:
+    UPtrPayClass GetClassification() const override {
+      return UPtrPayClass(new CommissionedClassification{salary_, commission_rate_});
+    }
+
+    UPtrPaySchedule GetSchedule() const override {
+      return UPtrPaySchedule(new BiweeklySchedule{});
+    }
+
+ private:
+    double salary_;
+    double commission_rate_;
 };
 }  // namespace transaction
 
