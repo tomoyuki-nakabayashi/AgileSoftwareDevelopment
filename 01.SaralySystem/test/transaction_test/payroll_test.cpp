@@ -91,4 +91,17 @@ TEST_F(TestPayroll, TestDeleteEmployee) {
   dt.Execute();
   EXPECT_THROW(PayrollDatabase::GetEmployee(kEmployeeId), std::out_of_range);
 }
+
+TEST_F(TestPayroll, TestTimeCardTransaction) {
+  constexpr int kEmployeeId = 2;
+  AddHourlyEmployee t{kEmployeeId, "Bill", "Home", 15.25};
+  t.Execute();
+  TimeCardTransaction tct{20180303, 8.0, kEmployeeId};
+  tct.Execute();
+  Employee e{PayrollDatabase::GetEmployee(kEmployeeId)};
+  auto pc = e.GetClassification();
+  EXPECT_EQ(typeid(HourlyClassification), typeid(pc));
+  TimeCard tc = dynamic_cast<const HourlyClassification*>(pc)->GetTimeCard(20180303);
+  EXPECT_EQ(8.0, tc.GetHours());
+}
 }  // namespace add_salaried_employee_test
