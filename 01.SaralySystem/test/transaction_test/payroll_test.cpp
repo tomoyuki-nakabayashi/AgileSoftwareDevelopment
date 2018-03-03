@@ -46,12 +46,12 @@ TEST_F(TestPayroll, TestAddSalariedEmployee) {
   const Employee expect {kEmployeeId, "Bob", "Home"};
   AddSalariedEmployee t {kEmployeeId, "Bob", "Home", 1000.00};
   t.Execute();
-  Employee e {PayrollDatabase::GetEmployee(kEmployeeId)};
-  EXPECT_EQ(expect, e);
-  auto sc = dynamic_cast<const SalariedClassification*>(e.GetClassification());
+  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
+  EXPECT_EQ(expect, *e);
+  auto sc = dynamic_cast<const SalariedClassification*>(e->GetClassification());
   EXPECT_NE(nullptr, sc);
   EXPECT_DOUBLE_EQ(1000.00, sc->GetSalary());
-  auto ms = dynamic_cast<const MonthlySchedule*>(e.GetSchedule());
+  auto ms = dynamic_cast<const MonthlySchedule*>(e->GetSchedule());
   EXPECT_NE(nullptr, ms);
 }
 
@@ -60,12 +60,12 @@ TEST_F(TestPayroll, TestAddHourlyEmployee) {
   const Employee expect {kEmployeeId, "Martin", "Home"};
   AddHourlyEmployee t {kEmployeeId, "Martin", "Home", 10.00};
   t.Execute();
-  Employee e {PayrollDatabase::GetEmployee(kEmployeeId)};
-  EXPECT_EQ(expect, e);
-  auto hc = dynamic_cast<const HourlyClassification*>(e.GetClassification());
+  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
+  EXPECT_EQ(expect, *e);
+  auto hc = dynamic_cast<const HourlyClassification*>(e->GetClassification());
   EXPECT_NE(nullptr, hc);
   EXPECT_DOUBLE_EQ(10.00, hc->GetHourlyRate());
-  auto ws = dynamic_cast<const WeeklySchedule*>(e.GetSchedule());
+  auto ws = dynamic_cast<const WeeklySchedule*>(e->GetSchedule());
   EXPECT_NE(nullptr, ws);
 }
 
@@ -74,13 +74,13 @@ TEST_F(TestPayroll, TestAddCommissionedEmployee) {
   const Employee expect {kEmployeeId, "Robert", "Home"};
   AddCommissionedEmployee t {kEmployeeId, "Robert", "Home", 1000.00, 10.00};
   t.Execute();
-  Employee e {PayrollDatabase::GetEmployee(kEmployeeId)};
-  EXPECT_EQ(expect, e);
-  auto cc = dynamic_cast<const CommissionedClassification*>(e.GetClassification());
+  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
+  EXPECT_EQ(expect, *e);
+  auto cc = dynamic_cast<const CommissionedClassification*>(e->GetClassification());
   EXPECT_NE(nullptr, cc);
   EXPECT_DOUBLE_EQ(1000.00, cc->GetSalary());
   EXPECT_DOUBLE_EQ(10.00, cc->GetCommissionRate());
-  auto bws = dynamic_cast<const BiweeklySchedule*>(e.GetSchedule());
+  auto bws = dynamic_cast<const BiweeklySchedule*>(e->GetSchedule());
   EXPECT_NE(nullptr, bws);
 }
 
@@ -89,12 +89,12 @@ TEST_F(TestPayroll, TestDeleteEmployee) {
   const Employee expect {kEmployeeId, "Lance", "Home"};
   AddCommissionedEmployee t{kEmployeeId, "Lance", "Home", 2500, 3.2};
   t.Execute();
-  Employee e{PayrollDatabase::GetEmployee(kEmployeeId)};
-  EXPECT_EQ(expect, e);
+  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
+  EXPECT_EQ(expect, *e);
 
   DeleteEmployee dt{kEmployeeId};
   dt.Execute();
-  EXPECT_THROW(PayrollDatabase::GetEmployee(kEmployeeId), std::out_of_range);
+  EXPECT_EQ(nullptr, PayrollDatabase::GetEmployee(kEmployeeId));
 }
 
 TEST_F(TestPayroll, TestTimeCardTransaction) {
@@ -103,29 +103,11 @@ TEST_F(TestPayroll, TestTimeCardTransaction) {
   t.Execute();
   TimeCardTransaction tct{20180303, 8.0, kEmployeeId};
   tct.Execute();
-  Employee e{PayrollDatabase::GetEmployee(kEmployeeId)};
-  auto pc = e.GetClassification();
+  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
+  auto pc = e->GetClassification();
   auto hc = dynamic_cast<HourlyClassification*>(pc);
   EXPECT_NE(nullptr, hc);
   auto tc = hc->GetTimeCard(20180303);
-  EXPECT_EQ(8.0, tc.hours);
-}
-
-TEST_F(TestPayroll, AddTimeCard) {
-  HourlyClassification hc {10};
-  hc.AddTimeCard(TimeCard{20180303, 8.0});
-  auto tc = hc.GetTimeCard(20180303);
-
-  EXPECT_EQ(8.0, tc.hours);
-}
-
-TEST_F(TestPayroll, GetTimeCardFromClonedObject) {
-  HourlyClassification orginal {10};
-  orginal.AddTimeCard(TimeCard{20180303, 8.0});
-  auto cloned = orginal.clone();
-  auto hc = dynamic_cast<HourlyClassification*>(cloned.get());
-  auto tc = hc->GetTimeCard(20180303);
-
   EXPECT_EQ(8.0, tc.hours);
 }
 

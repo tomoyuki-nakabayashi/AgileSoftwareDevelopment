@@ -10,6 +10,7 @@
 
 namespace payroll_database {
 using payroll_domain::Employee;
+using payroll_domain::SPtrEmployee;
 
 class PayrollDatabase {
  public:
@@ -19,7 +20,7 @@ class PayrollDatabase {
     ~PayrollDatabase() = delete;
     static void AddEmployee(const int id, Employee& employee);
     static void DeleteEmployee(const int id);
-    static Employee& GetEmployee(const int id);
+    static SPtrEmployee GetEmployee(const int id);
     static void Clear();
 };
 

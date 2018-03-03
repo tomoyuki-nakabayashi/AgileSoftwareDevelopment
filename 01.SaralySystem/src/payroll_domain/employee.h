@@ -11,7 +11,8 @@
 #include <payroll_domain/payment_schedule.h>
 
 namespace payroll_domain {
-
+class Employee;
+using SPtrEmployee = std::shared_ptr<Employee>;
 using ClassificationUPtr = std::unique_ptr<PaymentClassification>;
 using ScheduleUPtr = std::unique_ptr<PaymentSchedule>;
 
