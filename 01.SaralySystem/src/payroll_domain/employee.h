@@ -22,9 +22,11 @@ class Employee {
  public:
     Employee(int id, std::string name, std::string addr);
     Employee(const Employee&) = delete;
-    Employee& operator=(const Employee&) = default;
+    Employee& operator=(const Employee&) = delete;
     virtual ~Employee() = default;
 
+    void SetName(std::string name) { name_ = name; }
+    void SetAddress (std::string addr) { address_ = addr; }
     void SetClassification(UPtrClassification&& c);
     void SetSchedule(UPtrSchedule&& s);
     void SetMethod(std::function<void()> m);
