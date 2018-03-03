@@ -36,6 +36,7 @@ using transaction::SalesReceiptTransaction;
 using transaction::ServiceChargeTransaction;
 using transaction::ChangeNameTransaction;
 using transaction::ChangeAddressTransaction;
+using transaction::ChangeSalariedTransaction;
 using transaction::ChangeHourlyTransaction;
 using payroll_domain::Employee;
 using payroll_domain::SalariedClassification;
@@ -179,18 +180,33 @@ TEST_F(TestPayroll, TestChangeAddressTransaction) {
   EXPECT_EQ(expect, *e);
 }
 
-TEST_F(TestPayroll, TestChangeClassification) {
-  constexpr int32_t kEmpId = 3;
-  AddCommissionedEmployee t{kEmpId, "Lance", "Home", 2500, 3.2};
-  t.Execute();
+constexpr int32_t kCeId = 3;
+const Employee kCoEmp{kCeId, "Lance", "Home"};
+AddCommissionedEmployee ace{kCeId, "Lance", "Home", 2500, 3.2};
 
-  ChangeHourlyTransaction cht{kEmpId, 27.52};
+TEST_F(TestPayroll, TestChangeHourlyTransaction) {
+  ace.Execute();
+
+  ChangeHourlyTransaction cht{kCeId, 27.52};
   cht.Execute();
-  auto e = PayrollDatabase::GetEmployee(kEmpId);
+  auto e = PayrollDatabase::GetEmployee(kCeId);
   auto hc = dynamic_cast<const HourlyClassification*>(e->GetClassification());
   EXPECT_NE(nullptr, hc);
   EXPECT_DOUBLE_EQ(27.52, hc->GetHourlyRate());
   auto ws = dynamic_cast<const WeeklySchedule*>(e->GetSchedule());
   EXPECT_NE(nullptr, ws);
+}
+
+TEST_F(TestPayroll, TestChangeSalariedTransaction) {
+  ace.Execute();
+
+  ChangeSalariedTransaction cht{kCeId, 2500};
+  cht.Execute();
+  auto e = PayrollDatabase::GetEmployee(kCeId);
+  auto sc = dynamic_cast<const SalariedClassification*>(e->GetClassification());
+  EXPECT_NE(nullptr, sc);
+  EXPECT_DOUBLE_EQ(2500, sc->GetSalary());
+  auto ms = dynamic_cast<const MonthlySchedule*>(e->GetSchedule());
+  EXPECT_NE(nullptr, ms);
 }
 }  // namespace add_salaried_employee_test

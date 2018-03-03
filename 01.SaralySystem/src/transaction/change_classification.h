@@ -11,15 +11,19 @@
 #include <transaction/change_employee_transaction.h>
 #include <payroll_domain/employee.h>
 #include <payroll_domain/payment_classification.h>
+#include <payroll_domain/salaried_classification.h>
 #include <payroll_domain/hourly_classification.h>
 #include <payroll_domain/payment_schedule.h>
+#include <payroll_domain/monthly_schedule.h>
 #include <payroll_domain/weekly_schedule.h>
 
 namespace transaction {
 using payroll_domain::Employee;
 using payroll_domain::UPtrPayClass;
 using payroll_domain::UPtrPaySchedule;
+using payroll_domain::SalariedClassification;
 using payroll_domain::HourlyClassification;
+using payroll_domain::MonthlySchedule;
 using payroll_domain::WeeklySchedule;
 
 class ChangeClassification: public ChangeEmployeeTransaction {
@@ -57,6 +61,26 @@ class ChangeHourlyTransaction: public ChangeClassification {
 
  private:
     double hourly_pay_;
+};
+
+class ChangeSalariedTransaction: public ChangeClassification {
+ public:
+    ChangeSalariedTransaction(int32_t id, double salary)
+        : ChangeClassification{id}
+        , salary_{salary} {}
+    virtual ~ChangeSalariedTransaction() override = default;
+
+ private:
+    UPtrPayClass GetClassification() const override {
+      return UPtrPayClass(new SalariedClassification{salary_});
+    }
+
+    UPtrPaySchedule GetSchedule() const override {
+      return UPtrPaySchedule(new MonthlySchedule{});
+    }
+
+ private:
+    double salary_;
 };
 }  // namespace transaction
 
