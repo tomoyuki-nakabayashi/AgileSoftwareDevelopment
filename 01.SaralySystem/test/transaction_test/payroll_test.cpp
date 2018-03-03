@@ -186,5 +186,11 @@ TEST_F(TestPayroll, TestChangeClassification) {
 
   ChangeHourlyTransaction cht{kEmpId, 27.52};
   cht.Execute();
+  auto e = PayrollDatabase::GetEmployee(kEmpId);
+  auto hc = dynamic_cast<const HourlyClassification*>(e->GetClassification());
+  EXPECT_NE(nullptr, hc);
+  EXPECT_DOUBLE_EQ(27.52, hc->GetHourlyRate());
+  auto ws = dynamic_cast<const WeeklySchedule*>(e->GetSchedule());
+  EXPECT_NE(nullptr, ws);
 }
 }  // namespace add_salaried_employee_test
