@@ -1,8 +1,8 @@
 // Copyright <2018> Tomoyuki-Nakabayashi
 // This software is released under the MIT License, see LICENSE.
 
-#ifndef SARALYSYSTEM_TRANSACTION_DELETE_EMPLOYEE_H_
-#define SARALYSYSTEM_TRANSACTION_DELETE_EMPLOYEE_H_
+#ifndef SALARYSYSTEM_TRANSACTION_DELETE_EMPLOYEE_H_
+#define SALARYSYSTEM_TRANSACTION_DELETE_EMPLOYEE_H_
 
 #include <transaction/transaction.h>
 
@@ -19,4 +19,4 @@ class DeleteEmployee: public Transaction {
 };
 }  // namespace transaction
 
-#endif  // SARALYSYSTEM_TRANSACTION_DELETE_EMPLOYEE_H_
+#endif  // SALARYSYSTEM_TRANSACTION_DELETE_EMPLOYEE_H_

@@ -1,8 +1,8 @@
 // Copyright <2018> Tomoyuki-Nakabayashi
 // This software is released under the MIT License, see LICENSE.
 
-#ifndef SARALYSYSTEM_PAYROLL_DOMAIN_HOURLY_CLASSIFICATION_H_
-#define SARALYSYSTEM_PAYROLL_DOMAIN_HOURLY_CLASSIFICATION_H_
+#ifndef SALARYSYSTEM_PAYROLL_DOMAIN_HOURLY_CLASSIFICATION_H_
+#define SALARYSYSTEM_PAYROLL_DOMAIN_HOURLY_CLASSIFICATION_H_
 
 #include <cstdint>
 #include <map>
@@ -37,4 +37,4 @@ class HourlyClassification: public PaymentClassification {
 
 }  // namespace payroll_domain
 
-#endif  // SARALYSYSTEM_PAYROLL_DOMAIN_HOURLY_CLASSIFICATION_H_
+#endif  // SALARYSYSTEM_PAYROLL_DOMAIN_HOURLY_CLASSIFICATION_H_

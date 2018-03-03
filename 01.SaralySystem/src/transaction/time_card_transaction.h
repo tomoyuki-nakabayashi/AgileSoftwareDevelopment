@@ -1,8 +1,8 @@
 // Copyright <2018> Tomoyuki-Nakabayashi
 // This software is released under the MIT License, see LICENSE.
 
-#ifndef SARALYSYSTEM_TRANSACTION_TIME_CARD_TRANSACTION_H_
-#define SARALYSYSTEM_TRANSACTION_TIME_CARD_TRANSACTION_H_
+#ifndef SALARYSYSTEM_TRANSACTION_TIME_CARD_TRANSACTION_H_
+#define SALARYSYSTEM_TRANSACTION_TIME_CARD_TRANSACTION_H_
 
 #include <cstdint>
 #include <transaction/transaction.h>
@@ -26,4 +26,4 @@ class TimeCardTransaction: public Transaction {
 };
 }  // namespace transaction
 
-#endif  // SARALYSYSTEM_TRANSACTION_TIME_CARD_TRANSACTION_H_
+#endif  // SALARYSYSTEM_TRANSACTION_TIME_CARD_TRANSACTION_H_

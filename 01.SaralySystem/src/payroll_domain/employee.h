@@ -1,8 +1,8 @@
 // Copyright <2018> Tomoyuki-Nakabayashi
 // This software is released under the MIT License, see LICENSE.
 
-#ifndef SARALYSYSTEM_PAYROLL_DOMAIN_EMPLOYEE_H_
-#define SARALYSYSTEM_PAYROLL_DOMAIN_EMPLOYEE_H_
+#ifndef SALARYSYSTEM_PAYROLL_DOMAIN_EMPLOYEE_H_
+#define SALARYSYSTEM_PAYROLL_DOMAIN_EMPLOYEE_H_
 
 #include <string>
 #include <functional>
@@ -51,4 +51,4 @@ class Employee {
 };
 
 }  // namespace payroll_domain
-#endif  // SARALYSYSTEM_PAYROLL_DOMAIN_EMPLOYEE_H_
+#endif  // SALARYSYSTEM_PAYROLL_DOMAIN_EMPLOYEE_H_

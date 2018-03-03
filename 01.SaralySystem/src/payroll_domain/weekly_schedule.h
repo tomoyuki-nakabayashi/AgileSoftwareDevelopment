@@ -1,8 +1,8 @@
 // Copyright <2018> Tomoyuki-Nakabayashi
 // This software is released under the MIT License, see LICENSE.
 
-#ifndef SARALYSYSTEM_PAYROLL_DOMAIN_WEEKLY_SCHEDULE_H_
-#define SARALYSYSTEM_PAYROLL_DOMAIN_WEEKLY_SCHEDULE_H_
+#ifndef SALARYSYSTEM_PAYROLL_DOMAIN_WEEKLY_SCHEDULE_H_
+#define SALARYSYSTEM_PAYROLL_DOMAIN_WEEKLY_SCHEDULE_H_
 
 #include <payroll_domain/payment_schedule.h>
 
@@ -21,4 +21,4 @@ class WeeklySchedule: public PaymentSchedule {
 };
 }  // namespace payroll_domain
 
-#endif  // SARALYSYSTEM_PAYROLL_DOMAIN_WEEKLY_SCHEDULE_H_
+#endif  // SALARYSYSTEM_PAYROLL_DOMAIN_WEEKLY_SCHEDULE_H_

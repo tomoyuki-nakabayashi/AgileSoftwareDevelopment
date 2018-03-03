@@ -1,8 +1,8 @@
 // Copyright <2018> Tomoyuki-Nakabayashi
 // This software is released under the MIT License, see LICENSE.
 
-#ifndef SARALYSYSTEM_PAYROLL_DATABASE_PAYROLL_DATABASE_H_
-#define SARALYSYSTEM_PAYROLL_DATABASE_PAYROLL_DATABASE_H_
+#ifndef SALARYSYSTEM_PAYROLL_DATABASE_PAYROLL_DATABASE_H_
+#define SALARYSYSTEM_PAYROLL_DATABASE_PAYROLL_DATABASE_H_
 
 #include <map>
 #include <memory>
@@ -26,4 +26,4 @@ class PayrollDatabase {
 
 }  // namespace payroll_database
 
-#endif  // SARALYSYSTEM_PAYROLL_DATABASE_PAYROLL_DATABASE_H_
+#endif  // SALARYSYSTEM_PAYROLL_DATABASE_PAYROLL_DATABASE_H_

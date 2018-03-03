@@ -7,6 +7,7 @@
 #include <transaction/add_commissioned_employee.h>
 #include <transaction/delete_employee.h>
 #include <transaction/time_card_transaction.h>
+#include <transaction/sales_receipt_transaction.h>
 #include <payroll_domain/employee.h>
 #include <payroll_domain/salaried_classification.h>
 #include <payroll_domain/hourly_classification.h>
@@ -15,6 +16,7 @@
 #include <payroll_domain/weekly_schedule.h>
 #include <payroll_domain/biweekly_schedule.h>
 #include <payroll_domain/time_card.h>
+#include <payroll_domain/sales_receipt.h>
 #include <payroll_database/payroll_database.h>
 
 namespace add_employee_transaction_test {
@@ -23,6 +25,7 @@ using transaction::AddHourlyEmployee;
 using transaction::AddCommissionedEmployee;
 using transaction::DeleteEmployee;
 using transaction::TimeCardTransaction;
+using transaction::SalesReceiptTransaction;
 using payroll_domain::Employee;
 using payroll_domain::SalariedClassification;
 using payroll_domain::HourlyClassification;
@@ -31,6 +34,7 @@ using payroll_domain::MonthlySchedule;
 using payroll_domain::WeeklySchedule;
 using payroll_domain::BiweeklySchedule;
 using payroll_domain::TimeCard;
+using payroll_domain::SalesReceipt;
 using payroll_domain::UPtrPayClass;
 using payroll_database::PayrollDatabase;
 
@@ -108,7 +112,20 @@ TEST_F(TestPayroll, TestTimeCardTransaction) {
   auto hc = dynamic_cast<HourlyClassification*>(pc);
   EXPECT_NE(nullptr, hc);
   auto tc = hc->GetTimeCard(20180303);
-  EXPECT_EQ(8.0, tc.hours);
+  EXPECT_DOUBLE_EQ(8.0, tc.hours);
 }
 
+TEST_F(TestPayroll, TestSalesReceiptTransaction) {
+  constexpr int kEmployeeId = 3;
+  AddCommissionedEmployee t{kEmployeeId, "Lance", "Home", 2500, 3.2};
+  t.Execute();
+  SalesReceiptTransaction srt{20180303, 100, kEmployeeId};
+  srt.Execute();
+  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
+  auto pc = e->GetClassification();
+  auto sc = dynamic_cast<CommissionedClassification*>(pc);
+  EXPECT_NE(nullptr, sc);
+  auto sr = sc->GetSalesReceipt(20180303);
+  EXPECT_DOUBLE_EQ(100, sr.amount);
+}
 }  // namespace add_salaried_employee_test

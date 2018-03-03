@@ -1,8 +1,8 @@
 // Copyright <2018> Tomoyuki-Nakabayashi
 // This software is released under the MIT License, see LICENSE.
 
-#ifndef SARALYSYSTEM_TRANSACTION_ADD_EMPLOYEE_TRANSACTION_H_
-#define SARALYSYSTEM_TRANSACTION_ADD_EMPLOYEE_TRANSACTION_H_
+#ifndef SALARYSYSTEM_TRANSACTION_ADD_EMPLOYEE_TRANSACTION_H_
+#define SALARYSYSTEM_TRANSACTION_ADD_EMPLOYEE_TRANSACTION_H_
 
 #include <string>
 #include <memory>
@@ -33,4 +33,4 @@ class AddEmployeeTransaction: public Transaction {
 };
 }  // namespace transaction
 
-#endif  // SARALYSYSTEM_TRANSACTION_ADD_EMPLOYEE_TRANSACTION_H_s
+#endif  // SALARYSYSTEM_TRANSACTION_ADD_EMPLOYEE_TRANSACTION_H_s

@@ -1,8 +1,8 @@
 // Copyright <2018> Tomoyuki-Nakabayashi
 // This software is released under the MIT License, see LICENSE.
 
-#ifndef SARALYSYSTEM_PAYROLL_DOMAIN_SALARIED_CLASSIFICATION_H_
-#define SARALYSYSTEM_PAYROLL_DOMAIN_SALARIED_CLASSIFICATION_H_
+#ifndef SALARYSYSTEM_PAYROLL_DOMAIN_SALARIED_CLASSIFICATION_H_
+#define SALARYSYSTEM_PAYROLL_DOMAIN_SALARIED_CLASSIFICATION_H_
 
 #include <payroll_domain/payment_classification.h>
 
@@ -27,4 +27,4 @@ class SalariedClassification: public PaymentClassification {
 
 }  // namespace payroll_domain
 
-#endif  // SARALYSYSTEM_PAYROLL_DOMAIN_SALARIED_CLASSIFICATION_H_
+#endif  // SALARYSYSTEM_PAYROLL_DOMAIN_SALARIED_CLASSIFICATION_H_
