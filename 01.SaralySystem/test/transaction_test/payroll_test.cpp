@@ -11,7 +11,7 @@
 #include <transaction/sales_receipt_transaction.h>
 #include <transaction/service_charge_transaction.h>
 #include <transaction/change_employee_transaction.h>
-#include <transaction/change_name_transaction.h>
+#include <transaction/change_basic_information.h>
 #include <payroll_domain/employee.h>
 #include <payroll_domain/salaried_classification.h>
 #include <payroll_domain/hourly_classification.h>
@@ -35,6 +35,7 @@ using transaction::SalesReceiptTransaction;
 using transaction::ServiceChargeTransaction;
 using transaction::ChangeEmployeeTransaction;
 using transaction::ChangeNameTransaction;
+using transaction::ChangeAddressTransaction;
 using payroll_domain::Employee;
 using payroll_domain::SalariedClassification;
 using payroll_domain::HourlyClassification;
@@ -161,6 +162,18 @@ TEST_F(TestPayroll, TestChangeNameTransaction) {
   Employee expect{kEmpId, "Bob", "Home"};
   ChangeNameTransaction cnt{kEmpId, "Bob"};
   cnt.Execute();
+  auto e = PayrollDatabase::GetEmployee(kEmpId);
+  EXPECT_EQ(expect, *e);
+}
+
+TEST_F(TestPayroll, TestChangeAddressTransaction) {
+  constexpr int32_t kEmpId = 2;
+  AddHourlyEmployee t{kEmpId, "Bill", "Home", 15.25};
+  t.Execute();
+
+  Employee expect{kEmpId, "Bill", "New Home"};
+  ChangeAddressTransaction cat{kEmpId, "New Home"};
+  cat.Execute();
   auto e = PayrollDatabase::GetEmployee(kEmpId);
   EXPECT_EQ(expect, *e);
 }

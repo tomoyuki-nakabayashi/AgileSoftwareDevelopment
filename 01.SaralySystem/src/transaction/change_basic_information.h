@@ -29,6 +29,22 @@ class ChangeNameTransaction: public ChangeEmployeeTransaction {
  private:
     std::string name_;
 };
+
+class ChangeAddressTransaction: public ChangeEmployeeTransaction {
+ public:
+    ChangeAddressTransaction(int32_t id, std::string address)
+        : ChangeEmployeeTransaction{id}
+        , address_{address} {}
+    virtual ~ChangeAddressTransaction() override = default;
+
+ private:
+    void Change(std::shared_ptr<Employee> e) override {
+      e->SetAddress(address_);
+    }
+
+ private:
+    std::string address_;
+};
 }  // namespace transaction
 
 #endif  // SALARYSYSTEM_TRANSACTION_CHANGE_NAME_TRANSACTION_H_
