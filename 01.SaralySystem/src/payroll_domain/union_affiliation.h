@@ -26,6 +26,7 @@ class UnionAffiliation: public Affiliation {
     void AddServiceCharge(const int64_t date, const double amount) override {
       service_charges_.emplace(date, amount);
     }
+    double Dues() const { return due_; }
 
  private:
     double due_;

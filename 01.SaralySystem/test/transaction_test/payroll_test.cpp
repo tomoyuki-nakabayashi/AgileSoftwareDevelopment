@@ -13,6 +13,7 @@
 #include <transaction/change_employee_transaction.h>
 #include <transaction/change_basic_information.h>
 #include <transaction/change_classification.h>
+#include <transaction/change_affiliation.h>
 #include <payroll_domain/employee.h>
 #include <payroll_domain/salaried_classification.h>
 #include <payroll_domain/hourly_classification.h>
@@ -39,6 +40,7 @@ using transaction::ChangeAddressTransaction;
 using transaction::ChangeSalariedTransaction;
 using transaction::ChangeHourlyTransaction;
 using transaction::ChangeCommissionedTransaction;
+using transaction::ChangeMemberTransaction;
 using payroll_domain::Employee;
 using payroll_domain::SalariedClassification;
 using payroll_domain::HourlyClassification;
@@ -207,5 +209,19 @@ TEST_F(TestPayroll, TestChangeCommissionedTransaction) {
   EXPECT_DOUBLE_EQ(2500, cc->GetSalary());
   auto bs = dynamic_cast<const BiweeklySchedule*>(e->GetSchedule());
   EXPECT_NE(nullptr, bs);
+}
+
+TEST_F(TestPayroll, TestChangeMemberTransaction) {
+  ahe.Execute();
+  constexpr int kMemberId = 7734;
+  ChangeMemberTransaction cmt{kHeId, kMemberId, 99.42};
+  cmt.Execute();
+  auto e = PayrollDatabase::GetEmployee(kHeId);
+  auto uf = dynamic_cast<const UnionAffiliation*>(&e->GetAffiliation());
+  ASSERT_NE(nullptr, uf);
+  EXPECT_EQ(99.42, uf->Dues());
+  auto member = PayrollDatabase::GetUnionMember(kMemberId);
+  ASSERT_NE(nullptr, member);
+  EXPECT_EQ(*e, *member);
 }
 }  // namespace add_salaried_employee_test

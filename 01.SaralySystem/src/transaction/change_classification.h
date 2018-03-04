@@ -45,6 +45,12 @@ class ChangeClassification: public ChangeEmployeeTransaction {
       e->SetSchedule(GetSchedule());
       e->SetClassification(GetClassification());
     }
+
+    template <typename Schedule, typename Classification>
+    void TemplateChange(std::shared_ptr<Employee> e) {
+      e->SetSchedule(UPtrPaySchedule{new Schedule});
+      e->SetClassification(UPtrPayClass{new Classification});
+    }
 };
 
 class ChangeHourlyTransaction: public ChangeClassification {
