@@ -53,12 +53,32 @@ class ChangeMemberTransaction: public ChangeAffiliation {
     }
 
     std::unique_ptr<Affiliation> GetAffiliation() const final {
-      return std::unique_ptr<Affiliation>(new UnionAffiliation{dues_});
+      return std::unique_ptr<Affiliation>(new UnionAffiliation{member_id_, dues_});
     }
 
  private:
     int32_t member_id_;
     double dues_;
+};
+
+class ChangeUnaffiliatedTransaction: public ChangeAffiliation {
+ public:
+    ChangeUnaffiliatedTransaction(int32_t emp_id)
+        : ChangeAffiliation{emp_id} {}
+    virtual ~ChangeUnaffiliatedTransaction() override = default;
+
+ private:
+    void RecordMembership(std::shared_ptr<Employee> e) override {
+      auto uf = dynamic_cast<const UnionAffiliation*>(&e->GetAffiliation());
+      if (uf != nullptr) {
+        int32_t member_id = uf->MemberId();
+        PayrollDatabase::DeleteUnionMember(member_id);
+      }
+    }
+
+    std::unique_ptr<Affiliation> GetAffiliation() const final {
+      return std::unique_ptr<Affiliation>(new NoAffiliation{});
+    }
 };
 }  // namespace transaction
 

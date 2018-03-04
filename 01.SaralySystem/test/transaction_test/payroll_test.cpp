@@ -41,6 +41,7 @@ using transaction::ChangeSalariedTransaction;
 using transaction::ChangeHourlyTransaction;
 using transaction::ChangeCommissionedTransaction;
 using transaction::ChangeMemberTransaction;
+using transaction::ChangeUnaffiliatedTransaction;
 using payroll_domain::Employee;
 using payroll_domain::SalariedClassification;
 using payroll_domain::HourlyClassification;
@@ -50,6 +51,7 @@ using payroll_domain::WeeklySchedule;
 using payroll_domain::BiweeklySchedule;
 using payroll_domain::Affiliation;
 using payroll_domain::UnionAffiliation;
+using payroll_domain::NoAffiliation;
 using payroll_domain::TimeCard;
 using payroll_domain::SalesReceipt;
 using payroll_domain::UPtrPayClass;
@@ -144,8 +146,8 @@ TEST_F(TestPayroll, TestSalesReceiptTransaction) {
 TEST_F(TestPayroll, TestAddServiceCharge) {
   ahe.Execute();
   auto e = PayrollDatabase::GetEmployee(kHeId);
-  e->SetAffiliation(std::unique_ptr<Affiliation>{new UnionAffiliation{12.5}});
   constexpr int32_t kMemberId = 86;
+  e->SetAffiliation(std::unique_ptr<Affiliation>{new UnionAffiliation{kMemberId, 12.5}});
   PayrollDatabase::AddUnionMember(kMemberId, e);
   ServiceChargeTransaction sct{kMemberId, 20180303, 12.95};
   sct.Execute();
@@ -223,5 +225,20 @@ TEST_F(TestPayroll, TestChangeMemberTransaction) {
   auto member = PayrollDatabase::GetUnionMember(kMemberId);
   ASSERT_NE(nullptr, member);
   EXPECT_EQ(*e, *member);
+}
+
+TEST_F(TestPayroll, TestChangeUnaffiliatedTransaction) {
+  ahe.Execute();
+  auto e = PayrollDatabase::GetEmployee(kHeId);
+  constexpr int32_t kMemberId = 7734;
+  e->SetAffiliation(std::unique_ptr<Affiliation>{new UnionAffiliation{kMemberId, 12.5}});
+  PayrollDatabase::AddUnionMember(kMemberId, e);
+
+  ChangeUnaffiliatedTransaction cut{kHeId};
+  cut.Execute();
+  auto nf = dynamic_cast<const NoAffiliation*>(&e->GetAffiliation());
+  ASSERT_NE(nullptr, nf);
+  auto member = PayrollDatabase::GetUnionMember(kMemberId);
+  EXPECT_EQ(nullptr, member);
 }
 }  // namespace add_salaried_employee_test

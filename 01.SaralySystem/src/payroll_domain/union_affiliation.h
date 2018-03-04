@@ -12,8 +12,8 @@ namespace payroll_domain {
 
 class UnionAffiliation: public Affiliation {
  public:
-    explicit UnionAffiliation(double due = 0.0):
-        Affiliation{}, due_{due}, service_charges_{} {}
+    explicit UnionAffiliation(int32_t member_id, double due = 0.0):
+        Affiliation{}, member_id_{member_id}, due_{due}, service_charges_{} {}
     UnionAffiliation(const UnionAffiliation&) = delete;
     UnionAffiliation(UnionAffiliation&&) = default;
     UnionAffiliation& operator=(const UnionAffiliation&) = delete;
@@ -26,9 +26,11 @@ class UnionAffiliation: public Affiliation {
     void AddServiceCharge(const int64_t date, const double amount) override {
       service_charges_.emplace(date, amount);
     }
+    int32_t MemberId() const { return member_id_; }
     double Dues() const { return due_; }
 
  private:
+    int32_t member_id_;
     double due_;
     std::map<int64_t, double> service_charges_;
 };
