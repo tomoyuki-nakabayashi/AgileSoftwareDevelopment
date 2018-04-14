@@ -14,6 +14,10 @@ class BiweeklySchedule: public PaymentSchedule {
     BiweeklySchedule(const BiweeklySchedule&) = default;
     BiweeklySchedule& operator=(const BiweeklySchedule&) = default;
     ~BiweeklySchedule() override = default;
+
+    bool IsPayDate(const gr::date &pay_date) const {
+      return false;
+    }
 };
 }  // namespace payroll_domain
 

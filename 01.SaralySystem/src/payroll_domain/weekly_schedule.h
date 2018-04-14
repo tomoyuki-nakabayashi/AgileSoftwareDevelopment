@@ -14,6 +14,10 @@ class WeeklySchedule: public PaymentSchedule {
     WeeklySchedule(const WeeklySchedule&) = default;
     WeeklySchedule& operator=(const WeeklySchedule&) = default;
     ~WeeklySchedule() override = default;
+
+    bool IsPayDate(const gr::date &pay_date) const {
+      return false;
+    }
 };
 }  // namespace payroll_domain
 

@@ -14,6 +14,10 @@ class MonthlySchedule: public PaymentSchedule {
     MonthlySchedule(const MonthlySchedule&) = default;
     MonthlySchedule& operator=(const MonthlySchedule&) = default;
     ~MonthlySchedule() override = default;
+
+    bool IsPayDate(const gr::date &pay_date) const {
+      return pay_date == pay_date.end_of_month_day();
+    }
 };
 }  // namespace payroll_domain
 
