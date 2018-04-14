@@ -2,6 +2,8 @@
 // This software is released under the MIT License, see LICENSE.
 
 #include <cstdint>
+#include <ctime>
+#include <boost/date_time/gregorian/gregorian.hpp>
 #include <gtest/gtest.h>
 #include <transaction/add_salaried_employee.h>
 #include <transaction/add_hourly_employee.h>
@@ -27,7 +29,7 @@
 #include <payroll_domain/sales_receipt.h>
 #include <payroll_database/payroll_database.h>
 
-namespace add_employee_transaction_test {
+namespace transaction_test {
 using transaction::AddSalariedEmployee;
 using transaction::AddHourlyEmployee;
 using transaction::AddCommissionedEmployee;
@@ -64,21 +66,23 @@ class TestPayroll : public ::testing::Test {
     }
 };
 
+constexpr int32_t kSeId = 1;
+const Employee kSalariedEmp {kSeId, "Bob", "Home"};
+AddSalariedEmployee add_salaried_transaction {kSeId, "Bob", "Home", 1000.00};
+
 constexpr int32_t kHeId = 2;
 const Employee kHourlyEmp{kHeId, "Bill", "Home"};
-AddHourlyEmployee ahe{kHeId, "Bill", "Home", 15.25};
+AddHourlyEmployee add_hourly_transaction{kHeId, "Bill", "Home", 15.25};
 
 constexpr int32_t kCeId = 3;
 const Employee kCoEmp{kCeId, "Lance", "Home"};
-AddCommissionedEmployee ace{kCeId, "Lance", "Home", 2500, 3.2};
+AddCommissionedEmployee add_commissioned_transaction{
+  kCeId, "Lance", "Home", 2500, 3.2};
 
 TEST_F(TestPayroll, TestAddSalariedEmployee) {
-  constexpr int kEmployeeId = 1;
-  const Employee expect {kEmployeeId, "Bob", "Home"};
-  AddSalariedEmployee t {kEmployeeId, "Bob", "Home", 1000.00};
-  t.Execute();
-  auto e = PayrollDatabase::GetEmployee(kEmployeeId);
-  EXPECT_EQ(expect, *e);
+  add_salaried_transaction.Execute();
+  auto e = PayrollDatabase::GetEmployee(kSeId);
+  EXPECT_EQ(kSalariedEmp, *e);
   auto sc = dynamic_cast<const SalariedClassification*>(e->GetClassification());
   EXPECT_NE(nullptr, sc);
   EXPECT_DOUBLE_EQ(1000.00, sc->GetSalary());
@@ -87,7 +91,7 @@ TEST_F(TestPayroll, TestAddSalariedEmployee) {
 }
 
 TEST_F(TestPayroll, TestAddHourlyEmployee) {
-  ahe.Execute();
+  add_hourly_transaction.Execute();
   auto e = PayrollDatabase::GetEmployee(kHeId);
   EXPECT_EQ(kHourlyEmp, *e);
   auto hc = dynamic_cast<const HourlyClassification*>(e->GetClassification());
@@ -98,7 +102,7 @@ TEST_F(TestPayroll, TestAddHourlyEmployee) {
 }
 
 TEST_F(TestPayroll, TestAddCommissionedEmployee) {
-  ace.Execute();
+  add_commissioned_transaction.Execute();
   auto e = PayrollDatabase::GetEmployee(kCeId);
   EXPECT_EQ(kCoEmp, *e);
   auto cc = dynamic_cast<const CommissionedClassification*>(e->GetClassification());
@@ -110,7 +114,7 @@ TEST_F(TestPayroll, TestAddCommissionedEmployee) {
 }
 
 TEST_F(TestPayroll, TestDeleteEmployee) {
-  ace.Execute();
+  add_commissioned_transaction.Execute();
   auto e = PayrollDatabase::GetEmployee(kCeId);
   EXPECT_EQ(kCoEmp, *e);
 
@@ -120,7 +124,7 @@ TEST_F(TestPayroll, TestDeleteEmployee) {
 }
 
 TEST_F(TestPayroll, TestTimeCardTransaction) {
-  ahe.Execute();
+  add_hourly_transaction.Execute();
   TimeCardTransaction tct{20180303, 8.0, kHeId};
   tct.Execute();
   auto e = PayrollDatabase::GetEmployee(kHeId);
@@ -132,7 +136,7 @@ TEST_F(TestPayroll, TestTimeCardTransaction) {
 }
 
 TEST_F(TestPayroll, TestSalesReceiptTransaction) {
-  ace.Execute();
+  add_commissioned_transaction.Execute();
   SalesReceiptTransaction srt{20180303, 100, kCeId};
   srt.Execute();
   auto e = PayrollDatabase::GetEmployee(kCeId);
@@ -144,7 +148,7 @@ TEST_F(TestPayroll, TestSalesReceiptTransaction) {
 }
 
 TEST_F(TestPayroll, TestAddServiceCharge) {
-  ahe.Execute();
+  add_hourly_transaction.Execute();
   auto e = PayrollDatabase::GetEmployee(kHeId);
   constexpr int32_t kMemberId = 86;
   e->SetAffiliation(std::unique_ptr<Affiliation>{new UnionAffiliation{kMemberId, 12.5}});
@@ -155,7 +159,7 @@ TEST_F(TestPayroll, TestAddServiceCharge) {
 }
 
 TEST_F(TestPayroll, TestChangeNameTransaction) {
-  ahe.Execute();
+  add_hourly_transaction.Execute();
 
   Employee expect{kHeId, "Bob", "Home"};
   ChangeNameTransaction cnt{kHeId, "Bob"};
@@ -165,7 +169,7 @@ TEST_F(TestPayroll, TestChangeNameTransaction) {
 }
 
 TEST_F(TestPayroll, TestChangeAddressTransaction) {
-  ahe.Execute();
+  add_hourly_transaction.Execute();
 
   Employee expect{kHeId, "Bill", "New Home"};
   ChangeAddressTransaction cat{kHeId, "New Home"};
@@ -175,7 +179,7 @@ TEST_F(TestPayroll, TestChangeAddressTransaction) {
 }
 
 TEST_F(TestPayroll, TestChangeHourlyTransaction) {
-  ace.Execute();
+  add_commissioned_transaction.Execute();
 
   ChangeHourlyTransaction cht{kCeId, 27.52};
   cht.Execute();
@@ -188,7 +192,7 @@ TEST_F(TestPayroll, TestChangeHourlyTransaction) {
 }
 
 TEST_F(TestPayroll, TestChangeSalariedTransaction) {
-  ace.Execute();
+  add_commissioned_transaction.Execute();
 
   ChangeSalariedTransaction cht{kCeId, 2500};
   cht.Execute();
@@ -201,7 +205,7 @@ TEST_F(TestPayroll, TestChangeSalariedTransaction) {
 }
 
 TEST_F(TestPayroll, TestChangeCommissionedTransaction) {
-  ahe.Execute();
+  add_hourly_transaction.Execute();
 
   ChangeCommissionedTransaction cht{kHeId, 2500, 3.2};
   cht.Execute();
@@ -214,7 +218,7 @@ TEST_F(TestPayroll, TestChangeCommissionedTransaction) {
 }
 
 TEST_F(TestPayroll, TestChangeMemberTransaction) {
-  ahe.Execute();
+  add_hourly_transaction.Execute();
   constexpr int kMemberId = 7734;
   ChangeMemberTransaction cmt{kHeId, kMemberId, 99.42};
   cmt.Execute();
@@ -228,7 +232,7 @@ TEST_F(TestPayroll, TestChangeMemberTransaction) {
 }
 
 TEST_F(TestPayroll, TestChangeUnaffiliatedTransaction) {
-  ahe.Execute();
+  add_hourly_transaction.Execute();
   auto e = PayrollDatabase::GetEmployee(kHeId);
   constexpr int32_t kMemberId = 7734;
   e->SetAffiliation(std::unique_ptr<Affiliation>{new UnionAffiliation{kMemberId, 12.5}});
@@ -241,4 +245,21 @@ TEST_F(TestPayroll, TestChangeUnaffiliatedTransaction) {
   auto member = PayrollDatabase::GetUnionMember(kMemberId);
   EXPECT_EQ(nullptr, member);
 }
-}  // namespace add_salaried_employee_test
+
+namespace gr = boost::gregorian;
+TEST_F(TestPayroll, TestPaySingleSalariedEmployee) {
+  add_salaried_transaction.Execute();
+  gr::date pay_date{2018, 4, 30};
+  PayDayTransaction pt{pay_date};
+  pt.Execute();
+  ValidatePayCheck(pt, kSeId, pay_date, 1000.0);
+}
+
+TEST_F(TestPayroll, Gregorian) {
+  int year = 2018;
+  int month = 4;
+  int eom_day =  gr::gregorian_calendar::end_of_month_day(year,month);
+
+  EXPECT_EQ(30, eom_day);
+}
+}  // namespace transaction_test

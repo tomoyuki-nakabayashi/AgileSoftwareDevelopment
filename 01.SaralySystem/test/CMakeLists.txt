@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-include_directories(../src)
+include_directories(../src Boost_INCLUDE_DIRS)
 add_executable(unittests
   payroll_domain_test/employee_test.cpp
   payroll_database_test/payroll_database_test.cpp

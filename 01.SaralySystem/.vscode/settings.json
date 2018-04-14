@@ -20,6 +20,8 @@
     "type_traits": "cpp",
     "typeinfo": "cpp",
     "utility": "cpp",
-    "string": "cpp"
+    "string": "cpp",
+    "ctime": "cpp",
+    "*.ipp": "cpp"
   }
 }
