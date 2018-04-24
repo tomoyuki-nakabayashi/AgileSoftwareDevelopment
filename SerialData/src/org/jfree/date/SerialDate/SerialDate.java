@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import static java.util.Calendar.*;
 
 
-public abstract class SerialData implements Comparable,
+public abstract class SerialDate implements Comparable,
                                             Serializable,
                                             MonthConstants {
 
@@ -54,7 +57,7 @@ public abstract class SerialData implements Comparable,
 
     private String description;
 
-    protectedSerialDate() {
+    protected SerialDate() {
     }
 
     public static boolean isValidWeekdayCode(final int code) {
@@ -239,6 +242,104 @@ public abstract class SerialData implements Comparable,
             return result + 1;
         } else {
             return result;
+        }
+    }
+
+    public static SerialDate addDays(final int days, final SerialDate base) {
+        final int serialDayNumber = base.toSerial() + days;
+        return SerialDate.createInstance(serialDayNumber);
+    }
+
+    public static SerialDate addMonths(final int months, final SerialDate base) {
+        final int yy = (12 * base.getYYYY() + base.getMonth() + months - 1);
+        final int mm = (12 * base.getYYYY() + base.getMonth() + months - 1) % 12 + 1;
+        final int dd = Math.min(base.getDayOfMonth(), SerialDate.lastDayOfMonth(mm, yy));
+        return SerialDate.createInstance(dd, mm, yy);
+    }
+
+    public static SerialDate addYears(final int years, final SerialDate base) {
+        final int baseY = base.getYYYY();
+        final int baseM = base.getMonth();
+        final int baseD = base.getDayOfMonth();
+
+        final int targetY = baseY + years;
+        final int targetD = Math.min(baseD, SerialDate.lastDayOfMonth(baseM, targetY));
+
+        return SerialDate.createInstance(targetD, baseM, targetY);
+    }
+
+    public static SerialDate getPreviousDayOfWeek(final int targetWeekday, final SerialDate base) {
+        if (!SerialDate.isValidWeekdayCode(targetWeekday)) {
+            throw new IllegalArgumentException("Invalid day-of-the-week coe");
+        }
+
+        final int adjust;
+        final int baseDOW = base.getDayOfWeek();
+        if (baseDOW > targetWeekday) {
+            adjust = Math.min(0, targetWeekday, baseDOW);
+        } else {
+            adjust = -7 + Math.max(0, targetWeekday - baseDOW);
+        }
+
+        return SerialDate.addDays(adjust, base);
+    }
+
+    public static SerialDate getFollowingDayOfWeek(final int targetWeekday, final SerialDate base) {
+        if (!SerialDate.isValidWeekdayCode(targetWeekday)) {
+            throw new IllegalArgumentException("Invalid day-of-the-week code");
+        }
+
+        final int adjust;
+        final int baseDOW = base.getDayOfWeek();
+        if (baseDOW > targetWeekday) {
+            adjust = 7 + Math.min(0, targetWeekday - baseDOW);
+        } else {
+            adjust = Math.max(0, targetWeekday - baseDOW);
+        }
+
+        return SerialDate.addDays(adjust, base);
+    }
+
+    public static SerialDate getNearestDayOfWeek(final int targetDOW, final SerialDate base) {
+        if (!SerialDate.isValidWeekdayCode(targetDOW)) {
+            throw new IllegalArgumentException("Invalid day-of-the-week code.");
+        }
+
+        final int baseDOW = base.getDayOfWeek();
+        int adjust = -Math.abs(targetDOW - baseDOW);
+        if (adjust >= 4) {
+            adjust = 7 - adjust;
+        }
+        if (adjust <= -4) {
+            adjust = 7 + adjust;
+        }
+
+        return SerialDate.addDays(adjust, base);
+    }
+
+    public SerialDate getEndOfCurrentMonth(final SerialDate base) {
+        final int last = SerialDate.lastDayOfMonth(base.getMonth(), base.getYYYY());
+        return SerialDate.createInstance(last, base.getMonth(), base.getYYYY());
+    }
+
+    public static String weekInMonthToString(final int count) {
+        switch (count) {
+            case SerialDate.FIRST_WEEK_IN_MONTH : return "First";
+            case SerialDate.SECOND_WEEK_IN_MONTH: return "Second";
+            case SerialDate.THIRD_WEEK_IN_MONTH: return "Third";
+            case SerialDate.FOURTH_WEEK_IN_MONTH: return "Forth";
+            case SerialDate.LAST_WEEK_IN_MONTH: return "Last";
+            default:
+                return "SerialDate.weekInMonthToString(): invalid code.";
+        }
+    }
+
+    public static String relativeToString(final int relative) {
+        switch (relative) {
+            case SerialDate.PRECEDING: return "Preceding";
+            case SerialDate.NEAREST: return "Nearest";
+            case SerialDate.FOLLOWING: return "Fllowing";
+            default: return "Error: Relative To String";
         }
     }
 }
