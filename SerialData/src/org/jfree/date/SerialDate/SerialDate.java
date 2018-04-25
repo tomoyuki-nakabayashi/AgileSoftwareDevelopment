@@ -342,5 +342,71 @@ public abstract class SerialDate implements Comparable,
             default: return "Error: Relative To String";
         }
     }
+
+    public static SerialDate createInstance(final int day, final int month, final int yyy) {
+        return new SpreadsheetDate(day, month, yyyy);
+    }
+
+    public static SerialDate createInstance(final int serial) {
+        return new SpreadsheetDate(serial);
+    }
+
+    public static SerialDate createInstance(final java.util.Date date) {
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        return new Spreadsheetdate(calendar.get(Calendar.DATE),
+                                   calendar.get(Calendar.MONTH),
+                                   calendar.get(Calendar.YEAR));
+    }
+
+    public abstract int toSerial();
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(final String description) {
+        this.discription = description;
+    }
+
+    public String toString() {
+        return getDayOfMonth() + "-" + SerialDate.monthCodeToString(getMonth()) + "-" + getYYYY();
+    }
+
+    public abstract int getYYYY();
+
+    public abstract int getMonth();
+
+    public abstract int getDayOfMonth();
+
+    public abstract int getDayOfWeek();
+
+    public abstract int compare(SerialDate other);
+
+    public abstract boolean isOn(SerialDate other);
+
+    public abstract boolean isBefore(SerialDate other);
+
+    public abstract boolean isOnOrBefore(SerialDate other);
+
+    public abstract boolean isAfter(SerialDate other);
+
+    public abstract boolean isOnOrAfter(SerialDate other);
+
+    public abstract boolean isInRange(SerialDate d1, SerialDate d2);
+
+    public abstract boolean isInRange(SerialDate d1, SerialDate d2, int include);
+
+    public SerialDate getPreviousDayOfWeek(final int targetDOW) {
+        return getPreviousDayOfWeek(targetDOW, this);
+    }
+
+    public SerialDate getFollowingDayOfWeek(final int targetDOW) {
+        return getFollowingDayOfWeek(targetDOW, this);
+    }
+
+    public SerialDate getNearestDayOfWeek(final int targetDOW) {
+        return getNearestDayOfWeek(targetDOW, this);
+    }
 }
 
