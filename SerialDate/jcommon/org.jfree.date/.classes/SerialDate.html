@@ -1,0 +1,1118 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SerialDate</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">org.jfree.date</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SerialDate (org.jfree.date)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SerialDate</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    58.8%
+  </span>
+  <span class="absValue">
+    (20/ 34)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    65.1%
+  </span>
+  <span class="absValue">
+    (97/ 149)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/* ========================================================================
+<i>2</i>&nbsp; * JCommon : a free general purpose class library for the Java(tm) platform
+<i>3</i>&nbsp; * ========================================================================
+<i>4</i>&nbsp; *
+<i>5</i>&nbsp; * (C) Copyright 2000-2006, by Object Refinery Limited and Contributors.
+<i>6</i>&nbsp; * 
+<i>7</i>&nbsp; * Project Info:  http://www.jfree.org/jcommon/index.html
+<i>8</i>&nbsp; *
+<i>9</i>&nbsp; * This library is free software; you can redistribute it and/or modify it 
+<i>10</i>&nbsp; * under the terms of the GNU Lesser General Public License as published by 
+<i>11</i>&nbsp; * the Free Software Foundation; either version 2.1 of the License, or 
+<i>12</i>&nbsp; * (at your option) any later version.
+<i>13</i>&nbsp; *
+<i>14</i>&nbsp; * This library is distributed in the hope that it will be useful, but 
+<i>15</i>&nbsp; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<i>16</i>&nbsp; * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<i>17</i>&nbsp; * License for more details.
+<i>18</i>&nbsp; *
+<i>19</i>&nbsp; * You should have received a copy of the GNU Lesser General Public
+<i>20</i>&nbsp; * License along with this library; if not, write to the Free Software
+<i>21</i>&nbsp; * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<i>22</i>&nbsp; * USA.  
+<i>23</i>&nbsp; *
+<i>24</i>&nbsp; * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<i>25</i>&nbsp; * in the United States and other countries.]
+<i>26</i>&nbsp; *
+<i>27</i>&nbsp; * ---------------
+<i>28</i>&nbsp; * SerialDate.java
+<i>29</i>&nbsp; * ---------------
+<i>30</i>&nbsp; * (C) Copyright 2001-2006, by Object Refinery Limited.
+<i>31</i>&nbsp; *
+<i>32</i>&nbsp; * Original Author:  David Gilbert (for Object Refinery Limited);
+<i>33</i>&nbsp; * Contributor(s):   -;
+<i>34</i>&nbsp; *
+<i>35</i>&nbsp; * $Id: SerialDate.java,v 1.9 2011/10/17 20:08:22 mungady Exp $
+<i>36</i>&nbsp; *
+<i>37</i>&nbsp; * Changes (from 11-Oct-2001)
+<i>38</i>&nbsp; * --------------------------
+<i>39</i>&nbsp; * 11-Oct-2001 : Re-organised the class and moved it to new package 
+<i>40</i>&nbsp; *               com.jrefinery.date (DG);
+<i>41</i>&nbsp; * 05-Nov-2001 : Added a getDescription() method, and eliminated NotableDate 
+<i>42</i>&nbsp; *               class (DG);
+<i>43</i>&nbsp; * 12-Nov-2001 : IBD requires setDescription() method, now that NotableDate 
+<i>44</i>&nbsp; *               class is gone (DG);  Changed getPreviousDayOfWeek(), 
+<i>45</i>&nbsp; *               getFollowingDayOfWeek() and getNearestDayOfWeek() to correct 
+<i>46</i>&nbsp; *               bugs (DG);
+<i>47</i>&nbsp; * 05-Dec-2001 : Fixed bug in SpreadsheetDate class (DG);
+<i>48</i>&nbsp; * 29-May-2002 : Moved the month constants into a separate interface 
+<i>49</i>&nbsp; *               (MonthConstants) (DG);
+<i>50</i>&nbsp; * 27-Aug-2002 : Fixed bug in addMonths() method, thanks to N???levka Petr (DG);
+<i>51</i>&nbsp; * 03-Oct-2002 : Fixed errors reported by Checkstyle (DG);
+<i>52</i>&nbsp; * 13-Mar-2003 : Implemented Serializable (DG);
+<i>53</i>&nbsp; * 29-May-2003 : Fixed bug in addMonths method (DG);
+<i>54</i>&nbsp; * 04-Sep-2003 : Implemented Comparable.  Updated the isInRange javadocs (DG);
+<i>55</i>&nbsp; * 05-Jan-2005 : Fixed bug in addYears() method (1096282) (DG);
+<i>56</i>&nbsp; * 
+<i>57</i>&nbsp; */
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;package org.jfree.date;
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;import java.io.Serializable;
+<i>62</i>&nbsp;import java.text.DateFormatSymbols;
+<i>63</i>&nbsp;import java.text.SimpleDateFormat;
+<i>64</i>&nbsp;import java.util.Calendar;
+<i>65</i>&nbsp;import java.util.GregorianCalendar;
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;/**
+<i>68</i>&nbsp; *  An abstract class that defines our requirements for manipulating dates,
+<i>69</i>&nbsp; *  without tying down a particular implementation.
+<i>70</i>&nbsp; *  &lt;P&gt;
+<i>71</i>&nbsp; *  Requirement 1 : match at least what Excel does for dates;
+<i>72</i>&nbsp; *  Requirement 2 : the date represented by the class is immutable;
+<i>73</i>&nbsp; *  &lt;P&gt;
+<i>74</i>&nbsp; *  Why not just use java.util.Date?  We will, when it makes sense.  At times,
+<i>75</i>&nbsp; *  java.util.Date can be *too* precise - it represents an instant in time,
+<i>76</i>&nbsp; *  accurate to 1/1000th of a second (with the date itself depending on the
+<i>77</i>&nbsp; *  time-zone).  Sometimes we just want to represent a particular day (e.g. 21
+<i>78</i>&nbsp; *  January 2015) without concerning ourselves about the time of day, or the
+<i>79</i>&nbsp; *  time-zone, or anything else.  That&#39;s what we&#39;ve defined SerialDate for.
+<i>80</i>&nbsp; *  &lt;P&gt;
+<i>81</i>&nbsp; *  You can call getInstance() to get a concrete subclass of SerialDate,
+<i>82</i>&nbsp; *  without worrying about the exact implementation.
+<i>83</i>&nbsp; *
+<i>84</i>&nbsp; * @author David Gilbert
+<i>85</i>&nbsp; */
+<i>86</i>&nbsp;public abstract class SerialDate implements Comparable, 
+<i>87</i>&nbsp;                                            Serializable, 
+<i>88</i>&nbsp;                                            MonthConstants {
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    /** For serialization. */
+<i>91</i>&nbsp;    private static final long serialVersionUID = -293716040467423637L;
+<i>92</i>&nbsp;    
+<i>93</i>&nbsp;    /** Date format symbols. */
+<i>94</i>&nbsp;    public static final DateFormatSymbols
+<b class="fc"><i>95</i>&nbsp;        DATE_FORMAT_SYMBOLS = new SimpleDateFormat().getDateFormatSymbols();</b>
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    /** The serial number for 1 January 1900. */
+<i>98</i>&nbsp;    public static final int SERIAL_LOWER_BOUND = 2;
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;    /** The serial number for 31 December 9999. */
+<i>101</i>&nbsp;    public static final int SERIAL_UPPER_BOUND = 2958465;
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;    /** The lowest year value supported by this date format. */
+<i>104</i>&nbsp;    public static final int MINIMUM_YEAR_SUPPORTED = 1900;
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;    /** The highest year value supported by this date format. */
+<i>107</i>&nbsp;    public static final int MAXIMUM_YEAR_SUPPORTED = 9999;
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    /** Useful constant for Monday. Equivalent to java.util.Calendar.MONDAY. */
+<i>110</i>&nbsp;    public static final int MONDAY = Calendar.MONDAY;
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    /** 
+<i>113</i>&nbsp;     * Useful constant for Tuesday. Equivalent to java.util.Calendar.TUESDAY. 
+<i>114</i>&nbsp;     */
+<i>115</i>&nbsp;    public static final int TUESDAY = Calendar.TUESDAY;
+<i>116</i>&nbsp;
+<i>117</i>&nbsp;    /** 
+<i>118</i>&nbsp;     * Useful constant for Wednesday. Equivalent to 
+<i>119</i>&nbsp;     * java.util.Calendar.WEDNESDAY. 
+<i>120</i>&nbsp;     */
+<i>121</i>&nbsp;    public static final int WEDNESDAY = Calendar.WEDNESDAY;
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;    /** 
+<i>124</i>&nbsp;     * Useful constant for Thrusday. Equivalent to java.util.Calendar.THURSDAY. 
+<i>125</i>&nbsp;     */
+<i>126</i>&nbsp;    public static final int THURSDAY = Calendar.THURSDAY;
+<i>127</i>&nbsp;
+<i>128</i>&nbsp;    /** Useful constant for Friday. Equivalent to java.util.Calendar.FRIDAY. */
+<i>129</i>&nbsp;    public static final int FRIDAY = Calendar.FRIDAY;
+<i>130</i>&nbsp;
+<i>131</i>&nbsp;    /** 
+<i>132</i>&nbsp;     * Useful constant for Saturday. Equivalent to java.util.Calendar.SATURDAY.
+<i>133</i>&nbsp;     */
+<i>134</i>&nbsp;    public static final int SATURDAY = Calendar.SATURDAY;
+<i>135</i>&nbsp;
+<i>136</i>&nbsp;    /** Useful constant for Sunday. Equivalent to java.util.Calendar.SUNDAY. */
+<i>137</i>&nbsp;    public static final int SUNDAY = Calendar.SUNDAY;
+<i>138</i>&nbsp;
+<i>139</i>&nbsp;    /** The number of days in each month in non leap years. */
+<b class="fc"><i>140</i>&nbsp;    static final int[] LAST_DAY_OF_MONTH =</b>
+<i>141</i>&nbsp;        {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;    /** The number of days in a (non-leap) year up to the end of each month. */
+<b class="fc"><i>144</i>&nbsp;    static final int[] AGGREGATE_DAYS_TO_END_OF_MONTH =</b>
+<i>145</i>&nbsp;        {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365};
+<i>146</i>&nbsp;
+<i>147</i>&nbsp;    /** The number of days in a year up to the end of the preceding month. */
+<b class="fc"><i>148</i>&nbsp;    static final int[] AGGREGATE_DAYS_TO_END_OF_PRECEDING_MONTH =</b>
+<i>149</i>&nbsp;        {0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365};
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;    /** The number of days in a leap year up to the end of each month. */
+<b class="fc"><i>152</i>&nbsp;    static final int[] LEAP_YEAR_AGGREGATE_DAYS_TO_END_OF_MONTH =</b>
+<i>153</i>&nbsp;        {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366};
+<i>154</i>&nbsp;
+<i>155</i>&nbsp;    /** 
+<i>156</i>&nbsp;     * The number of days in a leap year up to the end of the preceding month. 
+<i>157</i>&nbsp;     */
+<i>158</i>&nbsp;    static final int[] 
+<b class="fc"><i>159</i>&nbsp;        LEAP_YEAR_AGGREGATE_DAYS_TO_END_OF_PRECEDING_MONTH =</b>
+<i>160</i>&nbsp;            {0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366};
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;    /** A useful constant for referring to the first week in a month. */
+<i>163</i>&nbsp;    public static final int FIRST_WEEK_IN_MONTH = 1;
+<i>164</i>&nbsp;
+<i>165</i>&nbsp;    /** A useful constant for referring to the second week in a month. */
+<i>166</i>&nbsp;    public static final int SECOND_WEEK_IN_MONTH = 2;
+<i>167</i>&nbsp;
+<i>168</i>&nbsp;    /** A useful constant for referring to the third week in a month. */
+<i>169</i>&nbsp;    public static final int THIRD_WEEK_IN_MONTH = 3;
+<i>170</i>&nbsp;
+<i>171</i>&nbsp;    /** A useful constant for referring to the fourth week in a month. */
+<i>172</i>&nbsp;    public static final int FOURTH_WEEK_IN_MONTH = 4;
+<i>173</i>&nbsp;
+<i>174</i>&nbsp;    /** A useful constant for referring to the last week in a month. */
+<i>175</i>&nbsp;    public static final int LAST_WEEK_IN_MONTH = 0;
+<i>176</i>&nbsp;
+<i>177</i>&nbsp;    /** Useful range constant. */
+<i>178</i>&nbsp;    public static final int INCLUDE_NONE = 0;
+<i>179</i>&nbsp;
+<i>180</i>&nbsp;    /** Useful range constant. */
+<i>181</i>&nbsp;    public static final int INCLUDE_FIRST = 1;
+<i>182</i>&nbsp;
+<i>183</i>&nbsp;    /** Useful range constant. */
+<i>184</i>&nbsp;    public static final int INCLUDE_SECOND = 2;
+<i>185</i>&nbsp;
+<i>186</i>&nbsp;    /** Useful range constant. */
+<i>187</i>&nbsp;    public static final int INCLUDE_BOTH = 3;
+<i>188</i>&nbsp;
+<i>189</i>&nbsp;    /** 
+<i>190</i>&nbsp;     * Useful constant for specifying a day of the week relative to a fixed 
+<i>191</i>&nbsp;     * date. 
+<i>192</i>&nbsp;     */
+<i>193</i>&nbsp;    public static final int PRECEDING = -1;
+<i>194</i>&nbsp;
+<i>195</i>&nbsp;    /** 
+<i>196</i>&nbsp;     * Useful constant for specifying a day of the week relative to a fixed 
+<i>197</i>&nbsp;     * date. 
+<i>198</i>&nbsp;     */
+<i>199</i>&nbsp;    public static final int NEAREST = 0;
+<i>200</i>&nbsp;
+<i>201</i>&nbsp;    /** 
+<i>202</i>&nbsp;     * Useful constant for specifying a day of the week relative to a fixed 
+<i>203</i>&nbsp;     * date. 
+<i>204</i>&nbsp;     */
+<i>205</i>&nbsp;    public static final int FOLLOWING = 1;
+<i>206</i>&nbsp;
+<i>207</i>&nbsp;    /** A description for the date. */
+<i>208</i>&nbsp;    private String description;
+<i>209</i>&nbsp;
+<i>210</i>&nbsp;    /**
+<i>211</i>&nbsp;     * Default constructor.
+<i>212</i>&nbsp;     */
+<b class="fc"><i>213</i>&nbsp;    protected SerialDate() {</b>
+<b class="fc"><i>214</i>&nbsp;    }</b>
+<i>215</i>&nbsp;
+<i>216</i>&nbsp;    /**
+<i>217</i>&nbsp;     * Returns &lt;code&gt;true&lt;/code&gt; if the supplied integer code represents a 
+<i>218</i>&nbsp;     * valid day-of-the-week, and &lt;code&gt;false&lt;/code&gt; otherwise.
+<i>219</i>&nbsp;     *
+<i>220</i>&nbsp;     * @param code  the code being checked for validity.
+<i>221</i>&nbsp;     *
+<i>222</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if the supplied integer code represents a 
+<i>223</i>&nbsp;     *         valid day-of-the-week, and &lt;code&gt;false&lt;/code&gt; otherwise.
+<i>224</i>&nbsp;     */
+<i>225</i>&nbsp;    public static boolean isValidWeekdayCode(final int code) {
+<i>226</i>&nbsp;
+<b class="fc"><i>227</i>&nbsp;        switch(code) {</b>
+<i>228</i>&nbsp;            case SUNDAY: 
+<i>229</i>&nbsp;            case MONDAY: 
+<i>230</i>&nbsp;            case TUESDAY: 
+<i>231</i>&nbsp;            case WEDNESDAY: 
+<i>232</i>&nbsp;            case THURSDAY: 
+<i>233</i>&nbsp;            case FRIDAY: 
+<i>234</i>&nbsp;            case SATURDAY: 
+<b class="fc"><i>235</i>&nbsp;                return true;</b>
+<i>236</i>&nbsp;            default: 
+<b class="nc"><i>237</i>&nbsp;                return false;</b>
+<i>238</i>&nbsp;        }
+<i>239</i>&nbsp;
+<i>240</i>&nbsp;    }
+<i>241</i>&nbsp;
+<i>242</i>&nbsp;    /**
+<i>243</i>&nbsp;     * Converts the supplied string to a day of the week.
+<i>244</i>&nbsp;     *
+<i>245</i>&nbsp;     * @param s  a string representing the day of the week.
+<i>246</i>&nbsp;     *
+<i>247</i>&nbsp;     * @return &lt;code&gt;-1&lt;/code&gt; if the string is not convertable, the day of 
+<i>248</i>&nbsp;     *         the week otherwise.
+<i>249</i>&nbsp;     */
+<i>250</i>&nbsp;    public static int stringToWeekdayCode(String s) {
+<i>251</i>&nbsp;
+<b class="fc"><i>252</i>&nbsp;        final String[] shortWeekdayNames </b>
+<b class="fc"><i>253</i>&nbsp;            = DATE_FORMAT_SYMBOLS.getShortWeekdays();</b>
+<b class="fc"><i>254</i>&nbsp;        final String[] weekDayNames = DATE_FORMAT_SYMBOLS.getWeekdays();</b>
+<i>255</i>&nbsp;
+<b class="fc"><i>256</i>&nbsp;        int result = -1;</b>
+<b class="fc"><i>257</i>&nbsp;        s = s.trim();</b>
+<b class="fc"><i>258</i>&nbsp;        for (int i = 0; i &lt; weekDayNames.length; i++) {</b>
+<b class="fc"><i>259</i>&nbsp;            if (s.equals(shortWeekdayNames[i])) {</b>
+<b class="fc"><i>260</i>&nbsp;                result = i;</b>
+<b class="fc"><i>261</i>&nbsp;                break;</b>
+<i>262</i>&nbsp;            }
+<b class="fc"><i>263</i>&nbsp;            if (s.equals(weekDayNames[i])) {</b>
+<b class="fc"><i>264</i>&nbsp;                result = i;</b>
+<b class="fc"><i>265</i>&nbsp;                break;</b>
+<i>266</i>&nbsp;            }
+<i>267</i>&nbsp;        }
+<b class="fc"><i>268</i>&nbsp;        return result;</b>
+<i>269</i>&nbsp;
+<i>270</i>&nbsp;    }
+<i>271</i>&nbsp;
+<i>272</i>&nbsp;    /**
+<i>273</i>&nbsp;     * Returns a string representing the supplied day-of-the-week.
+<i>274</i>&nbsp;     * &lt;P&gt;
+<i>275</i>&nbsp;     * Need to find a better approach.
+<i>276</i>&nbsp;     *
+<i>277</i>&nbsp;     * @param weekday  the day of the week.
+<i>278</i>&nbsp;     *
+<i>279</i>&nbsp;     * @return a string representing the supplied day-of-the-week.
+<i>280</i>&nbsp;     */
+<i>281</i>&nbsp;    public static String weekdayCodeToString(final int weekday) {
+<i>282</i>&nbsp;
+<b class="fc"><i>283</i>&nbsp;        final String[] weekdays = DATE_FORMAT_SYMBOLS.getWeekdays();</b>
+<b class="fc"><i>284</i>&nbsp;        return weekdays[weekday];</b>
+<i>285</i>&nbsp;
+<i>286</i>&nbsp;    }
+<i>287</i>&nbsp;
+<i>288</i>&nbsp;    /**
+<i>289</i>&nbsp;     * Returns an array of month names.
+<i>290</i>&nbsp;     *
+<i>291</i>&nbsp;     * @return an array of month names.
+<i>292</i>&nbsp;     */
+<i>293</i>&nbsp;    public static String[] getMonths() {
+<i>294</i>&nbsp;
+<b class="nc"><i>295</i>&nbsp;        return getMonths(false);</b>
+<i>296</i>&nbsp;
+<i>297</i>&nbsp;    }
+<i>298</i>&nbsp;
+<i>299</i>&nbsp;    /**
+<i>300</i>&nbsp;     * Returns an array of month names.
+<i>301</i>&nbsp;     *
+<i>302</i>&nbsp;     * @param shortened  a flag indicating that shortened month names should 
+<i>303</i>&nbsp;     *                   be returned.
+<i>304</i>&nbsp;     *
+<i>305</i>&nbsp;     * @return an array of month names.
+<i>306</i>&nbsp;     */
+<i>307</i>&nbsp;    public static String[] getMonths(final boolean shortened) {
+<i>308</i>&nbsp;
+<b class="nc"><i>309</i>&nbsp;        if (shortened) {</b>
+<b class="nc"><i>310</i>&nbsp;            return DATE_FORMAT_SYMBOLS.getShortMonths();</b>
+<i>311</i>&nbsp;        }
+<i>312</i>&nbsp;        else {
+<b class="nc"><i>313</i>&nbsp;            return DATE_FORMAT_SYMBOLS.getMonths();</b>
+<i>314</i>&nbsp;        }
+<i>315</i>&nbsp;
+<i>316</i>&nbsp;    }
+<i>317</i>&nbsp;
+<i>318</i>&nbsp;    /**
+<i>319</i>&nbsp;     * Returns true if the supplied integer code represents a valid month.
+<i>320</i>&nbsp;     *
+<i>321</i>&nbsp;     * @param code  the code being checked for validity.
+<i>322</i>&nbsp;     *
+<i>323</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if the supplied integer code represents a 
+<i>324</i>&nbsp;     *         valid month.
+<i>325</i>&nbsp;     */
+<i>326</i>&nbsp;    public static boolean isValidMonthCode(final int code) {
+<i>327</i>&nbsp;
+<b class="fc"><i>328</i>&nbsp;        switch(code) {</b>
+<i>329</i>&nbsp;            case JANUARY: 
+<i>330</i>&nbsp;            case FEBRUARY: 
+<i>331</i>&nbsp;            case MARCH: 
+<i>332</i>&nbsp;            case APRIL: 
+<i>333</i>&nbsp;            case MAY: 
+<i>334</i>&nbsp;            case JUNE: 
+<i>335</i>&nbsp;            case JULY: 
+<i>336</i>&nbsp;            case AUGUST: 
+<i>337</i>&nbsp;            case SEPTEMBER: 
+<i>338</i>&nbsp;            case OCTOBER: 
+<i>339</i>&nbsp;            case NOVEMBER: 
+<i>340</i>&nbsp;            case DECEMBER: 
+<b class="fc"><i>341</i>&nbsp;                return true;</b>
+<i>342</i>&nbsp;            default: 
+<b class="nc"><i>343</i>&nbsp;                return false;</b>
+<i>344</i>&nbsp;        }
+<i>345</i>&nbsp;
+<i>346</i>&nbsp;    }
+<i>347</i>&nbsp;
+<i>348</i>&nbsp;    /**
+<i>349</i>&nbsp;     * Returns the quarter for the specified month.
+<i>350</i>&nbsp;     *
+<i>351</i>&nbsp;     * @param code  the month code (1-12).
+<i>352</i>&nbsp;     *
+<i>353</i>&nbsp;     * @return the quarter that the month belongs to.
+<i>354</i>&nbsp;     */
+<i>355</i>&nbsp;    public static int monthCodeToQuarter(final int code) {
+<i>356</i>&nbsp;
+<b class="nc"><i>357</i>&nbsp;        switch(code) {</b>
+<i>358</i>&nbsp;            case JANUARY: 
+<i>359</i>&nbsp;            case FEBRUARY: 
+<b class="nc"><i>360</i>&nbsp;            case MARCH: return 1;</b>
+<i>361</i>&nbsp;            case APRIL: 
+<i>362</i>&nbsp;            case MAY: 
+<b class="nc"><i>363</i>&nbsp;            case JUNE: return 2;</b>
+<i>364</i>&nbsp;            case JULY: 
+<i>365</i>&nbsp;            case AUGUST: 
+<b class="nc"><i>366</i>&nbsp;            case SEPTEMBER: return 3;</b>
+<i>367</i>&nbsp;            case OCTOBER: 
+<i>368</i>&nbsp;            case NOVEMBER: 
+<b class="nc"><i>369</i>&nbsp;            case DECEMBER: return 4;</b>
+<b class="nc"><i>370</i>&nbsp;            default: throw new IllegalArgumentException(</b>
+<i>371</i>&nbsp;                &quot;SerialDate.monthCodeToQuarter: invalid month code.&quot;);
+<i>372</i>&nbsp;        }
+<i>373</i>&nbsp;
+<i>374</i>&nbsp;    }
+<i>375</i>&nbsp;
+<i>376</i>&nbsp;    /**
+<i>377</i>&nbsp;     * Returns a string representing the supplied month.
+<i>378</i>&nbsp;     * &lt;P&gt;
+<i>379</i>&nbsp;     * The string returned is the long form of the month name taken from the 
+<i>380</i>&nbsp;     * default locale.
+<i>381</i>&nbsp;     *
+<i>382</i>&nbsp;     * @param month  the month.
+<i>383</i>&nbsp;     *
+<i>384</i>&nbsp;     * @return a string representing the supplied month.
+<i>385</i>&nbsp;     */
+<i>386</i>&nbsp;    public static String monthCodeToString(final int month) {
+<i>387</i>&nbsp;
+<b class="fc"><i>388</i>&nbsp;        return monthCodeToString(month, false);</b>
+<i>389</i>&nbsp;
+<i>390</i>&nbsp;    }
+<i>391</i>&nbsp;
+<i>392</i>&nbsp;    /**
+<i>393</i>&nbsp;     * Returns a string representing the supplied month.
+<i>394</i>&nbsp;     * &lt;P&gt;
+<i>395</i>&nbsp;     * The string returned is the long or short form of the month name taken 
+<i>396</i>&nbsp;     * from the default locale.
+<i>397</i>&nbsp;     *
+<i>398</i>&nbsp;     * @param month  the month.
+<i>399</i>&nbsp;     * @param shortened  if &lt;code&gt;true&lt;/code&gt; return the abbreviation of the 
+<i>400</i>&nbsp;     *                   month.
+<i>401</i>&nbsp;     *
+<i>402</i>&nbsp;     * @return a string representing the supplied month.
+<i>403</i>&nbsp;     */
+<i>404</i>&nbsp;    public static String monthCodeToString(final int month, 
+<i>405</i>&nbsp;                                           final boolean shortened) {
+<i>406</i>&nbsp;
+<i>407</i>&nbsp;        // check arguments...
+<b class="fc"><i>408</i>&nbsp;        if (!isValidMonthCode(month)) {</b>
+<b class="nc"><i>409</i>&nbsp;            throw new IllegalArgumentException(</b>
+<i>410</i>&nbsp;                &quot;SerialDate.monthCodeToString: month outside valid range.&quot;);
+<i>411</i>&nbsp;        }
+<i>412</i>&nbsp;
+<i>413</i>&nbsp;        final String[] months;
+<i>414</i>&nbsp;
+<b class="fc"><i>415</i>&nbsp;        if (shortened) {</b>
+<b class="nc"><i>416</i>&nbsp;            months = DATE_FORMAT_SYMBOLS.getShortMonths();</b>
+<i>417</i>&nbsp;        }
+<i>418</i>&nbsp;        else {
+<b class="fc"><i>419</i>&nbsp;            months = DATE_FORMAT_SYMBOLS.getMonths();</b>
+<i>420</i>&nbsp;        }
+<i>421</i>&nbsp;
+<b class="fc"><i>422</i>&nbsp;        return months[month - 1];</b>
+<i>423</i>&nbsp;
+<i>424</i>&nbsp;    }
+<i>425</i>&nbsp;
+<i>426</i>&nbsp;    /**
+<i>427</i>&nbsp;     * Converts a string to a month code.
+<i>428</i>&nbsp;     * &lt;P&gt;
+<i>429</i>&nbsp;     * This method will return one of the constants JANUARY, FEBRUARY, ..., 
+<i>430</i>&nbsp;     * DECEMBER that corresponds to the string.  If the string is not 
+<i>431</i>&nbsp;     * recognised, this method returns -1.
+<i>432</i>&nbsp;     *
+<i>433</i>&nbsp;     * @param s  the string to parse.
+<i>434</i>&nbsp;     *
+<i>435</i>&nbsp;     * @return &lt;code&gt;-1&lt;/code&gt; if the string is not parseable, the month of the
+<i>436</i>&nbsp;     *         year otherwise.
+<i>437</i>&nbsp;     */
+<i>438</i>&nbsp;    public static int stringToMonthCode(String s) {
+<i>439</i>&nbsp;
+<b class="fc"><i>440</i>&nbsp;        final String[] shortMonthNames = DATE_FORMAT_SYMBOLS.getShortMonths();</b>
+<b class="fc"><i>441</i>&nbsp;        final String[] monthNames = DATE_FORMAT_SYMBOLS.getMonths();</b>
+<i>442</i>&nbsp;
+<b class="fc"><i>443</i>&nbsp;        int result = -1;</b>
+<b class="fc"><i>444</i>&nbsp;        s = s.trim();</b>
+<i>445</i>&nbsp;
+<i>446</i>&nbsp;        // first try parsing the string as an integer (1-12)...
+<i>447</i>&nbsp;        try {
+<b class="fc"><i>448</i>&nbsp;            result = Integer.parseInt(s);</b>
+<i>449</i>&nbsp;        }
+<b class="fc"><i>450</i>&nbsp;        catch (NumberFormatException e) {</b>
+<i>451</i>&nbsp;            // suppress
+<b class="nc"><i>452</i>&nbsp;        }</b>
+<i>453</i>&nbsp;
+<i>454</i>&nbsp;        // now search through the month names...
+<b class="fc"><i>455</i>&nbsp;        if ((result &lt; 1) || (result &gt; 12)) {</b>
+<b class="fc"><i>456</i>&nbsp;            for (int i = 0; i &lt; monthNames.length; i++) {</b>
+<b class="fc"><i>457</i>&nbsp;                if (s.equals(shortMonthNames[i])) {</b>
+<b class="fc"><i>458</i>&nbsp;                    result = i + 1;</b>
+<b class="fc"><i>459</i>&nbsp;                    break;</b>
+<i>460</i>&nbsp;                }
+<b class="fc"><i>461</i>&nbsp;                if (s.equals(monthNames[i])) {</b>
+<b class="fc"><i>462</i>&nbsp;                    result = i + 1;</b>
+<b class="fc"><i>463</i>&nbsp;                    break;</b>
+<i>464</i>&nbsp;                }
+<i>465</i>&nbsp;            }
+<i>466</i>&nbsp;        }
+<i>467</i>&nbsp;
+<b class="fc"><i>468</i>&nbsp;        return result;</b>
+<i>469</i>&nbsp;
+<i>470</i>&nbsp;    }
+<i>471</i>&nbsp;
+<i>472</i>&nbsp;    /**
+<i>473</i>&nbsp;     * Returns true if the supplied integer code represents a valid 
+<i>474</i>&nbsp;     * week-in-the-month, and false otherwise.
+<i>475</i>&nbsp;     *
+<i>476</i>&nbsp;     * @param code  the code being checked for validity.
+<i>477</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if the supplied integer code represents a 
+<i>478</i>&nbsp;     *         valid week-in-the-month.
+<i>479</i>&nbsp;     */
+<i>480</i>&nbsp;    public static boolean isValidWeekInMonthCode(final int code) {
+<i>481</i>&nbsp;
+<b class="nc"><i>482</i>&nbsp;        switch(code) {</b>
+<i>483</i>&nbsp;            case FIRST_WEEK_IN_MONTH: 
+<i>484</i>&nbsp;            case SECOND_WEEK_IN_MONTH: 
+<i>485</i>&nbsp;            case THIRD_WEEK_IN_MONTH: 
+<i>486</i>&nbsp;            case FOURTH_WEEK_IN_MONTH: 
+<b class="nc"><i>487</i>&nbsp;            case LAST_WEEK_IN_MONTH: return true;</b>
+<b class="nc"><i>488</i>&nbsp;            default: return false;</b>
+<i>489</i>&nbsp;        }
+<i>490</i>&nbsp;
+<i>491</i>&nbsp;    }
+<i>492</i>&nbsp;
+<i>493</i>&nbsp;    /**
+<i>494</i>&nbsp;     * Determines whether or not the specified year is a leap year.
+<i>495</i>&nbsp;     *
+<i>496</i>&nbsp;     * @param yyyy  the year (in the range 1900 to 9999).
+<i>497</i>&nbsp;     *
+<i>498</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if the specified year is a leap year.
+<i>499</i>&nbsp;     */
+<i>500</i>&nbsp;    public static boolean isLeapYear(final int yyyy) {
+<i>501</i>&nbsp;
+<b class="fc"><i>502</i>&nbsp;        if ((yyyy % 4) != 0) {</b>
+<b class="fc"><i>503</i>&nbsp;            return false;</b>
+<i>504</i>&nbsp;        }
+<b class="fc"><i>505</i>&nbsp;        else if ((yyyy % 400) == 0) {</b>
+<b class="fc"><i>506</i>&nbsp;            return true;</b>
+<i>507</i>&nbsp;        }
+<b class="fc"><i>508</i>&nbsp;        else if ((yyyy % 100) == 0) {</b>
+<b class="fc"><i>509</i>&nbsp;            return false;</b>
+<i>510</i>&nbsp;        }
+<i>511</i>&nbsp;        else {
+<b class="fc"><i>512</i>&nbsp;            return true;</b>
+<i>513</i>&nbsp;        }
+<i>514</i>&nbsp;
+<i>515</i>&nbsp;    }
+<i>516</i>&nbsp;
+<i>517</i>&nbsp;    /**
+<i>518</i>&nbsp;     * Returns the number of leap years from 1900 to the specified year 
+<i>519</i>&nbsp;     * INCLUSIVE.
+<i>520</i>&nbsp;     * &lt;P&gt;
+<i>521</i>&nbsp;     * Note that 1900 is not a leap year.
+<i>522</i>&nbsp;     *
+<i>523</i>&nbsp;     * @param yyyy  the year (in the range 1900 to 9999).
+<i>524</i>&nbsp;     *
+<i>525</i>&nbsp;     * @return the number of leap years from 1900 to the specified year.
+<i>526</i>&nbsp;     */
+<i>527</i>&nbsp;    public static int leapYearCount(final int yyyy) {
+<i>528</i>&nbsp;
+<b class="fc"><i>529</i>&nbsp;        final int leap4 = (yyyy - 1896) / 4;</b>
+<b class="fc"><i>530</i>&nbsp;        final int leap100 = (yyyy - 1800) / 100;</b>
+<b class="fc"><i>531</i>&nbsp;        final int leap400 = (yyyy - 1600) / 400;</b>
+<b class="fc"><i>532</i>&nbsp;        return leap4 - leap100 + leap400;</b>
+<i>533</i>&nbsp;
+<i>534</i>&nbsp;    }
+<i>535</i>&nbsp;
+<i>536</i>&nbsp;    /**
+<i>537</i>&nbsp;     * Returns the number of the last day of the month, taking into account 
+<i>538</i>&nbsp;     * leap years.
+<i>539</i>&nbsp;     *
+<i>540</i>&nbsp;     * @param month  the month.
+<i>541</i>&nbsp;     * @param yyyy  the year (in the range 1900 to 9999).
+<i>542</i>&nbsp;     *
+<i>543</i>&nbsp;     * @return the number of the last day of the month.
+<i>544</i>&nbsp;     */
+<i>545</i>&nbsp;    public static int lastDayOfMonth(final int month, final int yyyy) {
+<i>546</i>&nbsp;
+<b class="fc"><i>547</i>&nbsp;        final int result = LAST_DAY_OF_MONTH[month];</b>
+<b class="fc"><i>548</i>&nbsp;        if (month != FEBRUARY) {</b>
+<b class="fc"><i>549</i>&nbsp;            return result;</b>
+<i>550</i>&nbsp;        }
+<b class="fc"><i>551</i>&nbsp;        else if (isLeapYear(yyyy)) {</b>
+<b class="fc"><i>552</i>&nbsp;            return result + 1;</b>
+<i>553</i>&nbsp;        }
+<i>554</i>&nbsp;        else {
+<b class="fc"><i>555</i>&nbsp;            return result;</b>
+<i>556</i>&nbsp;        }
+<i>557</i>&nbsp;
+<i>558</i>&nbsp;    }
+<i>559</i>&nbsp;
+<i>560</i>&nbsp;    /**
+<i>561</i>&nbsp;     * Creates a new date by adding the specified number of days to the base 
+<i>562</i>&nbsp;     * date.
+<i>563</i>&nbsp;     *
+<i>564</i>&nbsp;     * @param days  the number of days to add (can be negative).
+<i>565</i>&nbsp;     * @param base  the base date.
+<i>566</i>&nbsp;     *
+<i>567</i>&nbsp;     * @return a new date.
+<i>568</i>&nbsp;     */
+<i>569</i>&nbsp;    public static SerialDate addDays(final int days, final SerialDate base) {
+<i>570</i>&nbsp;
+<b class="fc"><i>571</i>&nbsp;        final int serialDayNumber = base.toSerial() + days;</b>
+<b class="fc"><i>572</i>&nbsp;        return SerialDate.createInstance(serialDayNumber);</b>
+<i>573</i>&nbsp;
+<i>574</i>&nbsp;    }
+<i>575</i>&nbsp;
+<i>576</i>&nbsp;    /**
+<i>577</i>&nbsp;     * Creates a new date by adding the specified number of months to the base 
+<i>578</i>&nbsp;     * date.
+<i>579</i>&nbsp;     * &lt;P&gt;
+<i>580</i>&nbsp;     * If the base date is close to the end of the month, the day on the result
+<i>581</i>&nbsp;     * may be adjusted slightly:  31 May + 1 month = 30 June.
+<i>582</i>&nbsp;     *
+<i>583</i>&nbsp;     * @param months  the number of months to add (can be negative).
+<i>584</i>&nbsp;     * @param base  the base date.
+<i>585</i>&nbsp;     *
+<i>586</i>&nbsp;     * @return a new date.
+<i>587</i>&nbsp;     */
+<i>588</i>&nbsp;    public static SerialDate addMonths(final int months, 
+<i>589</i>&nbsp;                                       final SerialDate base) {
+<i>590</i>&nbsp;
+<b class="fc"><i>591</i>&nbsp;        final int yy = (12 * base.getYYYY() + base.getMonth() + months - 1) </b>
+<i>592</i>&nbsp;                       / 12;
+<b class="fc"><i>593</i>&nbsp;        final int mm = (12 * base.getYYYY() + base.getMonth() + months - 1) </b>
+<i>594</i>&nbsp;                       % 12 + 1;
+<b class="fc"><i>595</i>&nbsp;        final int dd = Math.min(</b>
+<b class="fc"><i>596</i>&nbsp;            base.getDayOfMonth(), SerialDate.lastDayOfMonth(mm, yy)</b>
+<i>597</i>&nbsp;        );
+<b class="fc"><i>598</i>&nbsp;        return SerialDate.createInstance(dd, mm, yy);</b>
+<i>599</i>&nbsp;
+<i>600</i>&nbsp;    }
+<i>601</i>&nbsp;
+<i>602</i>&nbsp;    /**
+<i>603</i>&nbsp;     * Creates a new date by adding the specified number of years to the base 
+<i>604</i>&nbsp;     * date.
+<i>605</i>&nbsp;     *
+<i>606</i>&nbsp;     * @param years  the number of years to add (can be negative).
+<i>607</i>&nbsp;     * @param base  the base date.
+<i>608</i>&nbsp;     *
+<i>609</i>&nbsp;     * @return A new date.
+<i>610</i>&nbsp;     */
+<i>611</i>&nbsp;    public static SerialDate addYears(final int years, final SerialDate base) {
+<i>612</i>&nbsp;
+<b class="fc"><i>613</i>&nbsp;        final int baseY = base.getYYYY();</b>
+<b class="fc"><i>614</i>&nbsp;        final int baseM = base.getMonth();</b>
+<b class="fc"><i>615</i>&nbsp;        final int baseD = base.getDayOfMonth();</b>
+<i>616</i>&nbsp;
+<b class="fc"><i>617</i>&nbsp;        final int targetY = baseY + years;</b>
+<b class="fc"><i>618</i>&nbsp;        final int targetD = Math.min(</b>
+<b class="fc"><i>619</i>&nbsp;            baseD, SerialDate.lastDayOfMonth(baseM, targetY)</b>
+<i>620</i>&nbsp;        );
+<i>621</i>&nbsp;
+<b class="fc"><i>622</i>&nbsp;        return SerialDate.createInstance(targetD, baseM, targetY);</b>
+<i>623</i>&nbsp;
+<i>624</i>&nbsp;    }
+<i>625</i>&nbsp;
+<i>626</i>&nbsp;    /**
+<i>627</i>&nbsp;     * Returns the latest date that falls on the specified day-of-the-week and 
+<i>628</i>&nbsp;     * is BEFORE the base date.
+<i>629</i>&nbsp;     *
+<i>630</i>&nbsp;     * @param targetWeekday  a code for the target day-of-the-week.
+<i>631</i>&nbsp;     * @param base  the base date.
+<i>632</i>&nbsp;     *
+<i>633</i>&nbsp;     * @return the latest date that falls on the specified day-of-the-week and 
+<i>634</i>&nbsp;     *         is BEFORE the base date.
+<i>635</i>&nbsp;     */
+<i>636</i>&nbsp;    public static SerialDate getPreviousDayOfWeek(final int targetWeekday, 
+<i>637</i>&nbsp;                                                  final SerialDate base) {
+<i>638</i>&nbsp;
+<i>639</i>&nbsp;        // check arguments...
+<b class="fc"><i>640</i>&nbsp;        if (!SerialDate.isValidWeekdayCode(targetWeekday)) {</b>
+<b class="nc"><i>641</i>&nbsp;            throw new IllegalArgumentException(</b>
+<i>642</i>&nbsp;                &quot;Invalid day-of-the-week code.&quot;
+<i>643</i>&nbsp;            );
+<i>644</i>&nbsp;        }
+<i>645</i>&nbsp;
+<i>646</i>&nbsp;        // find the date...
+<i>647</i>&nbsp;        final int adjust;
+<b class="fc"><i>648</i>&nbsp;        final int baseDOW = base.getDayOfWeek();</b>
+<b class="fc"><i>649</i>&nbsp;        if (baseDOW &gt; targetWeekday) {</b>
+<b class="fc"><i>650</i>&nbsp;            adjust = Math.min(0, targetWeekday - baseDOW);</b>
+<i>651</i>&nbsp;        }
+<i>652</i>&nbsp;        else {
+<b class="nc"><i>653</i>&nbsp;            adjust = -7 + Math.max(0, targetWeekday - baseDOW);</b>
+<i>654</i>&nbsp;        }
+<i>655</i>&nbsp;
+<b class="fc"><i>656</i>&nbsp;        return SerialDate.addDays(adjust, base);</b>
+<i>657</i>&nbsp;
+<i>658</i>&nbsp;    }
+<i>659</i>&nbsp;
+<i>660</i>&nbsp;    /**
+<i>661</i>&nbsp;     * Returns the earliest date that falls on the specified day-of-the-week
+<i>662</i>&nbsp;     * and is AFTER the base date.
+<i>663</i>&nbsp;     *
+<i>664</i>&nbsp;     * @param targetWeekday  a code for the target day-of-the-week.
+<i>665</i>&nbsp;     * @param base  the base date.
+<i>666</i>&nbsp;     *
+<i>667</i>&nbsp;     * @return the earliest date that falls on the specified day-of-the-week 
+<i>668</i>&nbsp;     *         and is AFTER the base date.
+<i>669</i>&nbsp;     */
+<i>670</i>&nbsp;    public static SerialDate getFollowingDayOfWeek(final int targetWeekday, 
+<i>671</i>&nbsp;                                                   final SerialDate base) {
+<i>672</i>&nbsp;
+<i>673</i>&nbsp;        // check arguments...
+<b class="fc"><i>674</i>&nbsp;        if (!SerialDate.isValidWeekdayCode(targetWeekday)) {</b>
+<b class="nc"><i>675</i>&nbsp;            throw new IllegalArgumentException(</b>
+<i>676</i>&nbsp;                &quot;Invalid day-of-the-week code.&quot;
+<i>677</i>&nbsp;            );
+<i>678</i>&nbsp;        }
+<i>679</i>&nbsp;
+<i>680</i>&nbsp;        // find the date...
+<i>681</i>&nbsp;        final int adjust;
+<b class="fc"><i>682</i>&nbsp;        final int baseDOW = base.getDayOfWeek();</b>
+<b class="fc"><i>683</i>&nbsp;        if (baseDOW &gt; targetWeekday) {</b>
+<b class="fc"><i>684</i>&nbsp;            adjust = 7 + Math.min(0, targetWeekday - baseDOW);</b>
+<i>685</i>&nbsp;        }
+<i>686</i>&nbsp;        else {
+<b class="nc"><i>687</i>&nbsp;            adjust = Math.max(0, targetWeekday - baseDOW);</b>
+<i>688</i>&nbsp;        }
+<i>689</i>&nbsp;
+<b class="fc"><i>690</i>&nbsp;        return SerialDate.addDays(adjust, base);</b>
+<i>691</i>&nbsp;    }
+<i>692</i>&nbsp;
+<i>693</i>&nbsp;    /**
+<i>694</i>&nbsp;     * Returns the date that falls on the specified day-of-the-week and is
+<i>695</i>&nbsp;     * CLOSEST to the base date.
+<i>696</i>&nbsp;     *
+<i>697</i>&nbsp;     * @param targetDOW  a code for the target day-of-the-week.
+<i>698</i>&nbsp;     * @param base  the base date.
+<i>699</i>&nbsp;     *
+<i>700</i>&nbsp;     * @return the date that falls on the specified day-of-the-week and is 
+<i>701</i>&nbsp;     *         CLOSEST to the base date.
+<i>702</i>&nbsp;     */
+<i>703</i>&nbsp;    public static SerialDate getNearestDayOfWeek(final int targetDOW,  
+<i>704</i>&nbsp;                                                 final SerialDate base) {
+<i>705</i>&nbsp;
+<i>706</i>&nbsp;        // check arguments...
+<b class="fc"><i>707</i>&nbsp;        if (!SerialDate.isValidWeekdayCode(targetDOW)) {</b>
+<b class="nc"><i>708</i>&nbsp;            throw new IllegalArgumentException(</b>
+<i>709</i>&nbsp;                &quot;Invalid day-of-the-week code.&quot;
+<i>710</i>&nbsp;            );
+<i>711</i>&nbsp;        }
+<i>712</i>&nbsp;
+<i>713</i>&nbsp;        // find the date...
+<b class="fc"><i>714</i>&nbsp;        final int baseDOW = base.getDayOfWeek();</b>
+<b class="fc"><i>715</i>&nbsp;        int adjust = -Math.abs(targetDOW - baseDOW);</b>
+<b class="fc"><i>716</i>&nbsp;        if (adjust &gt;= 4) {</b>
+<b class="nc"><i>717</i>&nbsp;            adjust = 7 - adjust;</b>
+<i>718</i>&nbsp;        }
+<b class="fc"><i>719</i>&nbsp;        if (adjust &lt;= -4) {</b>
+<b class="fc"><i>720</i>&nbsp;            adjust = 7 + adjust;</b>
+<i>721</i>&nbsp;        }
+<b class="fc"><i>722</i>&nbsp;        return SerialDate.addDays(adjust, base);</b>
+<i>723</i>&nbsp;
+<i>724</i>&nbsp;    }
+<i>725</i>&nbsp;
+<i>726</i>&nbsp;    /**
+<i>727</i>&nbsp;     * Rolls the date forward to the last day of the month.
+<i>728</i>&nbsp;     *
+<i>729</i>&nbsp;     * @param base  the base date.
+<i>730</i>&nbsp;     *
+<i>731</i>&nbsp;     * @return a new serial date.
+<i>732</i>&nbsp;     */
+<i>733</i>&nbsp;    public SerialDate getEndOfCurrentMonth(final SerialDate base) {
+<b class="nc"><i>734</i>&nbsp;        final int last = SerialDate.lastDayOfMonth(</b>
+<b class="nc"><i>735</i>&nbsp;            base.getMonth(), base.getYYYY()</b>
+<i>736</i>&nbsp;        );
+<b class="nc"><i>737</i>&nbsp;        return SerialDate.createInstance(last, base.getMonth(), base.getYYYY());</b>
+<i>738</i>&nbsp;    }
+<i>739</i>&nbsp;
+<i>740</i>&nbsp;    /**
+<i>741</i>&nbsp;     * Returns a string corresponding to the week-in-the-month code.
+<i>742</i>&nbsp;     * &lt;P&gt;
+<i>743</i>&nbsp;     * Need to find a better approach.
+<i>744</i>&nbsp;     *
+<i>745</i>&nbsp;     * @param count  an integer code representing the week-in-the-month.
+<i>746</i>&nbsp;     *
+<i>747</i>&nbsp;     * @return a string corresponding to the week-in-the-month code.
+<i>748</i>&nbsp;     */
+<i>749</i>&nbsp;    public static String weekInMonthToString(final int count) {
+<i>750</i>&nbsp;
+<b class="nc"><i>751</i>&nbsp;        switch (count) {</b>
+<b class="nc"><i>752</i>&nbsp;            case SerialDate.FIRST_WEEK_IN_MONTH : return &quot;First&quot;;</b>
+<b class="nc"><i>753</i>&nbsp;            case SerialDate.SECOND_WEEK_IN_MONTH : return &quot;Second&quot;;</b>
+<b class="nc"><i>754</i>&nbsp;            case SerialDate.THIRD_WEEK_IN_MONTH : return &quot;Third&quot;;</b>
+<b class="nc"><i>755</i>&nbsp;            case SerialDate.FOURTH_WEEK_IN_MONTH : return &quot;Fourth&quot;;</b>
+<b class="nc"><i>756</i>&nbsp;            case SerialDate.LAST_WEEK_IN_MONTH : return &quot;Last&quot;;</b>
+<i>757</i>&nbsp;            default :
+<b class="nc"><i>758</i>&nbsp;                return &quot;SerialDate.weekInMonthToString(): invalid code.&quot;;</b>
+<i>759</i>&nbsp;        }
+<i>760</i>&nbsp;
+<i>761</i>&nbsp;    }
+<i>762</i>&nbsp;
+<i>763</i>&nbsp;    /**
+<i>764</i>&nbsp;     * Returns a string representing the supplied &#39;relative&#39;.
+<i>765</i>&nbsp;     * &lt;P&gt;
+<i>766</i>&nbsp;     * Need to find a better approach.
+<i>767</i>&nbsp;     *
+<i>768</i>&nbsp;     * @param relative  a constant representing the &#39;relative&#39;.
+<i>769</i>&nbsp;     *
+<i>770</i>&nbsp;     * @return a string representing the supplied &#39;relative&#39;.
+<i>771</i>&nbsp;     */
+<i>772</i>&nbsp;    public static String relativeToString(final int relative) {
+<i>773</i>&nbsp;
+<b class="nc"><i>774</i>&nbsp;        switch (relative) {</b>
+<b class="nc"><i>775</i>&nbsp;            case SerialDate.PRECEDING : return &quot;Preceding&quot;;</b>
+<b class="nc"><i>776</i>&nbsp;            case SerialDate.NEAREST : return &quot;Nearest&quot;;</b>
+<b class="nc"><i>777</i>&nbsp;            case SerialDate.FOLLOWING : return &quot;Following&quot;;</b>
+<b class="nc"><i>778</i>&nbsp;            default : return &quot;ERROR : Relative To String&quot;;</b>
+<i>779</i>&nbsp;        }
+<i>780</i>&nbsp;
+<i>781</i>&nbsp;    }
+<i>782</i>&nbsp;
+<i>783</i>&nbsp;    /**
+<i>784</i>&nbsp;     * Factory method that returns an instance of some concrete subclass of 
+<i>785</i>&nbsp;     * {@link SerialDate}.
+<i>786</i>&nbsp;     *
+<i>787</i>&nbsp;     * @param day  the day (1-31).
+<i>788</i>&nbsp;     * @param month  the month (1-12).
+<i>789</i>&nbsp;     * @param yyyy  the year (in the range 1900 to 9999).
+<i>790</i>&nbsp;     *
+<i>791</i>&nbsp;     * @return An instance of {@link SerialDate}.
+<i>792</i>&nbsp;     */
+<i>793</i>&nbsp;    public static SerialDate createInstance(final int day, final int month, 
+<i>794</i>&nbsp;                                            final int yyyy) {
+<b class="fc"><i>795</i>&nbsp;        return new SpreadsheetDate(day, month, yyyy);</b>
+<i>796</i>&nbsp;    }
+<i>797</i>&nbsp;
+<i>798</i>&nbsp;    /**
+<i>799</i>&nbsp;     * Factory method that returns an instance of some concrete subclass of 
+<i>800</i>&nbsp;     * {@link SerialDate}.
+<i>801</i>&nbsp;     *
+<i>802</i>&nbsp;     * @param serial  the serial number for the day (1 January 1900 = 2).
+<i>803</i>&nbsp;     *
+<i>804</i>&nbsp;     * @return a instance of SerialDate.
+<i>805</i>&nbsp;     */
+<i>806</i>&nbsp;    public static SerialDate createInstance(final int serial) {
+<b class="fc"><i>807</i>&nbsp;        return new SpreadsheetDate(serial);</b>
+<i>808</i>&nbsp;    }
+<i>809</i>&nbsp;
+<i>810</i>&nbsp;    /**
+<i>811</i>&nbsp;     * Factory method that returns an instance of a subclass of SerialDate.
+<i>812</i>&nbsp;     *
+<i>813</i>&nbsp;     * @param date  A Java date object.
+<i>814</i>&nbsp;     *
+<i>815</i>&nbsp;     * @return a instance of SerialDate.
+<i>816</i>&nbsp;     */
+<i>817</i>&nbsp;    public static SerialDate createInstance(final java.util.Date date) {
+<i>818</i>&nbsp;
+<b class="nc"><i>819</i>&nbsp;        final GregorianCalendar calendar = new GregorianCalendar();</b>
+<b class="nc"><i>820</i>&nbsp;        calendar.setTime(date);</b>
+<b class="nc"><i>821</i>&nbsp;        return new SpreadsheetDate(calendar.get(Calendar.DATE),</b>
+<b class="nc"><i>822</i>&nbsp;                                   calendar.get(Calendar.MONTH) + 1,</b>
+<b class="nc"><i>823</i>&nbsp;                                   calendar.get(Calendar.YEAR));</b>
+<i>824</i>&nbsp;
+<i>825</i>&nbsp;    }
+<i>826</i>&nbsp;
+<i>827</i>&nbsp;    /**
+<i>828</i>&nbsp;     * Returns the serial number for the date, where 1 January 1900 = 2 (this
+<i>829</i>&nbsp;     * corresponds, almost, to the numbering system used in Microsoft Excel for
+<i>830</i>&nbsp;     * Windows and Lotus 1-2-3).
+<i>831</i>&nbsp;     *
+<i>832</i>&nbsp;     * @return the serial number for the date.
+<i>833</i>&nbsp;     */
+<i>834</i>&nbsp;    public abstract int toSerial();
+<i>835</i>&nbsp;
+<i>836</i>&nbsp;    /**
+<i>837</i>&nbsp;     * Returns a java.util.Date.  Since java.util.Date has more precision than
+<i>838</i>&nbsp;     * SerialDate, we need to define a convention for the &#39;time of day&#39;.
+<i>839</i>&nbsp;     *
+<i>840</i>&nbsp;     * @return this as &lt;code&gt;java.util.Date&lt;/code&gt;.
+<i>841</i>&nbsp;     */
+<i>842</i>&nbsp;    public abstract java.util.Date toDate();
+<i>843</i>&nbsp;
+<i>844</i>&nbsp;    /**
+<i>845</i>&nbsp;     * Returns the description that is attached to the date.  It is not 
+<i>846</i>&nbsp;     * required that a date have a description, but for some applications it 
+<i>847</i>&nbsp;     * is useful.
+<i>848</i>&nbsp;     *
+<i>849</i>&nbsp;     * @return The description (possibly &lt;code&gt;null&lt;/code&gt;).
+<i>850</i>&nbsp;     */
+<i>851</i>&nbsp;    public String getDescription() {
+<b class="nc"><i>852</i>&nbsp;        return this.description;</b>
+<i>853</i>&nbsp;    }
+<i>854</i>&nbsp;
+<i>855</i>&nbsp;    /**
+<i>856</i>&nbsp;     * Sets the description for the date.
+<i>857</i>&nbsp;     *
+<i>858</i>&nbsp;     * @param description  the description for this date (&lt;code&gt;null&lt;/code&gt; 
+<i>859</i>&nbsp;     *                     permitted).
+<i>860</i>&nbsp;     */
+<i>861</i>&nbsp;    public void setDescription(final String description) {
+<b class="nc"><i>862</i>&nbsp;        this.description = description;</b>
+<b class="nc"><i>863</i>&nbsp;    }</b>
+<i>864</i>&nbsp;
+<i>865</i>&nbsp;    /**
+<i>866</i>&nbsp;     * Converts the date to a string.
+<i>867</i>&nbsp;     *
+<i>868</i>&nbsp;     * @return  a string representation of the date.
+<i>869</i>&nbsp;     */
+<i>870</i>&nbsp;    public String toString() {
+<b class="nc"><i>871</i>&nbsp;        return getDayOfMonth() + &quot;-&quot; + SerialDate.monthCodeToString(getMonth())</b>
+<b class="nc"><i>872</i>&nbsp;                               + &quot;-&quot; + getYYYY();</b>
+<i>873</i>&nbsp;    }
+<i>874</i>&nbsp;
+<i>875</i>&nbsp;    /**
+<i>876</i>&nbsp;     * Returns the year (assume a valid range of 1900 to 9999).
+<i>877</i>&nbsp;     *
+<i>878</i>&nbsp;     * @return the year.
+<i>879</i>&nbsp;     */
+<i>880</i>&nbsp;    public abstract int getYYYY();
+<i>881</i>&nbsp;
+<i>882</i>&nbsp;    /**
+<i>883</i>&nbsp;     * Returns the month (January = 1, February = 2, March = 3).
+<i>884</i>&nbsp;     *
+<i>885</i>&nbsp;     * @return the month of the year.
+<i>886</i>&nbsp;     */
+<i>887</i>&nbsp;    public abstract int getMonth();
+<i>888</i>&nbsp;
+<i>889</i>&nbsp;    /**
+<i>890</i>&nbsp;     * Returns the day of the month.
+<i>891</i>&nbsp;     *
+<i>892</i>&nbsp;     * @return the day of the month.
+<i>893</i>&nbsp;     */
+<i>894</i>&nbsp;    public abstract int getDayOfMonth();
+<i>895</i>&nbsp;
+<i>896</i>&nbsp;    /**
+<i>897</i>&nbsp;     * Returns the day of the week.
+<i>898</i>&nbsp;     *
+<i>899</i>&nbsp;     * @return the day of the week.
+<i>900</i>&nbsp;     */
+<i>901</i>&nbsp;    public abstract int getDayOfWeek();
+<i>902</i>&nbsp;
+<i>903</i>&nbsp;    /**
+<i>904</i>&nbsp;     * Returns the difference (in days) between this date and the specified 
+<i>905</i>&nbsp;     * &#39;other&#39; date.
+<i>906</i>&nbsp;     * &lt;P&gt;
+<i>907</i>&nbsp;     * The result is positive if this date is after the &#39;other&#39; date and
+<i>908</i>&nbsp;     * negative if it is before the &#39;other&#39; date.
+<i>909</i>&nbsp;     *
+<i>910</i>&nbsp;     * @param other  the date being compared to.
+<i>911</i>&nbsp;     *
+<i>912</i>&nbsp;     * @return the difference between this and the other date.
+<i>913</i>&nbsp;     */
+<i>914</i>&nbsp;    public abstract int compare(SerialDate other);
+<i>915</i>&nbsp;
+<i>916</i>&nbsp;    /**
+<i>917</i>&nbsp;     * Returns true if this SerialDate represents the same date as the 
+<i>918</i>&nbsp;     * specified SerialDate.
+<i>919</i>&nbsp;     *
+<i>920</i>&nbsp;     * @param other  the date being compared to.
+<i>921</i>&nbsp;     *
+<i>922</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if this SerialDate represents the same date as 
+<i>923</i>&nbsp;     *         the specified SerialDate.
+<i>924</i>&nbsp;     */
+<i>925</i>&nbsp;    public abstract boolean isOn(SerialDate other);
+<i>926</i>&nbsp;
+<i>927</i>&nbsp;    /**
+<i>928</i>&nbsp;     * Returns true if this SerialDate represents an earlier date compared to
+<i>929</i>&nbsp;     * the specified SerialDate.
+<i>930</i>&nbsp;     *
+<i>931</i>&nbsp;     * @param other  The date being compared to.
+<i>932</i>&nbsp;     *
+<i>933</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if this SerialDate represents an earlier date 
+<i>934</i>&nbsp;     *         compared to the specified SerialDate.
+<i>935</i>&nbsp;     */
+<i>936</i>&nbsp;    public abstract boolean isBefore(SerialDate other);
+<i>937</i>&nbsp;
+<i>938</i>&nbsp;    /**
+<i>939</i>&nbsp;     * Returns true if this SerialDate represents the same date as the 
+<i>940</i>&nbsp;     * specified SerialDate.
+<i>941</i>&nbsp;     *
+<i>942</i>&nbsp;     * @param other  the date being compared to.
+<i>943</i>&nbsp;     *
+<i>944</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if this SerialDate represents the same date
+<i>945</i>&nbsp;     *         as the specified SerialDate.
+<i>946</i>&nbsp;     */
+<i>947</i>&nbsp;    public abstract boolean isOnOrBefore(SerialDate other);
+<i>948</i>&nbsp;
+<i>949</i>&nbsp;    /**
+<i>950</i>&nbsp;     * Returns true if this SerialDate represents the same date as the 
+<i>951</i>&nbsp;     * specified SerialDate.
+<i>952</i>&nbsp;     *
+<i>953</i>&nbsp;     * @param other  the date being compared to.
+<i>954</i>&nbsp;     *
+<i>955</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if this SerialDate represents the same date
+<i>956</i>&nbsp;     *         as the specified SerialDate.
+<i>957</i>&nbsp;     */
+<i>958</i>&nbsp;    public abstract boolean isAfter(SerialDate other);
+<i>959</i>&nbsp;
+<i>960</i>&nbsp;    /**
+<i>961</i>&nbsp;     * Returns true if this SerialDate represents the same date as the 
+<i>962</i>&nbsp;     * specified SerialDate.
+<i>963</i>&nbsp;     *
+<i>964</i>&nbsp;     * @param other  the date being compared to.
+<i>965</i>&nbsp;     *
+<i>966</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if this SerialDate represents the same date
+<i>967</i>&nbsp;     *         as the specified SerialDate.
+<i>968</i>&nbsp;     */
+<i>969</i>&nbsp;    public abstract boolean isOnOrAfter(SerialDate other);
+<i>970</i>&nbsp;
+<i>971</i>&nbsp;    /**
+<i>972</i>&nbsp;     * Returns &lt;code&gt;true&lt;/code&gt; if this {@link SerialDate} is within the 
+<i>973</i>&nbsp;     * specified range (INCLUSIVE).  The date order of d1 and d2 is not 
+<i>974</i>&nbsp;     * important.
+<i>975</i>&nbsp;     *
+<i>976</i>&nbsp;     * @param d1  a boundary date for the range.
+<i>977</i>&nbsp;     * @param d2  the other boundary date for the range.
+<i>978</i>&nbsp;     *
+<i>979</i>&nbsp;     * @return A boolean.
+<i>980</i>&nbsp;     */
+<i>981</i>&nbsp;    public abstract boolean isInRange(SerialDate d1, SerialDate d2);
+<i>982</i>&nbsp;
+<i>983</i>&nbsp;    /**
+<i>984</i>&nbsp;     * Returns &lt;code&gt;true&lt;/code&gt; if this {@link SerialDate} is within the 
+<i>985</i>&nbsp;     * specified range (caller specifies whether or not the end-points are 
+<i>986</i>&nbsp;     * included).  The date order of d1 and d2 is not important.
+<i>987</i>&nbsp;     *
+<i>988</i>&nbsp;     * @param d1  a boundary date for the range.
+<i>989</i>&nbsp;     * @param d2  the other boundary date for the range.
+<i>990</i>&nbsp;     * @param include  a code that controls whether or not the start and end 
+<i>991</i>&nbsp;     *                 dates are included in the range.
+<i>992</i>&nbsp;     *
+<i>993</i>&nbsp;     * @return A boolean.
+<i>994</i>&nbsp;     */
+<i>995</i>&nbsp;    public abstract boolean isInRange(SerialDate d1, SerialDate d2, 
+<i>996</i>&nbsp;                                      int include);
+<i>997</i>&nbsp;
+<i>998</i>&nbsp;    /**
+<i>999</i>&nbsp;     * Returns the latest date that falls on the specified day-of-the-week and
+<i>1000</i>&nbsp;     * is BEFORE this date.
+<i>1001</i>&nbsp;     *
+<i>1002</i>&nbsp;     * @param targetDOW  a code for the target day-of-the-week.
+<i>1003</i>&nbsp;     *
+<i>1004</i>&nbsp;     * @return the latest date that falls on the specified day-of-the-week and
+<i>1005</i>&nbsp;     *         is BEFORE this date.
+<i>1006</i>&nbsp;     */
+<i>1007</i>&nbsp;    public SerialDate getPreviousDayOfWeek(final int targetDOW) {
+<b class="nc"><i>1008</i>&nbsp;        return getPreviousDayOfWeek(targetDOW, this);</b>
+<i>1009</i>&nbsp;    }
+<i>1010</i>&nbsp;
+<i>1011</i>&nbsp;    /**
+<i>1012</i>&nbsp;     * Returns the earliest date that falls on the specified day-of-the-week
+<i>1013</i>&nbsp;     * and is AFTER this date.
+<i>1014</i>&nbsp;     *
+<i>1015</i>&nbsp;     * @param targetDOW  a code for the target day-of-the-week.
+<i>1016</i>&nbsp;     *
+<i>1017</i>&nbsp;     * @return the earliest date that falls on the specified day-of-the-week
+<i>1018</i>&nbsp;     *         and is AFTER this date.
+<i>1019</i>&nbsp;     */
+<i>1020</i>&nbsp;    public SerialDate getFollowingDayOfWeek(final int targetDOW) {
+<b class="nc"><i>1021</i>&nbsp;        return getFollowingDayOfWeek(targetDOW, this);</b>
+<i>1022</i>&nbsp;    }
+<i>1023</i>&nbsp;
+<i>1024</i>&nbsp;    /**
+<i>1025</i>&nbsp;     * Returns the nearest date that falls on the specified day-of-the-week.
+<i>1026</i>&nbsp;     *
+<i>1027</i>&nbsp;     * @param targetDOW  a code for the target day-of-the-week.
+<i>1028</i>&nbsp;     *
+<i>1029</i>&nbsp;     * @return the nearest date that falls on the specified day-of-the-week.
+<i>1030</i>&nbsp;     */
+<i>1031</i>&nbsp;    public SerialDate getNearestDayOfWeek(final int targetDOW) {
+<b class="nc"><i>1032</i>&nbsp;        return getNearestDayOfWeek(targetDOW, this);</b>
+<i>1033</i>&nbsp;    }
+<i>1034</i>&nbsp;
+<i>1035</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-04-26 20:55</div>
+</div>
+</body>
+</html>

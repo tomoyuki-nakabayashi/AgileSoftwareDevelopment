@@ -1,0 +1,544 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SpreadsheetDate</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">org.jfree.date</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SpreadsheetDate (org.jfree.date)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SpreadsheetDate</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (10/ 20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    57.5%
+  </span>
+  <span class="absValue">
+    (46/ 80)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/* ========================================================================
+<i>2</i>&nbsp; * JCommon : a free general purpose class library for the Java(tm) platform
+<i>3</i>&nbsp; * ========================================================================
+<i>4</i>&nbsp; *
+<i>5</i>&nbsp; * (C) Copyright 2000-2006, by Object Refinery Limited and Contributors.
+<i>6</i>&nbsp; * 
+<i>7</i>&nbsp; * Project Info:  http://www.jfree.org/jcommon/index.html
+<i>8</i>&nbsp; *
+<i>9</i>&nbsp; * This library is free software; you can redistribute it and/or modify it 
+<i>10</i>&nbsp; * under the terms of the GNU Lesser General Public License as published by 
+<i>11</i>&nbsp; * the Free Software Foundation; either version 2.1 of the License, or 
+<i>12</i>&nbsp; * (at your option) any later version.
+<i>13</i>&nbsp; *
+<i>14</i>&nbsp; * This library is distributed in the hope that it will be useful, but 
+<i>15</i>&nbsp; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<i>16</i>&nbsp; * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<i>17</i>&nbsp; * License for more details.
+<i>18</i>&nbsp; *
+<i>19</i>&nbsp; * You should have received a copy of the GNU Lesser General Public
+<i>20</i>&nbsp; * License along with this library; if not, write to the Free Software
+<i>21</i>&nbsp; * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<i>22</i>&nbsp; * USA.  
+<i>23</i>&nbsp; *
+<i>24</i>&nbsp; * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<i>25</i>&nbsp; * in the United States and other countries.]
+<i>26</i>&nbsp; *
+<i>27</i>&nbsp; * --------------------
+<i>28</i>&nbsp; * SpreadsheetDate.java
+<i>29</i>&nbsp; * --------------------
+<i>30</i>&nbsp; * (C) Copyright 2000-2006, by Object Refinery Limited and Contributors.
+<i>31</i>&nbsp; *
+<i>32</i>&nbsp; * Original Author:  David Gilbert (for Object Refinery Limited);
+<i>33</i>&nbsp; * Contributor(s):   -;
+<i>34</i>&nbsp; *
+<i>35</i>&nbsp; * $Id: SpreadsheetDate.java,v 1.10 2006/08/29 13:59:30 mungady Exp $
+<i>36</i>&nbsp; *
+<i>37</i>&nbsp; * Changes
+<i>38</i>&nbsp; * -------
+<i>39</i>&nbsp; * 11-Oct-2001 : Version 1 (DG);
+<i>40</i>&nbsp; * 05-Nov-2001 : Added getDescription() and setDescription() methods (DG);
+<i>41</i>&nbsp; * 12-Nov-2001 : Changed name from ExcelDate.java to SpreadsheetDate.java (DG);
+<i>42</i>&nbsp; *               Fixed a bug in calculating day, month and year from serial 
+<i>43</i>&nbsp; *               number (DG);
+<i>44</i>&nbsp; * 24-Jan-2002 : Fixed a bug in calculating the serial number from the day, 
+<i>45</i>&nbsp; *               month and year.  Thanks to Trevor Hills for the report (DG);
+<i>46</i>&nbsp; * 29-May-2002 : Added equals(Object) method (SourceForge ID 558850) (DG);
+<i>47</i>&nbsp; * 03-Oct-2002 : Fixed errors reported by Checkstyle (DG);
+<i>48</i>&nbsp; * 13-Mar-2003 : Implemented Serializable (DG);
+<i>49</i>&nbsp; * 04-Sep-2003 : Completed isInRange() methods (DG);
+<i>50</i>&nbsp; * 05-Sep-2003 : Implemented Comparable (DG);
+<i>51</i>&nbsp; * 21-Oct-2003 : Added hashCode() method (DG);
+<i>52</i>&nbsp; * 29-Aug-2006 : Removed redundant description attribute (DG);
+<i>53</i>&nbsp; *
+<i>54</i>&nbsp; */
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;package org.jfree.date;
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;import java.util.Calendar;
+<i>59</i>&nbsp;import java.util.Date;
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;/**
+<i>62</i>&nbsp; * Represents a date using an integer, in a similar fashion to the
+<i>63</i>&nbsp; * implementation in Microsoft Excel.  The range of dates supported is
+<i>64</i>&nbsp; * 1-Jan-1900 to 31-Dec-9999.
+<i>65</i>&nbsp; * &lt;P&gt;
+<i>66</i>&nbsp; * Be aware that there is a deliberate bug in Excel that recognises the year
+<i>67</i>&nbsp; * 1900 as a leap year when in fact it is not a leap year. You can find more
+<i>68</i>&nbsp; * information on the Microsoft website in article Q181370:
+<i>69</i>&nbsp; * &lt;P&gt;
+<i>70</i>&nbsp; * http://support.microsoft.com/support/kb/articles/Q181/3/70.asp
+<i>71</i>&nbsp; * &lt;P&gt;
+<i>72</i>&nbsp; * Excel uses the convention that 1-Jan-1900 = 1.  This class uses the
+<i>73</i>&nbsp; * convention 1-Jan-1900 = 2.
+<i>74</i>&nbsp; * The result is that the day number in this class will be different to the
+<i>75</i>&nbsp; * Excel figure for January and February 1900...but then Excel adds in an extra
+<i>76</i>&nbsp; * day (29-Feb-1900 which does not actually exist!) and from that point forward
+<i>77</i>&nbsp; * the day numbers will match.
+<i>78</i>&nbsp; *
+<i>79</i>&nbsp; * @author David Gilbert
+<i>80</i>&nbsp; */
+<i>81</i>&nbsp;public class SpreadsheetDate extends SerialDate {
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;    /** For serialization. */
+<i>84</i>&nbsp;    private static final long serialVersionUID = -2039586705374454461L;
+<i>85</i>&nbsp;    
+<i>86</i>&nbsp;    /** 
+<i>87</i>&nbsp;     * The day number (1-Jan-1900 = 2, 2-Jan-1900 = 3, ..., 31-Dec-9999 = 
+<i>88</i>&nbsp;     * 2958465). 
+<i>89</i>&nbsp;     */
+<i>90</i>&nbsp;    private final int serial;
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;    /** The day of the month (1 to 28, 29, 30 or 31 depending on the month). */
+<i>93</i>&nbsp;    private final int day;
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    /** The month of the year (1 to 12). */
+<i>96</i>&nbsp;    private final int month;
+<i>97</i>&nbsp;
+<i>98</i>&nbsp;    /** The year (1900 to 9999). */
+<i>99</i>&nbsp;    private final int year;
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    /**
+<i>102</i>&nbsp;     * Creates a new date instance.
+<i>103</i>&nbsp;     *
+<i>104</i>&nbsp;     * @param day  the day (in the range 1 to 28/29/30/31).
+<i>105</i>&nbsp;     * @param month  the month (in the range 1 to 12).
+<i>106</i>&nbsp;     * @param year  the year (in the range 1900 to 9999).
+<i>107</i>&nbsp;     */
+<b class="fc"><i>108</i>&nbsp;    public SpreadsheetDate(final int day, final int month, final int year) {</b>
+<i>109</i>&nbsp;
+<b class="fc"><i>110</i>&nbsp;        if ((year &gt;= 1900) &amp;&amp; (year &lt;= 9999)) {</b>
+<b class="fc"><i>111</i>&nbsp;            this.year = year;</b>
+<i>112</i>&nbsp;        }
+<i>113</i>&nbsp;        else {
+<b class="nc"><i>114</i>&nbsp;            throw new IllegalArgumentException(</b>
+<i>115</i>&nbsp;                &quot;The &#39;year&#39; argument must be in range 1900 to 9999.&quot;
+<i>116</i>&nbsp;            );
+<i>117</i>&nbsp;        }
+<i>118</i>&nbsp;
+<b class="fc"><i>119</i>&nbsp;        if ((month &gt;= MonthConstants.JANUARY) </b>
+<i>120</i>&nbsp;                &amp;&amp; (month &lt;= MonthConstants.DECEMBER)) {
+<b class="fc"><i>121</i>&nbsp;            this.month = month;</b>
+<i>122</i>&nbsp;        }
+<i>123</i>&nbsp;        else {
+<b class="nc"><i>124</i>&nbsp;            throw new IllegalArgumentException(</b>
+<i>125</i>&nbsp;                &quot;The &#39;month&#39; argument must be in the range 1 to 12.&quot;
+<i>126</i>&nbsp;            );
+<i>127</i>&nbsp;        }
+<i>128</i>&nbsp;
+<b class="fc"><i>129</i>&nbsp;        if ((day &gt;= 1) &amp;&amp; (day &lt;= SerialDate.lastDayOfMonth(month, year))) {</b>
+<b class="fc"><i>130</i>&nbsp;            this.day = day;</b>
+<i>131</i>&nbsp;        }
+<i>132</i>&nbsp;        else {
+<b class="nc"><i>133</i>&nbsp;            throw new IllegalArgumentException(&quot;Invalid &#39;day&#39; argument.&quot;);</b>
+<i>134</i>&nbsp;        }
+<i>135</i>&nbsp;
+<i>136</i>&nbsp;        // the serial number needs to be synchronised with the day-month-year...
+<b class="fc"><i>137</i>&nbsp;        this.serial = calcSerial(day, month, year);</b>
+<i>138</i>&nbsp;
+<b class="fc"><i>139</i>&nbsp;    }</b>
+<i>140</i>&nbsp;
+<i>141</i>&nbsp;    /**
+<i>142</i>&nbsp;     * Standard constructor - creates a new date object representing the
+<i>143</i>&nbsp;     * specified day number (which should be in the range 2 to 2958465.
+<i>144</i>&nbsp;     *
+<i>145</i>&nbsp;     * @param serial  the serial number for the day (range: 2 to 2958465).
+<i>146</i>&nbsp;     */
+<b class="fc"><i>147</i>&nbsp;    public SpreadsheetDate(final int serial) {</b>
+<i>148</i>&nbsp;
+<b class="fc"><i>149</i>&nbsp;        if ((serial &gt;= SERIAL_LOWER_BOUND) &amp;&amp; (serial &lt;= SERIAL_UPPER_BOUND)) {</b>
+<b class="fc"><i>150</i>&nbsp;            this.serial = serial;</b>
+<i>151</i>&nbsp;        }
+<i>152</i>&nbsp;        else {
+<b class="nc"><i>153</i>&nbsp;            throw new IllegalArgumentException(</b>
+<i>154</i>&nbsp;                &quot;SpreadsheetDate: Serial must be in range 2 to 2958465.&quot;);
+<i>155</i>&nbsp;        }
+<i>156</i>&nbsp;
+<i>157</i>&nbsp;        // the day-month-year needs to be synchronised with the serial number...
+<i>158</i>&nbsp;      // get the year from the serial date
+<b class="fc"><i>159</i>&nbsp;      final int days = this.serial - SERIAL_LOWER_BOUND;</b>
+<i>160</i>&nbsp;      // overestimated because we ignored leap days
+<b class="fc"><i>161</i>&nbsp;      final int overestimatedYYYY = 1900 + (days / 365);</b>
+<b class="fc"><i>162</i>&nbsp;      final int leaps = SerialDate.leapYearCount(overestimatedYYYY);</b>
+<b class="fc"><i>163</i>&nbsp;      final int nonleapdays = days - leaps;</b>
+<i>164</i>&nbsp;      // underestimated because we overestimated years
+<b class="fc"><i>165</i>&nbsp;      int underestimatedYYYY = 1900 + (nonleapdays / 365);</b>
+<i>166</i>&nbsp;
+<b class="fc"><i>167</i>&nbsp;      if (underestimatedYYYY == overestimatedYYYY) {</b>
+<b class="fc"><i>168</i>&nbsp;          this.year = underestimatedYYYY;</b>
+<i>169</i>&nbsp;      }
+<i>170</i>&nbsp;      else {
+<b class="nc"><i>171</i>&nbsp;          int ss1 = calcSerial(1, 1, underestimatedYYYY);</b>
+<b class="nc"><i>172</i>&nbsp;          while (ss1 &lt;= this.serial) {</b>
+<b class="nc"><i>173</i>&nbsp;              underestimatedYYYY = underestimatedYYYY + 1;</b>
+<b class="nc"><i>174</i>&nbsp;              ss1 = calcSerial(1, 1, underestimatedYYYY);</b>
+<i>175</i>&nbsp;          }
+<b class="nc"><i>176</i>&nbsp;          this.year = underestimatedYYYY - 1;</b>
+<i>177</i>&nbsp;      }
+<i>178</i>&nbsp;
+<b class="fc"><i>179</i>&nbsp;      final int ss2 = calcSerial(1, 1, this.year);</b>
+<i>180</i>&nbsp;
+<b class="fc"><i>181</i>&nbsp;      int[] daysToEndOfPrecedingMonth </b>
+<i>182</i>&nbsp;          = AGGREGATE_DAYS_TO_END_OF_PRECEDING_MONTH;
+<i>183</i>&nbsp;
+<b class="fc"><i>184</i>&nbsp;      if (isLeapYear(this.year)) {</b>
+<b class="nc"><i>185</i>&nbsp;          daysToEndOfPrecedingMonth </b>
+<i>186</i>&nbsp;              = LEAP_YEAR_AGGREGATE_DAYS_TO_END_OF_PRECEDING_MONTH;
+<i>187</i>&nbsp;      }
+<i>188</i>&nbsp;
+<i>189</i>&nbsp;      // get the month from the serial date
+<b class="fc"><i>190</i>&nbsp;      int mm = 1;</b>
+<b class="fc"><i>191</i>&nbsp;      int sss = ss2 + daysToEndOfPrecedingMonth[mm] - 1;</b>
+<b class="fc"><i>192</i>&nbsp;      while (sss &lt; this.serial) {</b>
+<b class="fc"><i>193</i>&nbsp;          mm = mm + 1;</b>
+<b class="fc"><i>194</i>&nbsp;          sss = ss2 + daysToEndOfPrecedingMonth[mm] - 1;</b>
+<i>195</i>&nbsp;      }
+<b class="fc"><i>196</i>&nbsp;      this.month = mm - 1;</b>
+<i>197</i>&nbsp;
+<i>198</i>&nbsp;      // what&#39;s left is d(+1);
+<b class="fc"><i>199</i>&nbsp;      this.day = this.serial - ss2 </b>
+<i>200</i>&nbsp;                 - daysToEndOfPrecedingMonth[this.month] + 1;
+<i>201</i>&nbsp;
+<b class="fc"><i>202</i>&nbsp;    }</b>
+<i>203</i>&nbsp;
+<i>204</i>&nbsp;    /**
+<i>205</i>&nbsp;     * Returns the serial number for the date, where 1 January 1900 = 2
+<i>206</i>&nbsp;     * (this corresponds, almost, to the numbering system used in Microsoft
+<i>207</i>&nbsp;     * Excel for Windows and Lotus 1-2-3).
+<i>208</i>&nbsp;     *
+<i>209</i>&nbsp;     * @return The serial number of this date.
+<i>210</i>&nbsp;     */
+<i>211</i>&nbsp;    public int toSerial() {
+<b class="fc"><i>212</i>&nbsp;        return this.serial;</b>
+<i>213</i>&nbsp;    }
+<i>214</i>&nbsp;
+<i>215</i>&nbsp;    /**
+<i>216</i>&nbsp;     * Returns a &lt;code&gt;java.util.Date&lt;/code&gt; equivalent to this date.
+<i>217</i>&nbsp;     *
+<i>218</i>&nbsp;     * @return The date.
+<i>219</i>&nbsp;     */
+<i>220</i>&nbsp;    public Date toDate() {
+<b class="nc"><i>221</i>&nbsp;        final Calendar calendar = Calendar.getInstance();</b>
+<b class="nc"><i>222</i>&nbsp;        calendar.set(getYYYY(), getMonth() - 1, getDayOfMonth(), 0, 0, 0);</b>
+<b class="nc"><i>223</i>&nbsp;        return calendar.getTime();</b>
+<i>224</i>&nbsp;    }
+<i>225</i>&nbsp;
+<i>226</i>&nbsp;    /**
+<i>227</i>&nbsp;     * Returns the year (assume a valid range of 1900 to 9999).
+<i>228</i>&nbsp;     *
+<i>229</i>&nbsp;     * @return The year.
+<i>230</i>&nbsp;     */
+<i>231</i>&nbsp;    public int getYYYY() {
+<b class="fc"><i>232</i>&nbsp;        return this.year;</b>
+<i>233</i>&nbsp;    }
+<i>234</i>&nbsp;
+<i>235</i>&nbsp;    /**
+<i>236</i>&nbsp;     * Returns the month (January = 1, February = 2, March = 3).
+<i>237</i>&nbsp;     *
+<i>238</i>&nbsp;     * @return The month of the year.
+<i>239</i>&nbsp;     */
+<i>240</i>&nbsp;    public int getMonth() {
+<b class="fc"><i>241</i>&nbsp;        return this.month;</b>
+<i>242</i>&nbsp;    }
+<i>243</i>&nbsp;
+<i>244</i>&nbsp;    /**
+<i>245</i>&nbsp;     * Returns the day of the month.
+<i>246</i>&nbsp;     *
+<i>247</i>&nbsp;     * @return The day of the month.
+<i>248</i>&nbsp;     */
+<i>249</i>&nbsp;    public int getDayOfMonth() {
+<b class="fc"><i>250</i>&nbsp;        return this.day;</b>
+<i>251</i>&nbsp;    }
+<i>252</i>&nbsp;
+<i>253</i>&nbsp;    /**
+<i>254</i>&nbsp;     * Returns a code representing the day of the week.
+<i>255</i>&nbsp;     * &lt;P&gt;
+<i>256</i>&nbsp;     * The codes are defined in the {@link SerialDate} class as: 
+<i>257</i>&nbsp;     * &lt;code&gt;SUNDAY&lt;/code&gt;, &lt;code&gt;MONDAY&lt;/code&gt;, &lt;code&gt;TUESDAY&lt;/code&gt;, 
+<i>258</i>&nbsp;     * &lt;code&gt;WEDNESDAY&lt;/code&gt;, &lt;code&gt;THURSDAY&lt;/code&gt;, &lt;code&gt;FRIDAY&lt;/code&gt;, and 
+<i>259</i>&nbsp;     * &lt;code&gt;SATURDAY&lt;/code&gt;.
+<i>260</i>&nbsp;     *
+<i>261</i>&nbsp;     * @return A code representing the day of the week.
+<i>262</i>&nbsp;     */
+<i>263</i>&nbsp;    public int getDayOfWeek() {
+<b class="fc"><i>264</i>&nbsp;        return (this.serial + 6) % 7 + 1;</b>
+<i>265</i>&nbsp;    }
+<i>266</i>&nbsp;
+<i>267</i>&nbsp;    /**
+<i>268</i>&nbsp;     * Tests the equality of this date with an arbitrary object.
+<i>269</i>&nbsp;     * &lt;P&gt;
+<i>270</i>&nbsp;     * This method will return true ONLY if the object is an instance of the
+<i>271</i>&nbsp;     * {@link SerialDate} base class, and it represents the same day as this
+<i>272</i>&nbsp;     * {@link SpreadsheetDate}.
+<i>273</i>&nbsp;     *
+<i>274</i>&nbsp;     * @param object  the object to compare (&lt;code&gt;null&lt;/code&gt; permitted).
+<i>275</i>&nbsp;     *
+<i>276</i>&nbsp;     * @return A boolean.
+<i>277</i>&nbsp;     */
+<i>278</i>&nbsp;    public boolean equals(final Object object) {
+<i>279</i>&nbsp;
+<b class="fc"><i>280</i>&nbsp;        if (object instanceof SerialDate) {</b>
+<b class="fc"><i>281</i>&nbsp;            final SerialDate s = (SerialDate) object;</b>
+<b class="fc"><i>282</i>&nbsp;            return (s.toSerial() == this.toSerial());</b>
+<i>283</i>&nbsp;        }
+<i>284</i>&nbsp;        else {
+<b class="nc"><i>285</i>&nbsp;            return false;</b>
+<i>286</i>&nbsp;        }
+<i>287</i>&nbsp;
+<i>288</i>&nbsp;    }
+<i>289</i>&nbsp;
+<i>290</i>&nbsp;    /**
+<i>291</i>&nbsp;     * Returns a hash code for this object instance.
+<i>292</i>&nbsp;     * 
+<i>293</i>&nbsp;     * @return A hash code.
+<i>294</i>&nbsp;     */
+<i>295</i>&nbsp;    public int hashCode() {
+<b class="nc"><i>296</i>&nbsp;        return toSerial();</b>
+<i>297</i>&nbsp;    }
+<i>298</i>&nbsp;
+<i>299</i>&nbsp;    /**
+<i>300</i>&nbsp;     * Returns the difference (in days) between this date and the specified 
+<i>301</i>&nbsp;     * &#39;other&#39; date.
+<i>302</i>&nbsp;     *
+<i>303</i>&nbsp;     * @param other  the date being compared to.
+<i>304</i>&nbsp;     *
+<i>305</i>&nbsp;     * @return The difference (in days) between this date and the specified 
+<i>306</i>&nbsp;     *         &#39;other&#39; date.
+<i>307</i>&nbsp;     */
+<i>308</i>&nbsp;    public int compare(final SerialDate other) {
+<b class="nc"><i>309</i>&nbsp;        return this.serial - other.toSerial();</b>
+<i>310</i>&nbsp;    }
+<i>311</i>&nbsp;
+<i>312</i>&nbsp;    /**
+<i>313</i>&nbsp;     * Implements the method required by the Comparable interface.
+<i>314</i>&nbsp;     * 
+<i>315</i>&nbsp;     * @param other  the other object (usually another SerialDate).
+<i>316</i>&nbsp;     * 
+<i>317</i>&nbsp;     * @return A negative integer, zero, or a positive integer as this object 
+<i>318</i>&nbsp;     *         is less than, equal to, or greater than the specified object.
+<i>319</i>&nbsp;     */
+<i>320</i>&nbsp;    public int compareTo(final Object other) {
+<b class="nc"><i>321</i>&nbsp;        return compare((SerialDate) other);    </b>
+<i>322</i>&nbsp;    }
+<i>323</i>&nbsp;    
+<i>324</i>&nbsp;    /**
+<i>325</i>&nbsp;     * Returns true if this SerialDate represents the same date as the
+<i>326</i>&nbsp;     * specified SerialDate.
+<i>327</i>&nbsp;     *
+<i>328</i>&nbsp;     * @param other  the date being compared to.
+<i>329</i>&nbsp;     *
+<i>330</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if this SerialDate represents the same date as
+<i>331</i>&nbsp;     *         the specified SerialDate.
+<i>332</i>&nbsp;     */
+<i>333</i>&nbsp;    public boolean isOn(final SerialDate other) {
+<b class="fc"><i>334</i>&nbsp;        return (this.serial == other.toSerial());</b>
+<i>335</i>&nbsp;    }
+<i>336</i>&nbsp;
+<i>337</i>&nbsp;    /**
+<i>338</i>&nbsp;     * Returns true if this SerialDate represents an earlier date compared to
+<i>339</i>&nbsp;     * the specified SerialDate.
+<i>340</i>&nbsp;     *
+<i>341</i>&nbsp;     * @param other  the date being compared to.
+<i>342</i>&nbsp;     *
+<i>343</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if this SerialDate represents an earlier date
+<i>344</i>&nbsp;     *         compared to the specified SerialDate.
+<i>345</i>&nbsp;     */
+<i>346</i>&nbsp;    public boolean isBefore(final SerialDate other) {
+<b class="nc"><i>347</i>&nbsp;        return (this.serial &lt; other.toSerial());</b>
+<i>348</i>&nbsp;    }
+<i>349</i>&nbsp;
+<i>350</i>&nbsp;    /**
+<i>351</i>&nbsp;     * Returns true if this SerialDate represents the same date as the
+<i>352</i>&nbsp;     * specified SerialDate.
+<i>353</i>&nbsp;     *
+<i>354</i>&nbsp;     * @param other  the date being compared to.
+<i>355</i>&nbsp;     *
+<i>356</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if this SerialDate represents the same date
+<i>357</i>&nbsp;     *         as the specified SerialDate.
+<i>358</i>&nbsp;     */
+<i>359</i>&nbsp;    public boolean isOnOrBefore(final SerialDate other) {
+<b class="nc"><i>360</i>&nbsp;        return (this.serial &lt;= other.toSerial());</b>
+<i>361</i>&nbsp;    }
+<i>362</i>&nbsp;
+<i>363</i>&nbsp;    /**
+<i>364</i>&nbsp;     * Returns true if this SerialDate represents the same date as the
+<i>365</i>&nbsp;     * specified SerialDate.
+<i>366</i>&nbsp;     *
+<i>367</i>&nbsp;     * @param other  the date being compared to.
+<i>368</i>&nbsp;     *
+<i>369</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if this SerialDate represents the same date
+<i>370</i>&nbsp;     *         as the specified SerialDate.
+<i>371</i>&nbsp;     */
+<i>372</i>&nbsp;    public boolean isAfter(final SerialDate other) {
+<b class="nc"><i>373</i>&nbsp;        return (this.serial &gt; other.toSerial());</b>
+<i>374</i>&nbsp;    }
+<i>375</i>&nbsp;
+<i>376</i>&nbsp;    /**
+<i>377</i>&nbsp;     * Returns true if this SerialDate represents the same date as the
+<i>378</i>&nbsp;     * specified SerialDate.
+<i>379</i>&nbsp;     *
+<i>380</i>&nbsp;     * @param other  the date being compared to.
+<i>381</i>&nbsp;     *
+<i>382</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if this SerialDate represents the same date as
+<i>383</i>&nbsp;     *         the specified SerialDate.
+<i>384</i>&nbsp;     */
+<i>385</i>&nbsp;    public boolean isOnOrAfter(final SerialDate other) {
+<b class="nc"><i>386</i>&nbsp;        return (this.serial &gt;= other.toSerial());</b>
+<i>387</i>&nbsp;    }
+<i>388</i>&nbsp;
+<i>389</i>&nbsp;    /**
+<i>390</i>&nbsp;     * Returns &lt;code&gt;true&lt;/code&gt; if this {@link SerialDate} is within the 
+<i>391</i>&nbsp;     * specified range (INCLUSIVE).  The date order of d1 and d2 is not 
+<i>392</i>&nbsp;     * important.
+<i>393</i>&nbsp;     *
+<i>394</i>&nbsp;     * @param d1  a boundary date for the range.
+<i>395</i>&nbsp;     * @param d2  the other boundary date for the range.
+<i>396</i>&nbsp;     *
+<i>397</i>&nbsp;     * @return A boolean.
+<i>398</i>&nbsp;     */
+<i>399</i>&nbsp;    public boolean isInRange(final SerialDate d1, final SerialDate d2) {
+<b class="nc"><i>400</i>&nbsp;        return isInRange(d1, d2, SerialDate.INCLUDE_BOTH);</b>
+<i>401</i>&nbsp;    }
+<i>402</i>&nbsp;
+<i>403</i>&nbsp;    /**
+<i>404</i>&nbsp;     * Returns true if this SerialDate is within the specified range (caller
+<i>405</i>&nbsp;     * specifies whether or not the end-points are included).  The order of d1
+<i>406</i>&nbsp;     * and d2 is not important.
+<i>407</i>&nbsp;     *
+<i>408</i>&nbsp;     * @param d1  one boundary date for the range.
+<i>409</i>&nbsp;     * @param d2  a second boundary date for the range.
+<i>410</i>&nbsp;     * @param include  a code that controls whether or not the start and end 
+<i>411</i>&nbsp;     *                 dates are included in the range.
+<i>412</i>&nbsp;     *
+<i>413</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if this SerialDate is within the specified 
+<i>414</i>&nbsp;     *         range.
+<i>415</i>&nbsp;     */
+<i>416</i>&nbsp;    public boolean isInRange(final SerialDate d1, final SerialDate d2, 
+<i>417</i>&nbsp;                             final int include) {
+<b class="nc"><i>418</i>&nbsp;        final int s1 = d1.toSerial();</b>
+<b class="nc"><i>419</i>&nbsp;        final int s2 = d2.toSerial();</b>
+<b class="nc"><i>420</i>&nbsp;        final int start = Math.min(s1, s2);</b>
+<b class="nc"><i>421</i>&nbsp;        final int end = Math.max(s1, s2);</b>
+<i>422</i>&nbsp;        
+<b class="nc"><i>423</i>&nbsp;        final int s = toSerial();</b>
+<b class="nc"><i>424</i>&nbsp;        if (include == SerialDate.INCLUDE_BOTH) {</b>
+<b class="nc"><i>425</i>&nbsp;            return (s &gt;= start &amp;&amp; s &lt;= end);</b>
+<i>426</i>&nbsp;        }
+<b class="nc"><i>427</i>&nbsp;        else if (include == SerialDate.INCLUDE_FIRST) {</b>
+<b class="nc"><i>428</i>&nbsp;            return (s &gt;= start &amp;&amp; s &lt; end);            </b>
+<i>429</i>&nbsp;        }
+<b class="nc"><i>430</i>&nbsp;        else if (include == SerialDate.INCLUDE_SECOND) {</b>
+<b class="nc"><i>431</i>&nbsp;            return (s &gt; start &amp;&amp; s &lt;= end);            </b>
+<i>432</i>&nbsp;        }
+<i>433</i>&nbsp;        else {
+<b class="nc"><i>434</i>&nbsp;            return (s &gt; start &amp;&amp; s &lt; end);            </b>
+<i>435</i>&nbsp;        }    
+<i>436</i>&nbsp;    }
+<i>437</i>&nbsp;
+<i>438</i>&nbsp;    /**
+<i>439</i>&nbsp;     * Calculate the serial number from the day, month and year.
+<i>440</i>&nbsp;     * &lt;P&gt;
+<i>441</i>&nbsp;     * 1-Jan-1900 = 2.
+<i>442</i>&nbsp;     *
+<i>443</i>&nbsp;     * @param d  the day.
+<i>444</i>&nbsp;     * @param m  the month.
+<i>445</i>&nbsp;     * @param y  the year.
+<i>446</i>&nbsp;     *
+<i>447</i>&nbsp;     * @return the serial number from the day, month and year.
+<i>448</i>&nbsp;     */
+<i>449</i>&nbsp;    private int calcSerial(final int d, final int m, final int y) {
+<b class="fc"><i>450</i>&nbsp;        final int yy = ((y - 1900) * 365) + SerialDate.leapYearCount(y - 1);</b>
+<b class="fc"><i>451</i>&nbsp;        int mm = SerialDate.AGGREGATE_DAYS_TO_END_OF_PRECEDING_MONTH[m];</b>
+<b class="fc"><i>452</i>&nbsp;        if (m &gt; MonthConstants.FEBRUARY) {</b>
+<b class="fc"><i>453</i>&nbsp;            if (SerialDate.isLeapYear(y)) {</b>
+<b class="fc"><i>454</i>&nbsp;                mm = mm + 1;</b>
+<i>455</i>&nbsp;            }
+<i>456</i>&nbsp;        }
+<b class="fc"><i>457</i>&nbsp;        final int dd = d;</b>
+<b class="fc"><i>458</i>&nbsp;        return yy + mm + dd + 1;</b>
+<i>459</i>&nbsp;    }
+<i>460</i>&nbsp;
+<i>461</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-04-26 20:55</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MonthConstants</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">org.jfree.date</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MonthConstants (org.jfree.date)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">MonthConstants</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/* ========================================================================
+<i>2</i>&nbsp; * JCommon : a free general purpose class library for the Java(tm) platform
+<i>3</i>&nbsp; * ========================================================================
+<i>4</i>&nbsp; *
+<i>5</i>&nbsp; * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+<i>6</i>&nbsp; * 
+<i>7</i>&nbsp; * Project Info:  http://www.jfree.org/jcommon/index.html
+<i>8</i>&nbsp; *
+<i>9</i>&nbsp; * This library is free software; you can redistribute it and/or modify it 
+<i>10</i>&nbsp; * under the terms of the GNU Lesser General Public License as published by 
+<i>11</i>&nbsp; * the Free Software Foundation; either version 2.1 of the License, or 
+<i>12</i>&nbsp; * (at your option) any later version.
+<i>13</i>&nbsp; *
+<i>14</i>&nbsp; * This library is distributed in the hope that it will be useful, but 
+<i>15</i>&nbsp; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<i>16</i>&nbsp; * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<i>17</i>&nbsp; * License for more details.
+<i>18</i>&nbsp; *
+<i>19</i>&nbsp; * You should have received a copy of the GNU Lesser General Public
+<i>20</i>&nbsp; * License along with this library; if not, write to the Free Software
+<i>21</i>&nbsp; * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<i>22</i>&nbsp; * USA.  
+<i>23</i>&nbsp; *
+<i>24</i>&nbsp; * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<i>25</i>&nbsp; * in the United States and other countries.]
+<i>26</i>&nbsp; *
+<i>27</i>&nbsp; * -------------------
+<i>28</i>&nbsp; * MonthConstants.java
+<i>29</i>&nbsp; * -------------------
+<i>30</i>&nbsp; * (C) Copyright 2002, 2003, by Object Refinery Limited.
+<i>31</i>&nbsp; *
+<i>32</i>&nbsp; * Original Author:  David Gilbert (for Object Refinery Limited);
+<i>33</i>&nbsp; * Contributor(s):   -;
+<i>34</i>&nbsp; *
+<i>35</i>&nbsp; * $Id: MonthConstants.java,v 1.4 2005/11/16 15:58:40 taqua Exp $
+<i>36</i>&nbsp; *
+<i>37</i>&nbsp; * Changes
+<i>38</i>&nbsp; * -------
+<i>39</i>&nbsp; * 29-May-2002 : Version 1 (code moved from SerialDate class) (DG);
+<i>40</i>&nbsp; *
+<i>41</i>&nbsp; */
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;package org.jfree.date;
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;/**
+<i>46</i>&nbsp; * Useful constants for months.  Note that these are NOT equivalent to the
+<i>47</i>&nbsp; * constants defined by java.util.Calendar (where JANUARY=0 and DECEMBER=11).
+<i>48</i>&nbsp; * &lt;P&gt;
+<i>49</i>&nbsp; * Used by the SerialDate and RegularTimePeriod classes.
+<i>50</i>&nbsp; *
+<i>51</i>&nbsp; * @author David Gilbert
+<i>52</i>&nbsp; */
+<i>53</i>&nbsp;public interface MonthConstants {
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    /** Constant for January. */
+<i>56</i>&nbsp;    public static final int JANUARY = 1;
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    /** Constant for February. */
+<i>59</i>&nbsp;    public static final int FEBRUARY = 2;
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    /** Constant for March. */
+<i>62</i>&nbsp;    public static final int MARCH = 3;
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    /** Constant for April. */
+<i>65</i>&nbsp;    public static final int APRIL = 4;
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    /** Constant for May. */
+<i>68</i>&nbsp;    public static final int MAY = 5;
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    /** Constant for June. */
+<i>71</i>&nbsp;    public static final int JUNE = 6;
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    /** Constant for July. */
+<i>74</i>&nbsp;    public static final int JULY = 7;
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    /** Constant for August. */
+<i>77</i>&nbsp;    public static final int AUGUST = 8;
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    /** Constant for September. */
+<i>80</i>&nbsp;    public static final int SEPTEMBER = 9;
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;    /** Constant for October. */
+<i>83</i>&nbsp;    public static final int OCTOBER = 10;
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;    /** Constant for November. */
+<i>86</i>&nbsp;    public static final int NOVEMBER = 11;
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;    /** Constant for December. */
+<i>89</i>&nbsp;    public static final int DECEMBER = 12;
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-04-26 20:55</div>
+</div>
+</body>
+</html>

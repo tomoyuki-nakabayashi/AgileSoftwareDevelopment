@@ -1,0 +1,471 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SerialDateUtilities</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">org.jfree.date</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SerialDateUtilities (org.jfree.date)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SerialDateUtilities</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 91)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/* ========================================================================
+<i>2</i>&nbsp; * JCommon : a free general purpose class library for the Java(tm) platform
+<i>3</i>&nbsp; * ========================================================================
+<i>4</i>&nbsp; *
+<i>5</i>&nbsp; * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+<i>6</i>&nbsp; * 
+<i>7</i>&nbsp; * Project Info:  http://www.jfree.org/jcommon/index.html
+<i>8</i>&nbsp; *
+<i>9</i>&nbsp; * This library is free software; you can redistribute it and/or modify it 
+<i>10</i>&nbsp; * under the terms of the GNU Lesser General Public License as published by 
+<i>11</i>&nbsp; * the Free Software Foundation; either version 2.1 of the License, or 
+<i>12</i>&nbsp; * (at your option) any later version.
+<i>13</i>&nbsp; *
+<i>14</i>&nbsp; * This library is distributed in the hope that it will be useful, but 
+<i>15</i>&nbsp; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+<i>16</i>&nbsp; * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+<i>17</i>&nbsp; * License for more details.
+<i>18</i>&nbsp; *
+<i>19</i>&nbsp; * You should have received a copy of the GNU Lesser General Public
+<i>20</i>&nbsp; * License along with this library; if not, write to the Free Software
+<i>21</i>&nbsp; * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, 
+<i>22</i>&nbsp; * USA.  
+<i>23</i>&nbsp; *
+<i>24</i>&nbsp; * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
+<i>25</i>&nbsp; * in the United States and other countries.]
+<i>26</i>&nbsp; *
+<i>27</i>&nbsp; * ------------------------
+<i>28</i>&nbsp; * SerialDateUtilities.java
+<i>29</i>&nbsp; * ------------------------
+<i>30</i>&nbsp; * (C) Copyright 2001-2003, by Object Refinery Limited.
+<i>31</i>&nbsp; *
+<i>32</i>&nbsp; * Original Author:  David Gilbert (for Object Refinery Limited);
+<i>33</i>&nbsp; * Contributor(s):   -;
+<i>34</i>&nbsp; *
+<i>35</i>&nbsp; * $Id: SerialDateUtilities.java,v 1.6 2005/11/16 15:58:40 taqua Exp $
+<i>36</i>&nbsp; *
+<i>37</i>&nbsp; * Changes (from 26-Oct-2001)
+<i>38</i>&nbsp; * --------------------------
+<i>39</i>&nbsp; * 26-Oct-2001 : Changed package to com.jrefinery.date.*;
+<i>40</i>&nbsp; * 08-Dec-2001 : Dropped isLeapYear() method (DG);
+<i>41</i>&nbsp; * 04-Mar-2002 : Renamed SerialDates.java --&gt; SerialDateUtilities.java (DG);
+<i>42</i>&nbsp; * 25-Jun-2002 : Fixed a bug in the dayCountActual() method (DG);
+<i>43</i>&nbsp; * 03-Oct-2002 : Fixed errors reported by Checkstyle (DG);
+<i>44</i>&nbsp; *
+<i>45</i>&nbsp; */
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;package org.jfree.date;
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;import java.text.DateFormatSymbols;
+<i>50</i>&nbsp;import java.util.Calendar;
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;/**
+<i>53</i>&nbsp; * A utility class that provides a number of useful methods (some static).
+<i>54</i>&nbsp; * Many of these are used in the implementation of the day-count convention
+<i>55</i>&nbsp; * classes.  I recognise some limitations in this implementation:
+<i>56</i>&nbsp; * &lt;p&gt;
+<i>57</i>&nbsp; * [1] some of the methods assume that the default Calendar is a
+<i>58</i>&nbsp; * GregorianCalendar (used mostly to determine leap years) - so the code
+<i>59</i>&nbsp; * won&amp;rsquo;t work if some other Calendar is the default.  I&#39;m not sure how
+<i>60</i>&nbsp; * to handle this properly?
+<i>61</i>&nbsp; * &lt;p&gt;
+<i>62</i>&nbsp; * [2] a whole bunch of static methods isn&#39;t very object-oriented - but I couldn&#39;t think of a good
+<i>63</i>&nbsp; * way to extend the Date and Calendar classes to add the functions I required,
+<i>64</i>&nbsp; * so static methods are doing the job for now.
+<i>65</i>&nbsp; *
+<i>66</i>&nbsp; * @author David Gilbert
+<i>67</i>&nbsp; */
+<i>68</i>&nbsp;public class SerialDateUtilities {
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    /** The default date format symbols. */
+<i>71</i>&nbsp;    private DateFormatSymbols dateFormatSymbols;
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    /** Strings representing the weekdays. */
+<i>74</i>&nbsp;    private String[] weekdays;
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    /** Strings representing the months. */
+<i>77</i>&nbsp;    private String[] months;
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    /**
+<i>80</i>&nbsp;     * Creates a new utility class for the default locale.
+<i>81</i>&nbsp;     */
+<b class="nc"><i>82</i>&nbsp;    public SerialDateUtilities() {</b>
+<b class="nc"><i>83</i>&nbsp;        this.dateFormatSymbols = new DateFormatSymbols();</b>
+<b class="nc"><i>84</i>&nbsp;        this.weekdays = this.dateFormatSymbols.getWeekdays();</b>
+<b class="nc"><i>85</i>&nbsp;        this.months = this.dateFormatSymbols.getMonths();</b>
+<i>86</i>&nbsp;    }
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;    /**
+<i>89</i>&nbsp;     * Returns an array of strings representing the days-of-the-week.
+<i>90</i>&nbsp;     *
+<i>91</i>&nbsp;     * @return an array of strings representing the days-of-the-week.
+<i>92</i>&nbsp;     */
+<i>93</i>&nbsp;    public String[] getWeekdays() {
+<b class="nc"><i>94</i>&nbsp;        return this.weekdays;</b>
+<i>95</i>&nbsp;    }
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    /**
+<i>98</i>&nbsp;     * Returns an array of strings representing the months.
+<i>99</i>&nbsp;     *
+<i>100</i>&nbsp;     * @return an array of strings representing the months.
+<i>101</i>&nbsp;     */
+<i>102</i>&nbsp;    public String[] getMonths() {
+<b class="nc"><i>103</i>&nbsp;        return this.months;</b>
+<i>104</i>&nbsp;    }
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;    /**
+<i>107</i>&nbsp;     * Converts the specified string to a weekday, using the default locale.
+<i>108</i>&nbsp;     *
+<i>109</i>&nbsp;     * @param s  a string representing the day-of-the-week.
+<i>110</i>&nbsp;     *
+<i>111</i>&nbsp;     * @return an integer representing the day-of-the-week.
+<i>112</i>&nbsp;     */
+<i>113</i>&nbsp;    public int stringToWeekday(final String s) {
+<i>114</i>&nbsp;
+<b class="nc"><i>115</i>&nbsp;        if (s.equals(this.weekdays[Calendar.SATURDAY])) {</b>
+<b class="nc"><i>116</i>&nbsp;            return SerialDate.SATURDAY;</b>
+<i>117</i>&nbsp;        }
+<b class="nc"><i>118</i>&nbsp;        else if (s.equals(this.weekdays[Calendar.SUNDAY])) {</b>
+<b class="nc"><i>119</i>&nbsp;            return SerialDate.SUNDAY;</b>
+<i>120</i>&nbsp;        }
+<b class="nc"><i>121</i>&nbsp;        else if (s.equals(this.weekdays[Calendar.MONDAY])) {</b>
+<b class="nc"><i>122</i>&nbsp;            return SerialDate.MONDAY;</b>
+<i>123</i>&nbsp;        }
+<b class="nc"><i>124</i>&nbsp;        else if (s.equals(this.weekdays[Calendar.TUESDAY])) {</b>
+<b class="nc"><i>125</i>&nbsp;            return SerialDate.TUESDAY;</b>
+<i>126</i>&nbsp;        }
+<b class="nc"><i>127</i>&nbsp;        else if (s.equals(this.weekdays[Calendar.WEDNESDAY])) {</b>
+<b class="nc"><i>128</i>&nbsp;            return SerialDate.WEDNESDAY;</b>
+<i>129</i>&nbsp;        }
+<b class="nc"><i>130</i>&nbsp;        else if (s.equals(this.weekdays[Calendar.THURSDAY])) {</b>
+<b class="nc"><i>131</i>&nbsp;            return SerialDate.THURSDAY;</b>
+<i>132</i>&nbsp;        }
+<i>133</i>&nbsp;        else {
+<b class="nc"><i>134</i>&nbsp;            return SerialDate.FRIDAY;</b>
+<i>135</i>&nbsp;        }
+<i>136</i>&nbsp;
+<i>137</i>&nbsp;    }
+<i>138</i>&nbsp;
+<i>139</i>&nbsp;    /**
+<i>140</i>&nbsp;     * Returns the actual number of days between two dates.
+<i>141</i>&nbsp;     *
+<i>142</i>&nbsp;     * @param start  the start date.
+<i>143</i>&nbsp;     * @param end  the end date.
+<i>144</i>&nbsp;     *
+<i>145</i>&nbsp;     * @return the number of days between the start date and the end date.
+<i>146</i>&nbsp;     */
+<i>147</i>&nbsp;    public static int dayCountActual(final SerialDate start, final SerialDate end) {
+<b class="nc"><i>148</i>&nbsp;        return end.compare(start);</b>
+<i>149</i>&nbsp;    }
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;    /**
+<i>152</i>&nbsp;     * Returns the number of days between the specified start and end dates,
+<i>153</i>&nbsp;     * assuming that there are thirty days in every month (that is,
+<i>154</i>&nbsp;     * corresponding to the 30/360 day-count convention).
+<i>155</i>&nbsp;     * &lt;P&gt;
+<i>156</i>&nbsp;     * The method handles cases where the start date is before the end date (by
+<i>157</i>&nbsp;     * switching the dates and returning a negative result).
+<i>158</i>&nbsp;     *
+<i>159</i>&nbsp;     * @param start  the start date.
+<i>160</i>&nbsp;     * @param end  the end date.
+<i>161</i>&nbsp;     *
+<i>162</i>&nbsp;     * @return the number of days between the two dates, assuming the 30/360 day-count convention.
+<i>163</i>&nbsp;     */
+<i>164</i>&nbsp;    public static int dayCount30(final SerialDate start, final SerialDate end) {
+<i>165</i>&nbsp;        final int d1;
+<i>166</i>&nbsp;        final int m1;
+<i>167</i>&nbsp;        final int y1;
+<i>168</i>&nbsp;        final int d2;
+<i>169</i>&nbsp;        final int m2;
+<i>170</i>&nbsp;        final int y2;
+<b class="nc"><i>171</i>&nbsp;        if (start.isBefore(end)) {  // check the order of the dates</b>
+<b class="nc"><i>172</i>&nbsp;            d1 = start.getDayOfMonth();</b>
+<b class="nc"><i>173</i>&nbsp;            m1 = start.getMonth();</b>
+<b class="nc"><i>174</i>&nbsp;            y1 = start.getYYYY();</b>
+<b class="nc"><i>175</i>&nbsp;            d2 = end.getDayOfMonth();</b>
+<b class="nc"><i>176</i>&nbsp;            m2 = end.getMonth();</b>
+<b class="nc"><i>177</i>&nbsp;            y2 = end.getYYYY();</b>
+<b class="nc"><i>178</i>&nbsp;            return 360 * (y2 - y1) + 30 * (m2 - m1) + (d2 - d1);</b>
+<i>179</i>&nbsp;        }
+<i>180</i>&nbsp;        else {
+<b class="nc"><i>181</i>&nbsp;            return -dayCount30(end, start);</b>
+<i>182</i>&nbsp;        }
+<i>183</i>&nbsp;    }
+<i>184</i>&nbsp;
+<i>185</i>&nbsp;    /**
+<i>186</i>&nbsp;     * Returns the number of days between the specified start and end dates,
+<i>187</i>&nbsp;     * assuming that there are thirty days in every month, and applying the
+<i>188</i>&nbsp;     * ISDA adjustments (that is, corresponding to the 30/360 (ISDA) day-count
+<i>189</i>&nbsp;     * convention).
+<i>190</i>&nbsp;     * &lt;P&gt;
+<i>191</i>&nbsp;     * The method handles cases where the start date is before the end date (by
+<i>192</i>&nbsp;     * switching the dates around and returning a negative result).
+<i>193</i>&nbsp;     *
+<i>194</i>&nbsp;     * @param start  the start date.
+<i>195</i>&nbsp;     * @param end  the end date.
+<i>196</i>&nbsp;     *
+<i>197</i>&nbsp;     * @return The number of days between the two dates, assuming the 30/360
+<i>198</i>&nbsp;     *      (ISDA) day-count convention.
+<i>199</i>&nbsp;     */
+<i>200</i>&nbsp;    public static int dayCount30ISDA(final SerialDate start, final SerialDate end) {
+<i>201</i>&nbsp;        int d1;
+<i>202</i>&nbsp;        final int m1;
+<i>203</i>&nbsp;        final int y1;
+<i>204</i>&nbsp;        int d2;
+<i>205</i>&nbsp;        final int m2;
+<i>206</i>&nbsp;        final int y2;
+<b class="nc"><i>207</i>&nbsp;        if (start.isBefore(end)) {</b>
+<b class="nc"><i>208</i>&nbsp;            d1 = start.getDayOfMonth();</b>
+<b class="nc"><i>209</i>&nbsp;            m1 = start.getMonth();</b>
+<b class="nc"><i>210</i>&nbsp;            y1 = start.getYYYY();</b>
+<b class="nc"><i>211</i>&nbsp;            if (d1 == 31) {  // first ISDA adjustment</b>
+<b class="nc"><i>212</i>&nbsp;                d1 = 30;</b>
+<i>213</i>&nbsp;            }
+<b class="nc"><i>214</i>&nbsp;            d2 = end.getDayOfMonth();</b>
+<b class="nc"><i>215</i>&nbsp;            m2 = end.getMonth();</b>
+<b class="nc"><i>216</i>&nbsp;            y2 = end.getYYYY();</b>
+<b class="nc"><i>217</i>&nbsp;            if ((d2 == 31) &amp;&amp; (d1 == 30)) {  // second ISDA adjustment</b>
+<b class="nc"><i>218</i>&nbsp;                d2 = 30;</b>
+<i>219</i>&nbsp;            }
+<b class="nc"><i>220</i>&nbsp;            return 360 * (y2 - y1) + 30 * (m2 - m1) + (d2 - d1);</b>
+<i>221</i>&nbsp;        }
+<b class="nc"><i>222</i>&nbsp;        else if (start.isAfter(end)) {</b>
+<b class="nc"><i>223</i>&nbsp;            return -dayCount30ISDA(end, start);</b>
+<i>224</i>&nbsp;        }
+<i>225</i>&nbsp;        else {
+<b class="nc"><i>226</i>&nbsp;            return 0;</b>
+<i>227</i>&nbsp;        }
+<i>228</i>&nbsp;    }
+<i>229</i>&nbsp;
+<i>230</i>&nbsp;    /**
+<i>231</i>&nbsp;     * Returns the number of days between the specified start and end dates,
+<i>232</i>&nbsp;     * assuming that there are thirty days in every month, and applying the PSA
+<i>233</i>&nbsp;     * adjustments (that is, corresponding to the 30/360 (PSA) day-count convention).
+<i>234</i>&nbsp;     * The method handles cases where the start date is before the end date (by
+<i>235</i>&nbsp;     * switching the dates around and returning a negative result).
+<i>236</i>&nbsp;     *
+<i>237</i>&nbsp;     * @param start  the start date.
+<i>238</i>&nbsp;     * @param end  the end date.
+<i>239</i>&nbsp;     *
+<i>240</i>&nbsp;     * @return The number of days between the two dates, assuming the 30/360
+<i>241</i>&nbsp;     *      (PSA) day-count convention.
+<i>242</i>&nbsp;     */
+<i>243</i>&nbsp;    public static int dayCount30PSA(final SerialDate start, final SerialDate end) {
+<i>244</i>&nbsp;        int d1;
+<i>245</i>&nbsp;        final int m1;
+<i>246</i>&nbsp;        final int y1;
+<i>247</i>&nbsp;        int d2;
+<i>248</i>&nbsp;        final int m2;
+<i>249</i>&nbsp;        final int y2;
+<i>250</i>&nbsp;
+<b class="nc"><i>251</i>&nbsp;        if (start.isOnOrBefore(end)) { // check the order of the dates</b>
+<b class="nc"><i>252</i>&nbsp;            d1 = start.getDayOfMonth();</b>
+<b class="nc"><i>253</i>&nbsp;            m1 = start.getMonth();</b>
+<b class="nc"><i>254</i>&nbsp;            y1 = start.getYYYY();</b>
+<i>255</i>&nbsp;
+<b class="nc"><i>256</i>&nbsp;            if (SerialDateUtilities.isLastDayOfFebruary(start)) {</b>
+<b class="nc"><i>257</i>&nbsp;                d1 = 30;</b>
+<i>258</i>&nbsp;            }
+<b class="nc"><i>259</i>&nbsp;            if ((d1 == 31) || SerialDateUtilities.isLastDayOfFebruary(start)) {</b>
+<i>260</i>&nbsp;                // first PSA adjustment
+<b class="nc"><i>261</i>&nbsp;                d1 = 30;</b>
+<i>262</i>&nbsp;            }
+<b class="nc"><i>263</i>&nbsp;            d2 = end.getDayOfMonth();</b>
+<b class="nc"><i>264</i>&nbsp;            m2 = end.getMonth();</b>
+<b class="nc"><i>265</i>&nbsp;            y2 = end.getYYYY();</b>
+<b class="nc"><i>266</i>&nbsp;            if ((d2 == 31) &amp;&amp; (d1 == 30)) {  // second PSA adjustment</b>
+<b class="nc"><i>267</i>&nbsp;                d2 = 30;</b>
+<i>268</i>&nbsp;            }
+<b class="nc"><i>269</i>&nbsp;            return 360 * (y2 - y1) + 30 * (m2 - m1) + (d2 - d1);</b>
+<i>270</i>&nbsp;        }
+<i>271</i>&nbsp;        else {
+<b class="nc"><i>272</i>&nbsp;            return -dayCount30PSA(end, start);</b>
+<i>273</i>&nbsp;        }
+<i>274</i>&nbsp;    }
+<i>275</i>&nbsp;
+<i>276</i>&nbsp;    /**
+<i>277</i>&nbsp;     * Returns the number of days between the specified start and end dates,
+<i>278</i>&nbsp;     * assuming that there are thirty days in every month, and applying the
+<i>279</i>&nbsp;     * European adjustment (that is, corresponding to the 30E/360 day-count
+<i>280</i>&nbsp;     * convention).
+<i>281</i>&nbsp;     * &lt;P&gt;
+<i>282</i>&nbsp;     * The method handles cases where the start date is before the end date (by
+<i>283</i>&nbsp;     * switching the dates around and returning a negative result).
+<i>284</i>&nbsp;     *
+<i>285</i>&nbsp;     * @param start  the start date.
+<i>286</i>&nbsp;     * @param end  the end date.
+<i>287</i>&nbsp;     *
+<i>288</i>&nbsp;     * @return the number of days between the two dates, assuming the 30E/360
+<i>289</i>&nbsp;     *      day-count convention.
+<i>290</i>&nbsp;     */
+<i>291</i>&nbsp;    public static int dayCount30E(final SerialDate start, final SerialDate end) {
+<i>292</i>&nbsp;        int d1;
+<i>293</i>&nbsp;        final int m1;
+<i>294</i>&nbsp;        final int y1;
+<i>295</i>&nbsp;        int d2;
+<i>296</i>&nbsp;        final int m2;
+<i>297</i>&nbsp;        final int y2;
+<b class="nc"><i>298</i>&nbsp;        if (start.isBefore(end)) {</b>
+<b class="nc"><i>299</i>&nbsp;            d1 = start.getDayOfMonth();</b>
+<b class="nc"><i>300</i>&nbsp;            m1 = start.getMonth();</b>
+<b class="nc"><i>301</i>&nbsp;            y1 = start.getYYYY();</b>
+<b class="nc"><i>302</i>&nbsp;            if (d1 == 31) {  // first European adjustment</b>
+<b class="nc"><i>303</i>&nbsp;                d1 = 30;</b>
+<i>304</i>&nbsp;            }
+<b class="nc"><i>305</i>&nbsp;            d2 = end.getDayOfMonth();</b>
+<b class="nc"><i>306</i>&nbsp;            m2 = end.getMonth();</b>
+<b class="nc"><i>307</i>&nbsp;            y2 = end.getYYYY();</b>
+<b class="nc"><i>308</i>&nbsp;            if (d2 == 31) {  // first European adjustment</b>
+<b class="nc"><i>309</i>&nbsp;                d2 = 30;</b>
+<i>310</i>&nbsp;            }
+<b class="nc"><i>311</i>&nbsp;            return 360 * (y2 - y1) + 30 * (m2 - m1) + (d2 - d1);</b>
+<i>312</i>&nbsp;        }
+<b class="nc"><i>313</i>&nbsp;        else if (start.isAfter(end)) {</b>
+<b class="nc"><i>314</i>&nbsp;            return -dayCount30E(end, start);</b>
+<i>315</i>&nbsp;        }
+<i>316</i>&nbsp;        else {
+<b class="nc"><i>317</i>&nbsp;            return 0;</b>
+<i>318</i>&nbsp;        }
+<i>319</i>&nbsp;    }
+<i>320</i>&nbsp;
+<i>321</i>&nbsp;    /**
+<i>322</i>&nbsp;     * Returns true if the specified date is the last day in February (that is, the
+<i>323</i>&nbsp;     * 28th in non-leap years, and the 29th in leap years).
+<i>324</i>&nbsp;     *
+<i>325</i>&nbsp;     * @param d  the date to be tested.
+<i>326</i>&nbsp;     *
+<i>327</i>&nbsp;     * @return a boolean that indicates whether or not the specified date is
+<i>328</i>&nbsp;     *      the last day of February.
+<i>329</i>&nbsp;     */
+<i>330</i>&nbsp;    public static boolean isLastDayOfFebruary(final SerialDate d) {
+<i>331</i>&nbsp;
+<i>332</i>&nbsp;        final int dom;
+<b class="nc"><i>333</i>&nbsp;        if (d.getMonth() == MonthConstants.FEBRUARY) {</b>
+<b class="nc"><i>334</i>&nbsp;            dom = d.getDayOfMonth();</b>
+<b class="nc"><i>335</i>&nbsp;            if (SerialDate.isLeapYear(d.getYYYY())) {</b>
+<b class="nc"><i>336</i>&nbsp;                return (dom == 29);</b>
+<i>337</i>&nbsp;            }
+<i>338</i>&nbsp;            else {
+<b class="nc"><i>339</i>&nbsp;                return (dom == 28);</b>
+<i>340</i>&nbsp;            }
+<i>341</i>&nbsp;        }
+<i>342</i>&nbsp;        else { // not even February
+<b class="nc"><i>343</i>&nbsp;            return false;</b>
+<i>344</i>&nbsp;        }
+<i>345</i>&nbsp;
+<i>346</i>&nbsp;    }
+<i>347</i>&nbsp;
+<i>348</i>&nbsp;    /**
+<i>349</i>&nbsp;     * Returns the number of times that February 29 falls within the specified
+<i>350</i>&nbsp;     * date range.  The result needs to correspond to the ACT/365 (Japanese)
+<i>351</i>&nbsp;     * day-count convention. The difficult cases are where the start or the
+<i>352</i>&nbsp;     * end date is Feb 29 (include or not?).  Need to find out how JGBs do this
+<i>353</i>&nbsp;     * (since this is where the ACT/365 (Japanese) convention comes from ...
+<i>354</i>&nbsp;     *
+<i>355</i>&nbsp;     * @param start  the start date.
+<i>356</i>&nbsp;     * @param end  the end date.
+<i>357</i>&nbsp;     *
+<i>358</i>&nbsp;     * @return the number of times that February 29 occurs within the date
+<i>359</i>&nbsp;     *      range.
+<i>360</i>&nbsp;     */
+<i>361</i>&nbsp;    public static int countFeb29s(final SerialDate start, final SerialDate end) {
+<b class="nc"><i>362</i>&nbsp;        int count = 0;</b>
+<i>363</i>&nbsp;        SerialDate feb29;
+<i>364</i>&nbsp;        final int y1;
+<i>365</i>&nbsp;        final int y2;
+<i>366</i>&nbsp;        int year;
+<i>367</i>&nbsp;
+<i>368</i>&nbsp;        // check the order of the dates
+<b class="nc"><i>369</i>&nbsp;        if (start.isBefore(end)) {</b>
+<i>370</i>&nbsp;
+<b class="nc"><i>371</i>&nbsp;            y1 = start.getYYYY();</b>
+<b class="nc"><i>372</i>&nbsp;            y2 = end.getYYYY();</b>
+<b class="nc"><i>373</i>&nbsp;            for (year = y1; year == y2; year++) {</b>
+<b class="nc"><i>374</i>&nbsp;                if (SerialDate.isLeapYear(year)) {</b>
+<b class="nc"><i>375</i>&nbsp;                    feb29 = SerialDate.createInstance(29, MonthConstants.FEBRUARY, year);</b>
+<b class="nc"><i>376</i>&nbsp;                    if (feb29.isInRange(start, end, SerialDate.INCLUDE_SECOND)) {</b>
+<b class="nc"><i>377</i>&nbsp;                        count++;</b>
+<i>378</i>&nbsp;                    }
+<i>379</i>&nbsp;                }
+<i>380</i>&nbsp;            }
+<b class="nc"><i>381</i>&nbsp;            return count;</b>
+<i>382</i>&nbsp;        }
+<i>383</i>&nbsp;        else {
+<b class="nc"><i>384</i>&nbsp;            return countFeb29s(end, start);</b>
+<i>385</i>&nbsp;        }
+<i>386</i>&nbsp;    }
+<i>387</i>&nbsp;
+<i>388</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-04-26 20:55</div>
+</div>
+</body>
+</html>
