@@ -64,8 +64,34 @@ import java.util.*;
  * </pre>
  */
 public abstract class DayDate implements Comparable,
-                                            Serializable, 
-                                            MonthConstants {
+                                            Serializable {
+
+    public static enum Month{
+        JANUARY(1),
+        FEBRUARY(2),
+        MARCH(3),
+        APRIL(4),
+        MAY(5),
+        JUNE(6),
+        JULY(7),
+        AUGUST(8),
+        SEPTEMBER(9),
+        OCTOBER(10),
+        NOVEMBER(11),
+        DECEMBER(12);
+        Month(int index) {
+            this.index = index;
+        }
+
+        public static Month make(int monthIndex) {
+            for (Month m : Month.values()) {
+                if (m.index == monthIndex)
+                    return m;
+            }
+            throw new IllegalArgumentException("Invalid month index " + monthIndex);
+        }
+        public final int index;
+    }
 
     /** For serialization. */
     private static final long serialVersionUID = -293716040467423637L;
@@ -303,10 +329,10 @@ public abstract class DayDate implements Comparable,
      * @return <code>true</code> if the supplied integer code represents a 
      *         valid month.
      */
-    public static boolean isValidMonthCode(final int code) {
+    public static boolean isValidMonthCode(final Month code) {
 
         switch(code) {
-            case JANUARY: 
+            case JANUARY:
             case FEBRUARY: 
             case MARCH: 
             case APRIL: 
@@ -332,7 +358,7 @@ public abstract class DayDate implements Comparable,
      *
      * @return the quarter that the month belongs to.
      */
-    public static int monthCodeToQuarter(final int code) {
+    public static int monthCodeToQuarter(final Month code) {
 
         switch(code) {
             case JANUARY: 
@@ -363,7 +389,7 @@ public abstract class DayDate implements Comparable,
      *
      * @return a string representing the supplied month.
      */
-    public static String monthCodeToString(final int month) {
+    public static String monthCodeToString(final Month month) {
 
         return monthCodeToString(month, false);
 
@@ -381,7 +407,7 @@ public abstract class DayDate implements Comparable,
      *
      * @return a string representing the supplied month.
      */
-    public static String monthCodeToString(final int month, 
+    public static String monthCodeToString(final Month month,
                                            final boolean shortened) {
 
         // check arguments...
@@ -399,7 +425,7 @@ public abstract class DayDate implements Comparable,
             months = DATE_FORMAT_SYMBOLS.getMonths();
         }
 
-        return months[month - 1];
+        return months[month.index - 1];
 
     }
 
@@ -523,10 +549,10 @@ public abstract class DayDate implements Comparable,
      *
      * @return the number of the last day of the month.
      */
-    public static int lastDayOfMonth(final int month, final int yyyy) {
+    public static int lastDayOfMonth(final Month month, final int yyyy) {
 
-        final int result = LAST_DAY_OF_MONTH[month];
-        if (month != FEBRUARY) {
+        final int result = LAST_DAY_OF_MONTH[month.index];
+        if (month != Month.FEBRUARY) {
             return result;
         }
         else if (isLeapYear(yyyy)) {
@@ -574,7 +600,7 @@ public abstract class DayDate implements Comparable,
         final int mm = (12 * base.getYYYY() + base.getMonth() + months - 1) 
                        % 12 + 1;
         final int dd = Math.min(
-            base.getDayOfMonth(), DayDate.lastDayOfMonth(mm, yy)
+            base.getDayOfMonth(), DayDate.lastDayOfMonth(Month.make(mm), yy)
         );
         return DayDate.createInstance(dd, mm, yy);
 
@@ -597,7 +623,7 @@ public abstract class DayDate implements Comparable,
 
         final int targetY = baseY + years;
         final int targetD = Math.min(
-            baseD, DayDate.lastDayOfMonth(baseM, targetY)
+            baseD, DayDate.lastDayOfMonth(Month.make(baseM), targetY)
         );
 
         return DayDate.createInstance(targetD, baseM, targetY);
@@ -710,7 +736,7 @@ public abstract class DayDate implements Comparable,
      */
     public DayDate getEndOfCurrentMonth(final DayDate base) {
         final int last = DayDate.lastDayOfMonth(
-            base.getMonth(), base.getYYYY()
+            Month.make(base.getMonth()), base.getYYYY()
         );
         return DayDate.createInstance(last, base.getMonth(), base.getYYYY());
     }
@@ -847,7 +873,7 @@ public abstract class DayDate implements Comparable,
      * @return  a string representation of the date.
      */
     public String toString() {
-        return getDayOfMonth() + "-" + DayDate.monthCodeToString(getMonth())
+        return getDayOfMonth() + "-" + DayDate.monthCodeToString(Month.make(getMonth()))
                                + "-" + getYYYY();
     }
 

@@ -3,6 +3,7 @@ package org.jfree.date;
 import junit.framework.TestCase;
 
 import static org.jfree.date.DayDate.*;
+import static org.jfree.date.DayDate.Month.*;
 
 import java.util.*;
 
@@ -39,9 +40,9 @@ public class BobsDayDateTest extends TestCase {
 
     public void testIsValidMonthCode() throws Exception {
         for (int i = 1; i <= 12; i++)
-            assertTrue(isValidMonthCode(i));
-        assertFalse(isValidMonthCode(0));
-        assertFalse(isValidMonthCode(13));
+            assertTrue(isValidMonthCode(Month.make(i)));
+        assertFalse(isValidMonthCode(Month.make(0)));
+        assertFalse(isValidMonthCode(Month.make(13)));
     }
 
     public void testMonthToQuarter() throws Exception {
@@ -59,7 +60,7 @@ public class BobsDayDateTest extends TestCase {
         assertEquals(4, monthCodeToQuarter(DECEMBER));
 
         try {
-            monthCodeToQuarter(-1);
+            monthCodeToQuarter(Month.make(-1));
             fail("Invalid Month Code should throw exception");
         } catch (IllegalArgumentException e) {
         }
@@ -93,7 +94,7 @@ public class BobsDayDateTest extends TestCase {
         assertEquals("Dec", monthCodeToString(DECEMBER, true));
 
         try {
-            monthCodeToString(-1);
+            monthCodeToString(Month.make(-1));
             fail("Invalid month code should throw exception");
         } catch (IllegalArgumentException e) {}
     }
@@ -118,8 +119,8 @@ public class BobsDayDateTest extends TestCase {
         assertEquals(-1, stringToMonthCode("Hello"));
 
         for (int m = 1; m <= 12; m++) {
-            assertEquals(m, stringToMonthCode(monthCodeToString(m, false)));
-            assertEquals(m, stringToMonthCode(monthCodeToString(m, true)));
+            assertEquals(m, stringToMonthCode(monthCodeToString(Month.make(m), false)));
+            assertEquals(m, stringToMonthCode(monthCodeToString(Month.make(m), true)));
         }
 
         assertEquals(1, stringToMonthCode("jan"));
@@ -187,8 +188,8 @@ public class BobsDayDateTest extends TestCase {
         assertEquals(d(31, DECEMBER, 1904), addDays(5 * 365, newYears));
     }
 
-    private static SpreadsheetDate d(int day, int month, int year) {
-        return new SpreadsheetDate(day, month, year);
+    private static SpreadsheetDate d(int day, Month month, int year) {
+        return new SpreadsheetDate(day, month.index, year);
     }
 
     public void testAddMonths() throws Exception {
@@ -295,7 +296,7 @@ public class BobsDayDateTest extends TestCase {
     }
 
     public void testCreateInstanceFromDDMMYYYY() throws Exception {
-        DayDate date = createInstance(1, JANUARY, 1900);
+        DayDate date = createInstance(1, JANUARY.index, 1900);
         assertEquals(1, date.getDayOfMonth());
         assertEquals(JANUARY, date.getMonth());
         assertEquals(1900, date.getYYYY());
