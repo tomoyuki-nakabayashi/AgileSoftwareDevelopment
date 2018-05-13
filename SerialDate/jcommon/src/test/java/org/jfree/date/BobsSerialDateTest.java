@@ -228,7 +228,7 @@ public class BobsSerialDateTest extends TestCase {
     }
 
     public void testGetFollowingDayOfWeek() throws Exception {
-        //assertEquals(d(1, JANUARY, 2005), getFollowingDayOfWeek(SATURDAY, d(25, DECEMBER, 2004)));
+        assertEquals(d(1, JANUARY, 2005), getFollowingDayOfWeek(SATURDAY, d(25, DECEMBER, 2004)));
         assertEquals(d(1, JANUARY, 2005), getFollowingDayOfWeek(SATURDAY, d(26, DECEMBER, 2004)));
         assertEquals(d(3, MARCH, 2004), getFollowingDayOfWeek(WEDNESDAY, d(28, FEBRUARY, 2004)));
 
@@ -247,7 +247,7 @@ public class BobsSerialDateTest extends TestCase {
         assertEquals(d(23, APRIL, 2006), getNearestDayOfWeek(SUNDAY, d(21, APRIL, 2006)));
         assertEquals(d(23, APRIL, 2006), getNearestDayOfWeek(SUNDAY, d(22, APRIL, 2006)));
 
-        //assertEquals(d(17, APRIL, 2006), getNearestDayOfWeek(MONDAY, d(16, APRIL, 2006)));
+        assertEquals(d(17, APRIL, 2006), getNearestDayOfWeek(MONDAY, d(16, APRIL, 2006)));
         assertEquals(d(17, APRIL, 2006), getNearestDayOfWeek(MONDAY, d(17, APRIL, 2006)));
         assertEquals(d(17, APRIL, 2006), getNearestDayOfWeek(MONDAY, d(18, APRIL, 2006)));
         assertEquals(d(17, APRIL, 2006), getNearestDayOfWeek(MONDAY, d(19, APRIL, 2006)));
@@ -280,10 +280,10 @@ public class BobsSerialDateTest extends TestCase {
         assertEquals("Fourth", weekInMonthToString(FOURTH_WEEK_IN_MONTH));
         assertEquals("Last", weekInMonthToString(LAST_WEEK_IN_MONTH));
 
-        //try {
-        //    weekInMonthToString(-1);
-        //    fail("Invalid week code should throw exception");
-        //} catch (IllegalArgumentException e) {}
+        try {
+            weekInMonthToString(-1);
+            fail("Invalid week code should throw exception");
+        } catch (IllegalArgumentException e) {}
     }
 
     public void testRelativeToString() throws Exception {
@@ -291,10 +291,10 @@ public class BobsSerialDateTest extends TestCase {
         assertEquals("Nearest", relativeToString(NEAREST));
         assertEquals("Following", relativeToString(FOLLOWING));
 
-        //try {
-        //    relativeToString(-1000);
-        //    fail("Invalid relative code should throw exception");
-        //} catch (IllegalArgumentException e) {}
+        try {
+            relativeToString(-1000);
+            fail("Invalid relative code should throw exception");
+        } catch (IllegalArgumentException e) {}
     }
 
     public void testCreateInstanceFromDDMMYYYY() throws Exception {
