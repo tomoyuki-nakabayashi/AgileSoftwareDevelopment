@@ -595,14 +595,14 @@ public abstract class DayDate implements Comparable,
     public static DayDate addMonths(final int months,
                                     final DayDate base) {
 
-        final int yy = (12 * base.getYYYY() + base.getMonth() + months - 1) 
+        final int yy = (12 * base.getYYYY() + base.getMonth().index + months - 1)
                        / 12;
-        final int mm = (12 * base.getYYYY() + base.getMonth() + months - 1) 
+        final int mm = (12 * base.getYYYY() + base.getMonth().index + months - 1)
                        % 12 + 1;
         final int dd = Math.min(
             base.getDayOfMonth(), DayDate.lastDayOfMonth(Month.make(mm), yy)
         );
-        return DayDate.createInstance(dd, mm, yy);
+        return DayDate.createInstance(dd, Month.make(mm), yy);
 
     }
 
@@ -618,12 +618,12 @@ public abstract class DayDate implements Comparable,
     public static DayDate addYears(final int years, final DayDate base) {
 
         final int baseY = base.getYYYY();
-        final int baseM = base.getMonth();
+        final Month baseM = base.getMonth();
         final int baseD = base.getDayOfMonth();
 
         final int targetY = baseY + years;
         final int targetD = Math.min(
-            baseD, DayDate.lastDayOfMonth(Month.make(baseM), targetY)
+            baseD, DayDate.lastDayOfMonth(baseM, targetY)
         );
 
         return DayDate.createInstance(targetD, baseM, targetY);
@@ -736,7 +736,7 @@ public abstract class DayDate implements Comparable,
      */
     public DayDate getEndOfCurrentMonth(final DayDate base) {
         final int last = DayDate.lastDayOfMonth(
-            Month.make(base.getMonth()), base.getYYYY()
+            base.getMonth(), base.getYYYY()
         );
         return DayDate.createInstance(last, base.getMonth(), base.getYYYY());
     }
@@ -795,7 +795,7 @@ public abstract class DayDate implements Comparable,
      *
      * @return An instance of {@link DayDate}.
      */
-    public static DayDate createInstance(final int day, final int month,
+    public static DayDate createInstance(final int day, final Month month,
                                          final int yyyy) {
         return new SpreadsheetDate(day, month, yyyy);
     }
@@ -824,7 +824,7 @@ public abstract class DayDate implements Comparable,
         final GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         return new SpreadsheetDate(calendar.get(Calendar.DATE),
-                                   calendar.get(Calendar.MONTH) + 1,
+                                   Month.make(calendar.get(Calendar.MONTH) + 1),
                                    calendar.get(Calendar.YEAR));
 
     }
@@ -873,7 +873,7 @@ public abstract class DayDate implements Comparable,
      * @return  a string representation of the date.
      */
     public String toString() {
-        return getDayOfMonth() + "-" + DayDate.monthCodeToString(Month.make(getMonth()))
+        return getDayOfMonth() + "-" + DayDate.monthCodeToString(getMonth())
                                + "-" + getYYYY();
     }
 
@@ -889,7 +889,7 @@ public abstract class DayDate implements Comparable,
      *
      * @return the month of the year.
      */
-    public abstract int getMonth();
+    public abstract Month getMonth();
 
     /**
      * Returns the day of the month.
